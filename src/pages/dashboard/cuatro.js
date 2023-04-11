@@ -70,6 +70,9 @@ function convertToBase64(file) {
 
 export default function PageCuatro() {
 
+    const api_url = "https://api.movilcelistic.com";
+    // const api_url = "http://localhost";
+
     const [preview, setPreview] = useState(false);
 
     const {themeStretch} = useSettingsContext();
@@ -153,7 +156,7 @@ export default function PageCuatro() {
 
                 // console.log(`Arrived: ${JSON.stringify(formData)}`);
 
-                const url = `http://localhost/api/mogo-db-wms/cargar_imagenes`;
+                const url = `${api_url}/api/mogo-db-wms/cargar_imagenes`;
 
                 fetch(url, {
                     method: 'POST',
