@@ -14,7 +14,7 @@ import { primaryFont } from '../theme/typography';
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en" className={primaryFont.className}>
+      <Html lang="es" className={primaryFont.className}>
         <Head>
           <meta charSet="utf-8" />
           <link rel="manifest" href="/manifest.json" />
@@ -34,10 +34,10 @@ export default class MyDocument extends Document {
           {/* Meta */}
           <meta
             name="description"
-            content="The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style"
+            content="Brindamos soluciones integrales para todo el ciclo de vida de dispositivos tecnológicos, para fabricantes (OEM) u operadores."
           />
           <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-          <meta name="author" content="Minimal UI Kit" />
+          <meta name="author" content="CRM | MovilCelistic" />
         </Head>
 
         <body>
