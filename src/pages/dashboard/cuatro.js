@@ -77,10 +77,10 @@ export default function PageCuatro() {
 
     const {themeStretch} = useSettingsContext();
 
-    const [pedidoProveedor, setPedidoProveedor] = useState('');
-    const [procedencia, setProcedencia] = useState('');
-    const [jsonData, setJsonData] = useState([]);
-    const [jsonDataDetalle, setJsonDataDetalle] = useState([]);
+    const [pedidoProveedorr, setPedidoProveedor] = useState('');
+    const [procedenciaa, setProcedencia] = useState('');
+    // const [jsonData, setJsonData] = useState([]);
+    // const [jsonDataDetalle, setJsonDataDetalle] = useState([]);
 
 
     const [files, setFiles] = useState([]);
@@ -148,8 +148,8 @@ export default function PageCuatro() {
 
                 // // Crear un objeto FormData
                 const formData = {
-                    pedidoProveedor: pedidoProveedor,
-                    procedencia: procedencia,
+                    pedidoProveedor: pedidoProveedorr,
+                    procedencia: procedenciaa,
                     description: "Imágen",
                     selectedFile: results_final
                 };
@@ -185,6 +185,10 @@ export default function PageCuatro() {
 
     };
 
+    // Actividades pendientes
+    // Las imágenes del pedido unicamente se podran cargar 24 horas despues de haber creado el pedido proveedor
+
+
     return (
         <>
             <Head>
@@ -196,23 +200,20 @@ export default function PageCuatro() {
 
                 <Block title="General" sx={style}>
 
-                   {/*Actividades pendientes*/}
-                   {/* Las imágenes del pedido unicamente se podran cargar 24 horas despues de haber creado el pedido proveedor*/}
-
                     <Typography variant="h3" component="h1" paragraph>
                         Subir imágenes a un pedido del proveedor.
                     </Typography>
 
                     <TextField type="text" className="form-control email" name="email" id="email2"
                                placeholder="PEDIDO PROVEEDOR" required
-                               value={pedidoProveedor}
+                               value={pedidoProveedorr}
                                onChange={e => {
                                    setPedidoProveedor(e.currentTarget.value);
                                }}
                     />
                     <TextField type="text" className="form-control email" name="email" id="email2"
                                placeholder="PROCEDENCIA" required
-                               value={procedencia}
+                               value={procedenciaa}
                                onChange={e => {
                                    setProcedencia(e.currentTarget.value);
                                }}
