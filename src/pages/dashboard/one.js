@@ -19,7 +19,7 @@ import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import DashboardLayout from '../../layouts/dashboard';
 // components
 import {useSettingsContext} from '../../components/settings';
-import {Block} from "./Block";
+import {Block} from "../../sections/_examples/Block";
 import Scrollbar from "../../components/scrollbar/Scrollbar";
 import {TableHeadCustom} from "../../components/table";
 import Image from "../../components/image";

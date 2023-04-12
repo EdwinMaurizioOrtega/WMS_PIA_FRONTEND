@@ -14,7 +14,7 @@ import {
 
 import {useSettingsContext} from "../../components/settings";
 import DashboardLayout from "../../layouts/dashboard";
-import {Block} from "./Block";
+import {Block} from "../../sections/_examples/Block";
 import {Upload} from "../../components/upload";
 
 
