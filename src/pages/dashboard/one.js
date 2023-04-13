@@ -24,6 +24,7 @@ import Scrollbar from "../../components/scrollbar/Scrollbar";
 import {TableHeadCustom} from "../../components/table";
 import Image from "../../components/image";
 import Iconify from "../../components/iconify";
+import {API_URL} from "../../routes/paths"
 
 // ----------------------------------------------------------------------
 
@@ -86,33 +87,29 @@ export default function PageOne() {
     const [jsonCantidadDataDetalle, setJsonCantidadDataDetalle] = useState([]);
     const [jsonDataListaImagenes, setJsonDataListaImagenes] = useState([]);
 
-    const api_url = "https://api.movilcelistic.com";
-    // const api_url = "http://localhost";
-
-
     const handleClick = () => {
 
         console.log(`${pedidoProveedor} ${procedencia}`);
 
-        const url = `${api_url}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+        const url = `${API_URL}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
 
         fetch(url)
             .then(response => response.json())
             .then(data => setJsonData(data.data));
 
-        const url_detalle = `${api_url}/api/wms/reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+        const url_detalle = `${API_URL}/api/wms/reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
 
         fetch(url_detalle)
             .then(response => response.json())
             .then(data => setJsonDataDetalle(data.data));
 
-        const url_cantidad_detalle = `${api_url}/api/wms/reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+        const url_cantidad_detalle = `${API_URL}/api/wms/reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
 
         fetch(url_cantidad_detalle)
             .then(response => response.json())
             .then(data => setJsonCantidadDataDetalle(data.data));
 
-        const url_lista_imagenes = `${api_url}/api/mogo-db-wms/lista_imagenes?pedidoProveedor=${pedidoProveedor}&procedencia=${procedencia}`;
+        const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?pedidoProveedor=${pedidoProveedor}&procedencia=${procedencia}`;
 
         fetch(url_lista_imagenes)
             .then(response => response.json())
