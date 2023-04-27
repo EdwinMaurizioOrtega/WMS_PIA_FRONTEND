@@ -15,7 +15,7 @@ import {
 // layouts
 import {Masonry} from "@mui/lab";
 import {useState} from "react";
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import {PDFDownloadLink, PDFViewer} from '@react-pdf/renderer';
 import {DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
 import {useDemoData} from "@mui/x-data-grid-generator";
 import DashboardLayout from '../../layouts/dashboard';
@@ -43,48 +43,33 @@ const TABLE_HEAD = [
     {id: 'FACTURA_FAB', label: 'FACTURA_FAB', align: 'right'},
     {id: 'BULTOS', label: 'NUM_BULTOS', align: 'right'},
     // {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
-    {id: 'VAL2', label: 'VOLUMEN', align: 'right'},
+    // {id: 'VAL2', label: 'VOLUMEN', align: 'right'},
     {id: 'PESO', label: 'PESO TOTAL', align: 'right'},
     {id: 'USUARIO', label: 'USUARIO', align: 'right'},
 
 ];
 
 const TABLE_HEAD_CANTIDAD_DETALLE = [
-    {id: 'PEDIDO_PROV', label: 'PEDIDO_PROV'},
-    {id: 'ARTICULO', label: 'ARTICULO', align: 'right'},
-    {id: 'DESCRIPCION', label: 'DESCRIPCION', align: 'right'},
-    {id: 'CANTIDAD', label: 'CANTIDAD', align: 'right'},
+    {field: 'PEDIDO_PROV', headerName: 'PEDIDO_PROV', width: 150},
+    {field: 'ARTICULO', headerName: 'ARTICULO', width: 150},
+    {field: 'DESCRIPCION', headerName: 'DESCRIPCION', width: 300},
+    {field: 'CANTIDAD', headerName: 'CANTIDAD', width: 150},
 ];
 
 const TABLE_HEAD_DETALLE = [
-    {id: 'PEDIDO_PROV', label: 'PEDIDO_PROV'},
-    {id: 'PROCEDENCIA', label: 'PROCEDENCIA', align: 'right'},
-    {id: 'ARTICULO', label: 'ARTICULO', align: 'right'},
-    {id: 'DESCRIPCION', label: 'DESCRIPCION', align: 'right'},
-    {id: 'SERIE', label: 'SERIE', align: 'right'},
-];
-
-
-const columnsExample = [
-    { field: 'PEDIDO_PROV', headerName: 'PEDIDO_PROV', width: 70 },
-    { field: 'PROCEDENCIA', headerName: 'PROCEDENCIA', width: 130 },
-    { field: 'ARTICULO', headerName: 'ARTICULO', width: 90 },
-    { field: 'DESCRIPCION', headerName: 'DESCRIPCION', width: 90 },
-    { field: 'SERIE', headerName: 'SERIE', width: 90 },
+    {field: 'PEDIDO_PROV', headerName: 'PEDIDO_PROV', width: 150 },
+    {field: 'PROCEDENCIA', headerName: 'PROCEDENCIA', width: 150 },
+    {field: 'ARTICULO', headerName: 'ARTICULO', width: 150},
+    {field: 'DESCRIPCION', headerName: 'DESCRIPCION', width: 300},
+    {field: 'SERIE', headerName: 'SERIE', width: 150},
 ];
 
 
 function CustomToolbar() {
     return (
         <GridToolbarContainer>
-
             <GridToolbarExport
-                printOptions={{
-                    hideFooter: false,
-
-                }}
-
-                />
+            />
         </GridToolbarContainer>
     );
 }
@@ -117,7 +102,7 @@ export default function PageOne() {
 
     const handleClick = () => {
 
-        if (pedidoProveedor !== '' && procedencia !== ''){
+        if (pedidoProveedor !== '' && procedencia !== '') {
             console.log(`${pedidoProveedor} ${procedencia}`);
 
             const url = `${API_URL}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
@@ -144,27 +129,20 @@ export default function PageOne() {
                 .then(response => response.json())
                 .then(data => setJsonDataListaImagenes(data.data));
 
-        }else {
+        } else {
             alert("Todos los campos son obligatorios.")
         }
 
     };
 
-    const [idCount, setIdCount] = useState(0);
-    function getRowId(row) {
-        if (!row.id) {
-            setIdCount(idCount + 1);
-            return idCount;
-        }
-        return row.id;
-    }
+    // Definir un contador autoincremental
+    let counter = 0;
 
-
-    const { data, loading } = useDemoData({
-        dataSet: 'Commodity',
-        rowLength: 4,
-        maxColumns: 6,
-    });
+// Función para generar un identificador único para cada fila
+    const getRowId = (row) => {
+        counter += 1;
+        return counter;
+    };
 
     return (
         <>
@@ -221,7 +199,8 @@ export default function PageOne() {
                                         <TableCell>{row.PEDIDO_PROV}</TableCell>
                                         <TableCell align="right">{row.FEC_INGRESO}</TableCell>
 
-                                        <TableCell align="right">{row.ESTATUS ==='N' ? 'NUEVO' : 'FINALIZADO'}</TableCell>
+                                        <TableCell
+                                            align="right">{row.ESTATUS === 'N' ? 'NUEVO' : 'FINALIZADO'}</TableCell>
                                         <TableCell align="right">{row.CLIENTE}</TableCell>
                                         <TableCell align="right">{row.PROVEEDOR}</TableCell>
                                         <TableCell align="right">{row.DATO1}</TableCell>
@@ -229,7 +208,6 @@ export default function PageOne() {
                                         <TableCell align="right">{row.DATO3}</TableCell>
                                         <TableCell align="right">{row.FACTURA_FAB}</TableCell>
                                         <TableCell align="right">{row.BULTOS}</TableCell>
-                                        <TableCell align="right">{row.VAL2}</TableCell>
                                         <TableCell align="right">{row.PESO}</TableCell>
                                         <TableCell align="right">{row.USUARIO}</TableCell>
                                     </TableRow>
@@ -243,54 +221,33 @@ export default function PageOne() {
                     Resumen pedido
                 </Typography>
 
+                <Box sx={{height: 720}}>
+                    <DataGrid
+                        rows={jsonCantidadDataDetalle}
+                        columns={TABLE_HEAD_CANTIDAD_DETALLE}
+                        getRowId={getRowId}
+                        components={{
+                            Toolbar: CustomToolbar,
+                        }}
+                    />
 
-                <Button  variant="contained">Generar PDF</Button>
-
-
-                <TableContainer sx={{mt: 3, overflow: 'unset'}}>
-                    <Scrollbar>
-                        <Table sx={{minWidth: 800}}>
-                            <TableHeadCustom headLabel={TABLE_HEAD_CANTIDAD_DETALLE}/>
-
-                            <TableBody>
-                                {jsonCantidadDataDetalle.map((row, indexuno) => (
-                                    <TableRow key={indexuno}>
-                                        <TableCell>{row.PEDIDO_PROV}</TableCell>
-                                        <TableCell align="right">{row.ARTICULO}</TableCell>
-                                        <TableCell align="right">{row.DESCRIPCION}</TableCell>
-                                        <TableCell align="right">{row.CANTIDAD}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </Scrollbar>
-                </TableContainer>
+                </Box>
 
                 <Typography variant="h3" component="h1" paragraph>
                     Detalle del pedido.
                 </Typography>
 
-                <Button  variant="contained">Exportar a EXCEL</Button>
+                <Box sx={{height: 720}}>
+                    <DataGrid
+                        rows={jsonDataDetalle}
+                        columns={TABLE_HEAD_DETALLE}
+                        getRowId={(row) => row.SERIE}
+                        components={{
+                            Toolbar: CustomToolbar,
+                        }}
+                    />
 
-                <TableContainer sx={{mt: 3, overflow: 'unset'}}>
-                    <Scrollbar>
-                        <Table sx={{minWidth: 800}}>
-                            <TableHeadCustom headLabel={TABLE_HEAD_DETALLE}/>
-
-                            <TableBody>
-                                {jsonDataDetalle.map((row, indexuno) => (
-                                    <TableRow key={indexuno}>
-                                        <TableCell>{row.PEDIDO_PROV}</TableCell>
-                                        <TableCell align="right">{row.PROCEDENCIA}</TableCell>
-                                        <TableCell align="right">{row.ARTICULO}</TableCell>
-                                        <TableCell align="right">{row.DESCRIPCION}</TableCell>
-                                        <TableCell align="right">{row.SERIE}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </Scrollbar>
-                </TableContainer>
+                </Box>
 
                 <Typography variant="h3" component="h1" paragraph>
                     Lista de imágenes.
@@ -306,16 +263,16 @@ export default function PageOne() {
                                     <TableRow key={row._id}>
 
                                         <TableCell>{row.pedidoProveedor}</TableCell>
-                                        <TableCell >{row.procedencia}</TableCell>
-                                        <TableCell >{row.createdAt}</TableCell>
-                                        <TableCell >
+                                        <TableCell>{row.procedencia}</TableCell>
+                                        <TableCell>{row.createdAt}</TableCell>
+                                        <TableCell>
                                             {row.selectedFile.map((imageData, index) => (
                                                 <Image
                                                     key={index}
                                                     src={imageData}
-                                                    src={`data:image/jpeg;base64,${ imageData}`}
+                                                    src={`data:image/jpeg;base64,${imageData}`}
 
-                                                    sx={{ width: 500, height: 500 }}
+                                                    sx={{width: 500, height: 500}}
                                                 />
                                             ))}
 

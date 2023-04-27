@@ -167,6 +167,8 @@ export default function PageCuatro() {
                     })
                         .then(response => {
                             // Manejar la respuesta
+
+                            alert("El proceso de carga de las imágenes se ha completado exitosamente.")
                         })
                         .catch(error => {
                             // Manejar el error
