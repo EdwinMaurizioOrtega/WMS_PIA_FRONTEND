@@ -57,19 +57,25 @@ export default function PageCinco() {
 
     const handleClick = () => {
 
-        console.log(`${pedidoProveedor} ${procedencia}`);
+        if (pedidoProveedor !== '' && procedencia !== ''){
 
-        const url = `${API_URL}/api/wms/reporte_despacho_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+            console.log(`${pedidoProveedor} ${procedencia}`);
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => setJsonDataDespacho(data.data));
+            const url = `${API_URL}/api/wms/reporte_despacho_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
 
-        const url_detalle = `${API_URL}/api/wms/reporte_despacho_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => setJsonDataDespacho(data.data));
 
-        fetch(url_detalle)
-            .then(response => response.json())
-            .then(data => setJsonDataDespachoDetalle(data.data));
+            const url_detalle = `${API_URL}/api/wms/reporte_despacho_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+
+            fetch(url_detalle)
+                .then(response => response.json())
+                .then(data => setJsonDataDespachoDetalle(data.data));
+
+        }else {
+            alert("Todos los campos son obligatorios.")
+        }
 
     };
 

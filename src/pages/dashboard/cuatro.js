@@ -136,50 +136,55 @@ export default function PageCuatro() {
 // Validar imágenes ==> https://codebeautify.org/base64-to-image-converter#
     const enviarDatos = () => {
 
-        // console.log(aaaaaaaa(files));
+        if (pedidoProveedorr !== '' && procedenciaa !== '') {
 
-        PasoUno(files).then((result_p_uno) => {
-            // console.log(result)
+            // console.log(aaaaaaaa(files));
 
-            Promise.all(result_p_uno).then((results_final) => {
-                console.log(results_final); // ['Resultado 1', 'Resultado 2', 'Resultado 3']
+            PasoUno(files).then((result_p_uno) => {
+                // console.log(result)
 
-                // // Crear un objeto FormData
-                const formData = {
-                    pedidoProveedor: pedidoProveedorr,
-                    procedencia: procedenciaa,
-                    description: "Imágen",
-                    selectedFile: results_final
-                };
+                Promise.all(result_p_uno).then((results_final) => {
+                    console.log(results_final); // ['Resultado 1', 'Resultado 2', 'Resultado 3']
 
-                // console.log(`Arrived: ${JSON.stringify(formData)}`);
+                    // // Crear un objeto FormData
+                    const formData = {
+                        pedidoProveedor: pedidoProveedorr,
+                        procedencia: procedenciaa,
+                        description: "Imágen",
+                        selectedFile: results_final
+                    };
 
-                const url = `${API_URL}/api/mogo-db-wms/cargar_imagenes`;
+                    // console.log(`Arrived: ${JSON.stringify(formData)}`);
 
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                })
-                    .then(response => {
-                        // Manejar la respuesta
+                    const url = `${API_URL}/api/mogo-db-wms/cargar_imagenes`;
+
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
                     })
-                    .catch(error => {
-                        // Manejar el error
-                    });
+                        .then(response => {
+                            // Manejar la respuesta
+                        })
+                        .catch(error => {
+                            // Manejar el error
+                        });
+
+
+                }).catch((error) => {
+                    console.error(error);
+                });
 
 
             }).catch((error) => {
-                console.error(error);
+                // Hacer algo con el error
             });
 
-
-        }).catch((error) => {
-            // Hacer algo con el error
-        });
-
+        } else {
+            alert("Todos los campos son obligatorios.")
+        }
 
     };
 
