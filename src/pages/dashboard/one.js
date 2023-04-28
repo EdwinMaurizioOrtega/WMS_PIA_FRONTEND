@@ -18,10 +18,12 @@ import {DataGrid, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-gri
 import {useForm} from 'react-hook-form';
 
 import {yupResolver} from "@hookform/resolvers/yup";
+
 import FormProvider, {
     RHFSelect,
     RHFTextField,
 } from '../../components/hook-form';
+
 import DashboardLayout from '../../layouts/dashboard';
 // components
 import {useSettingsContext} from '../../components/settings';
@@ -110,17 +112,11 @@ export default function PageOne() {
     };
 
     const methods = useForm({
-        resolver: yupResolver(FormSchema),
         defaultValues,
     });
 
     const {
-        watch,
-        reset,
-        control,
-        setValue,
         handleSubmit,
-        formState: {isSubmitting},
     } = methods;
 
     const [jsonData, setJsonData] = useState([]);
@@ -130,8 +126,8 @@ export default function PageOne() {
 
     const onSubmit = async (dataAux) => {
 
-        // console.log('pedidoProveedorX: ', dataAux.pedidoProveedorX);
-        // console.log('procedencia: ', dataAux.singleSelect);
+        console.log('pedidoProveedorX: ', dataAux.pedidoProveedorX);
+        console.log('procedencia: ', dataAux.singleSelect);
 
         const pedidoProveedor = dataAux.pedidoProveedorX;
         const procedencia = dataAux.singleSelect;
@@ -140,7 +136,6 @@ export default function PageOne() {
 
             console.log('pedidoProveedor: ', pedidoProveedor);
             console.log('procedencia: ', procedencia);
-
 
             const url = `${API_URL}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
             fetch(url)
@@ -183,51 +178,36 @@ export default function PageOne() {
                 <title> Page Cuatro | Minimal UI</title>
             </Head>
 
-            {isSubmitting && (
-                <Backdrop open sx={{zIndex: (theme) => theme.zIndex.modal + 1}}>
-                    <CircularProgress color="primary"/>
-                </Backdrop>
-            )}
-
+            <Typography variant="h3" component="h1" paragraph>
+                PEDIDO PROVEEDOR
+            </Typography>
 
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={5}>
-                    <Grid item xs={12} md={6}>
-                        <Stack spacing={2}>
-
-                            <Typography variant="h3" component="h1" paragraph>
-                                Número pedido proveedor.
-                            </Typography>
-
-                            <Block>
-                                <RHFTextField
-                                    name="pedidoProveedorX"
-                                    label="PEDIDO PROVEEDOR"
-                                />
-                            </Block>
-
-                            <Block label="RHFSelect">
-                                <RHFSelect name="singleSelect" label="PROCEDENCIA">
-                                    <MenuItem value="">None</MenuItem>
-                                    <Divider sx={{borderStyle: 'dashed'}}/>
-                                    {OPTIONS.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </RHFSelect>
-                            </Block>
 
 
-                            <Button fullWidth size="large" type="submit" variant="contained">
-                                Buscar
-                            </Button>
+                <Block>
+                    <RHFTextField
+                        name="pedidoProveedorX"
+                        label="PEDIDO PROVEEDOR"
+                    />
+                </Block>
 
+                <Block label="RHFSelect">
+                    <RHFSelect name="singleSelect" label="PROCEDENCIA">
+                        <MenuItem value="">None</MenuItem>
+                        <Divider sx={{borderStyle: 'dashed'}}/>
+                        {OPTIONS.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </RHFSelect>
+                </Block>
 
-                        </Stack>
-                    </Grid>
+                <Button fullWidth size="large" type="submit" variant="contained">
+                    Buscar
+                </Button>
 
-                </Grid>
             </FormProvider>
 
 
