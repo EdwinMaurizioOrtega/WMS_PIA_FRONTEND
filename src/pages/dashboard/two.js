@@ -2,7 +2,7 @@
 import Head from 'next/head';
 import {
   Button,
-  Container,
+  Container, Divider, FormControl, InputLabel, MenuItem, Select,
   Stack,
   Table,
   TableBody,
@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 // layouts
 import {useState} from "react";
+import {useForm} from "react-hook-form";
 import DashboardLayout from '../../layouts/dashboard';
 // components
 import { useSettingsContext } from '../../components/settings';
@@ -22,6 +23,10 @@ import {fDate, fDatePersonalized_1} from "../../utils/formatTime";
 import Scrollbar from "../../components/scrollbar/Scrollbar";
 import {TableHeadCustom} from "../../components/table";
 import {API_URL} from "../../routes/paths";
+import {RHFSelect} from "../../components/hook-form";
+
+import React from 'react';
+
 
 
 // ----------------------------------------------------------------------
@@ -52,8 +57,20 @@ const TABLE_HEAD = [
   {id: 'PESO', label: 'PESO TOTAL', align: 'right'},
 ];
 
+const OPTIONS = [
+  {value: '9000', label: 'HT miami'},
+  {value: '7001', label: '7001'},
+
+];
+
 export default function PageTwo() {
   const { themeStretch } = useSettingsContext();
+
+  const [procedencia, setProcedencia] = React.useState('');
+
+  const handleChange = (event) => {
+    setProcedencia(event.target.value);
+  };
 
   const pickerCalendar = useDateRangePicker(new Date(), null);
 
@@ -69,11 +86,12 @@ export default function PageTwo() {
 
       console.log(`Inicio: ${fDatePersonalized_1(pickerCalendar.startDate)}`);
       console.log(`Final: ${fDatePersonalized_1(pickerCalendar.endDate)}`);
+      console.log(`Prodedencia: ${procedencia}`);
 
       const fec_inicio = fDatePersonalized_1(pickerCalendar.startDate);
       const fec_fin = fDatePersonalized_1(pickerCalendar.endDate);
 
-      const url = `${API_URL}/api/wms/rango_fecha_creacion_pedido_proveedor?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}`;
+      const url = `${API_URL}/api/wms/rango_fecha_creacion_pedido_proveedor?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}&proced=${procedencia}`;
 
       fetch(url)
           .then(response => response.json())
@@ -119,6 +137,24 @@ export default function PageTwo() {
                 onClose={pickerCalendar.onClose}
                 isError={pickerCalendar.isError}
             />
+
+            <Block>
+
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">PROCEDENCIA</InputLabel>
+              <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={procedencia}
+                  label="Age"
+                  onChange={handleChange}
+              >
+                <MenuItem value={9000}>HT miami</MenuItem>
+                <MenuItem value={7001}>7001</MenuItem>
+
+              </Select>
+            </FormControl>
+            </Block>
 
             <Button variant="contained"
 
