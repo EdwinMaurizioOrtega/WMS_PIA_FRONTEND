@@ -8,7 +8,7 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableRow,
+    TableRow, Tooltip,
     Typography
 } from '@mui/material';
 // layouts
@@ -34,6 +34,11 @@ import Image from "../../components/image";
 import {FormSchema} from "../../sections/_examples/extra/form/schema";
 import {API_URL} from "../../routes/paths";
 
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+
+import InvoicePDF from '../../sections/invoice/InvoicePDF';
+import Iconify from "../../components/iconify";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -51,6 +56,7 @@ const TABLE_HEAD = [
     // {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
     // {id: 'VAL2', label: 'VOLUMEN', align: 'right'},
     {id: 'PESO', label: 'PESO TOTAL', align: 'right'},
+    {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
     {id: 'USUARIO', label: 'USUARIO', align: 'right'},
 
 ];
@@ -210,6 +216,26 @@ export default function PageOne() {
 
             </FormProvider>
 
+            {jsonData && jsonData.length > 0 ? (
+                <PDFDownloadLink
+                    document={<InvoicePDF invoice={jsonData} invoice_detail={jsonCantidadDataDetalle} invoice_imagen={jsonDataListaImagenes}/>}
+                    fileName="Imprimir_PDF"
+                    style={{ textDecoration: 'none' }}
+                >
+                    {({ loading }) => (
+                        <Tooltip title="Download">
+                            <IconButton>
+                                {loading ? (
+                                    <CircularProgress size={24} color="inherit" />
+                                ) : (
+                                    <Iconify icon="eva:download-fill" />
+                                )}
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                </PDFDownloadLink>
+            ) : null}
+
 
             <Container maxWidth={themeStretch ? false : 'xl'}>
 
@@ -239,6 +265,7 @@ export default function PageOne() {
                                         <TableCell align="right">{row.FACTURA_FAB}</TableCell>
                                         <TableCell align="right">{row.BULTOS}</TableCell>
                                         <TableCell align="right">{row.PESO}</TableCell>
+                                        <TableCell align="right">{row.DATO4}</TableCell>
                                         <TableCell align="right">{row.USUARIO}</TableCell>
                                     </TableRow>
                                 ))}
@@ -314,7 +341,6 @@ export default function PageOne() {
                         </Table>
                     </Scrollbar>
                 </TableContainer>
-
 
             </Container>
         </>

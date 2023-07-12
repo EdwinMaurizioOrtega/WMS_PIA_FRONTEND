@@ -40,8 +40,8 @@ const TABLE_HEAD = [
   {id: 'DATO1', label: 'EMBARCADOR', align: 'right'},
   {id: 'DATO2', label: 'NOMBRE CONDUCTOR', align: 'right'},
   {id: 'DATO3', label: 'DN', align: 'right'},
-  {id: 'DATO4', label: 'DATO4', align: 'right'},
-  {id: 'DATO5', label: 'DATO5', align: 'right'},
+  {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
+  // {id: 'DATO5', label: 'DATO5', align: 'right'},
   {id: 'FACTURA', label: 'FACTURA', align: 'right'},
   {id: 'FACTURA_FAB', label: 'FACTURA_FAB', align: 'right'},
   {id: 'VAL1', label: 'NUM_BULTOS', align: 'right'},
@@ -175,7 +175,7 @@ export default function PageThree() {
                         <TableCell align="right">{row.DATO2}</TableCell>
                         <TableCell align="right">{row.DATO3}</TableCell>
                         <TableCell align="right">{row.DATO4}</TableCell>
-                        <TableCell align="right">{row.DATO5}</TableCell>
+                        {/*<TableCell align="right">{row.DATO5}</TableCell>*/}
                         <TableCell align="right">{row.FACTURA}</TableCell>
                         <TableCell align="right">{row.FACTURA_FAB}</TableCell>
                         <TableCell align="right">{row.VAL1}</TableCell>

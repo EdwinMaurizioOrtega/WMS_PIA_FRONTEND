@@ -226,7 +226,7 @@ export default function PageCuatro() {
 
                     <Card>
                         <CardHeader
-                            title="Upload Multi File"
+                            title="Subir archivo múltiple"
                             action={
                                 <FormControlLabel
                                     control={

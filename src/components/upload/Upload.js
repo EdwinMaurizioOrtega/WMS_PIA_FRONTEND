@@ -189,11 +189,11 @@ function Placeholder({ sx, ...other }) {
 
       <div>
         <Typography gutterBottom variant="h5">
-          Drop or Select file
+          Soltar o Seleccionar archivo
         </Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Drop files here or click
+          Coloque los archivos aquí o haga clic en
           <Typography
             variant="body2"
             component="span"
@@ -203,9 +203,9 @@ function Placeholder({ sx, ...other }) {
               textDecoration: 'underline',
             }}
           >
-            browse
+            navegar
           </Typography>
-          thorough your machine
+          a fondo su máquina
         </Typography>
       </div>
     </Stack>
