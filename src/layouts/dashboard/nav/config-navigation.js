@@ -27,6 +27,7 @@ const navConfig = [
       { title: 'Fecha de creación (Fecha Alta)', path: PATH_DASHBOARD.three, icon: ICONS.analytics },
       { title: 'DESPACHO | Número pedido proveedor.', path: PATH_DASHBOARD.five, icon: ICONS.dashboard },
       { title: 'Cargar Imágenes Pedido Proveedor', path: PATH_DASHBOARD.four, icon: ICONS.analytics },
+      { title: 'Pedidos proveedor (Fechas)', path: PATH_DASHBOARD.six, icon: ICONS.analytics },
     ],
   },
 
