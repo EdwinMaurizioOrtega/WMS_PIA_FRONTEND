@@ -91,11 +91,11 @@ export default function PageCinco() {
                     <Block title="General" sx={style}>
 
                         <Typography variant="h3" component="h1" paragraph>
-                            Despacho | Número pedido proveedor..
+                            Despacho
                         </Typography>
 
                         <TextField type="text" className="form-control email" name="email" id="email2"
-                                   placeholder="PEDIDO PROVEEDOR" required
+                                   placeholder="PEDIDO" required
                                    value={pedidoProveedor}
                                    onChange={e => {
                                        setPedidoProveedor(e.currentTarget.value);
