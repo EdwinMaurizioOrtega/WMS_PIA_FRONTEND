@@ -3,7 +3,7 @@ import Head from 'next/head';
 import {
     Backdrop,
     Box, Button, CircularProgress,
-    Container, Divider, Grid, IconButton, MenuItem, Stack,
+    Container, Divider, FormControl, FormControlLabel, Grid, IconButton, MenuItem, Radio, RadioGroup, Stack,
     Table,
     TableBody,
     TableCell,
@@ -15,7 +15,7 @@ import {
 import {LoadingButton, Masonry} from "@mui/lab";
 import {useState} from "react";
 import {DataGrid, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 
 import {yupResolver} from "@hookform/resolvers/yup";
 
@@ -34,7 +34,7 @@ import Image from "../../components/image";
 import {FormSchema} from "../../sections/_examples/extra/form/schema";
 import {API_URL} from "../../routes/paths";
 
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import {PDFDownloadLink, PDFViewer} from '@react-pdf/renderer';
 
 import InvoicePDF from '../../sections/invoice/InvoicePDF';
 import Iconify from "../../components/iconify";
@@ -134,38 +134,81 @@ export default function PageOne() {
 
         console.log('pedidoProveedorX: ', dataAux.pedidoProveedorX);
         console.log('procedencia: ', dataAux.singleSelect);
+        console.log('procedencia: ', dataAux.radioOption);
 
         const pedidoProveedor = dataAux.pedidoProveedorX;
         const procedencia = dataAux.singleSelect;
+        const filtro = dataAux.radioOption;
 
-        if (pedidoProveedor !== '' && procedencia !== '') {
+        // g <= Pedido
+        if (filtro === "g") {
 
-            console.log('pedidoProveedor: ', pedidoProveedor);
-            console.log('procedencia: ', procedencia);
+            if (pedidoProveedor !== '' && procedencia !== '') {
 
-            const url = `${API_URL}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => setJsonData(data.data));
+                console.log('pedidoProveedor: ', pedidoProveedor);
+                console.log('procedencia: ', procedencia);
 
-            const url_detalle = `${API_URL}/api/wms/reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
-            fetch(url_detalle)
-                .then(response => response.json())
-                .then(data => setJsonDataDetalle(data.data));
+                const url = `${API_URL}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => setJsonData(data.data));
 
-            const url_cantidad_detalle = `${API_URL}/api/wms/reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
-            fetch(url_cantidad_detalle)
-                .then(response => response.json())
-                .then(data => setJsonCantidadDataDetalle(data.data));
+                const url_detalle = `${API_URL}/api/wms/reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url_detalle)
+                    .then(response => response.json())
+                    .then(data => setJsonDataDetalle(data.data));
 
-            const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?pedidoProveedor=${pedidoProveedor}&procedencia=${procedencia}`;
-            fetch(url_lista_imagenes)
-                .then(response => response.json())
-                .then(data => setJsonDataListaImagenes(data.data));
+                const url_cantidad_detalle = `${API_URL}/api/wms/reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url_cantidad_detalle)
+                    .then(response => response.json())
+                    .then(data => setJsonCantidadDataDetalle(data.data));
 
-        } else {
-            alert("Todos los campos son obligatorios.")
+                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?pedidoProveedor=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url_lista_imagenes)
+                    .then(response => response.json())
+                    .then(data => setJsonDataListaImagenes(data.data));
+
+            } else {
+                alert("Todos los campos son obligatorios.")
+            }
+
+
         }
+
+        // p <= DN
+        if (filtro === "p") {
+
+            if (pedidoProveedor !== '' && procedencia !== '') {
+
+                console.log('pedidoProveedor: ', pedidoProveedor);
+                console.log('procedencia: ', procedencia);
+
+                const url = `${API_URL}/api/wms/dn_reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => setJsonData(data.data));
+
+                const url_cantidad_detalle = `${API_URL}/api/wms/dn_reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url_cantidad_detalle)
+                    .then(response => response.json())
+                    .then(data => setJsonCantidadDataDetalle(data.data));
+
+                const url_detalle = `${API_URL}/api/wms/dn_reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url_detalle)
+                    .then(response => response.json())
+                    .then(data => setJsonDataDetalle(data.data));
+
+                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?pedidoProveedor=${pedidoProveedor}&procedencia=${procedencia}`;
+                fetch(url_lista_imagenes)
+                    .then(response => response.json())
+                    .then(data => setJsonDataListaImagenes(data.data));
+
+            } else {
+                alert("Todos los campos son obligatorios.")
+            }
+
+        }
+
 
     };
 
@@ -190,15 +233,24 @@ export default function PageOne() {
 
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
 
+                <Block title="Filtro" sx={style}>
+                    <Controller
+                        name="radioOption"
+                        control={methods.control}
+                        defaultValue="g"
+                        render={({field}) => (
+                            <RadioGroup row {...field}>
+                                <FormControlLabel value="g" control={<Radio/>} label="Pedido"/>
+                                <FormControlLabel value="p" control={<Radio size="small"/>} label="DN"/>
+                            </RadioGroup>
+                        )}
+                    />
 
-                <Block>
                     <RHFTextField
                         name="pedidoProveedorX"
-                        label="PEDIDO PROVEEDOR"
+                        label="Número"
                     />
-                </Block>
 
-                <Block label="RHFSelect">
                     <RHFSelect name="singleSelect" label="PROCEDENCIA">
                         <MenuItem value="">None</MenuItem>
                         <Divider sx={{borderStyle: 'dashed'}}/>
@@ -218,17 +270,18 @@ export default function PageOne() {
 
             {jsonData && jsonData.length > 0 ? (
                 <PDFDownloadLink
-                    document={<InvoicePDF invoice={jsonData} invoice_detail={jsonCantidadDataDetalle} invoice_imagen={jsonDataListaImagenes}/>}
+                    document={<InvoicePDF invoice={jsonData} invoice_detail={jsonCantidadDataDetalle}
+                                          invoice_imagen={jsonDataListaImagenes}/>}
                     fileName="Imprimir_PDF"
-                    style={{ textDecoration: 'none' }}
+                    style={{textDecoration: 'none'}}
                 >
-                    {({ loading }) => (
+                    {({loading}) => (
                         <Tooltip title="Download">
                             <IconButton>
                                 {loading ? (
-                                    <CircularProgress size={24} color="inherit" />
+                                    <CircularProgress size={24} color="inherit"/>
                                 ) : (
-                                    <Iconify icon="eva:download-fill" />
+                                    <Iconify icon="eva:download-fill"/>
                                 )}
                             </IconButton>
                         </Tooltip>

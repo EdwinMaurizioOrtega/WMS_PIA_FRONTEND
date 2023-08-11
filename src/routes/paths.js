@@ -29,5 +29,5 @@ export const PATH_DASHBOARD = {
 };
 
 // Para consumir la API
-export const API_URL = 'https://api.movilcelistic.com';
-//export const API_URL = 'http://localhost';
+//export const API_URL = 'https://api.movilcelistic.com';
+export const API_URL = 'http://localhost';

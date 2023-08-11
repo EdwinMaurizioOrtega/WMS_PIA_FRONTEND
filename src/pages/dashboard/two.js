@@ -59,7 +59,7 @@ const TABLE_HEAD = [
 
 const OPTIONS = [
   {value: '9000', label: 'HT miami'},
-  {value: '7001', label: '7001'},
+  {value: '7001', label: 'CNT'},
 
 ];
 
