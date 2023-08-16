@@ -141,9 +141,9 @@ export default function PageCuatro() {
             // console.log(aaaaaaaa(files));
 
             const formData = new FormData();
-            formData.append("pedidoProveedor", "36");
-            formData.append("procedencia", "9000");
-            formData.append("description", "imágen");
+            formData.append("pedidoProveedor", pedidoProveedorr);
+            formData.append("procedencia", procedenciaa);
+            formData.append("description", "MisArchivos");
 
             files.forEach((file, index) => {
                 formData.append(`selectedFile`, file);
