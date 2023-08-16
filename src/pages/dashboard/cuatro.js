@@ -140,49 +140,66 @@ export default function PageCuatro() {
 
             // console.log(aaaaaaaa(files));
 
-            PasoUno(files).then((result_p_uno) => {
-                // console.log(result)
+            const formData = new FormData();
+            formData.append("pedidoProveedor", "36");
+            formData.append("procedencia", "9000");
+            formData.append("description", "imágen");
 
-                Promise.all(result_p_uno).then((results_final) => {
-                    console.log(results_final); // ['Resultado 1', 'Resultado 2', 'Resultado 3']
+            files.forEach((file, index) => {
+                formData.append(`selectedFile`, file);
+            });
 
-                    // // Crear un objeto FormData
-                    const formData = {
-                        pedidoProveedor: pedidoProveedorr,
-                        procedencia: procedenciaa,
-                        description: "Imágen",
-                        selectedFile: results_final
-                    };
+            const url = `${API_URL}/api/mogo-db-wms/upload_web_files`;
 
-                    // console.log(`Arrived: ${JSON.stringify(formData)}`);
-
-                    const url = `${API_URL}/api/mogo-db-wms/cargar_imagenes`;
-
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(formData)
-                    })
-                        .then(response => {
-                            // Manejar la respuesta
-
-                            alert("El proceso de carga de las imágenes se ha completado exitosamente.")
-                        })
-                        .catch(error => {
-                            // Manejar el error
-                        });
-
-
-                }).catch((error) => {
-                    console.error(error);
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // If expecting JSON response
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    // Handle the successful response data here
+                    alert("El proceso de carga de las imágenes se ha completado exitosamente.");
+                })
+                .catch(error => {
+                    // Handle errors here
+                    console.error('Error:', error);
                 });
 
 
-            }).catch((error) => {
-                // Hacer algo con el error
-            });
+            // // Crear un objeto FormData
+            // const formData = {
+            //     pedidoProveedor: pedidoProveedorr,
+            //     procedencia: procedenciaa,
+            //     description: "Imágen",
+            //     selectedFile: results_final
+            // };
+            //
+            // // console.log(`Arrived: ${JSON.stringify(formData)}`);
+            //
+            // const url = `${API_URL}/api/mogo-db-wms/upload_web_files`;
+            //
+            // fetch(url, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(formData)
+            // })
+            //     .then(response => {
+            //         // Manejar la respuesta
+            //
+            //         alert("El proceso de carga de las imágenes se ha completado exitosamente.")
+            //     })
+            //     .catch(error => {
+            //         // Manejar el error
+            //     });
+
 
         } else {
             alert("Todos los campos son obligatorios.")

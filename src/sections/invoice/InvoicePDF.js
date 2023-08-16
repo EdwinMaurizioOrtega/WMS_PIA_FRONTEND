@@ -6,6 +6,7 @@ import { fDate } from '../../utils/formatTime';
 import { fCurrency } from '../../utils/formatNumber';
 //
 import styles from './InvoiceStyle';
+import {Link} from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -145,17 +146,13 @@ export default function InvoicePDF({ invoice, invoice_detail, invoice_imagen}) {
 
 
             <View style={[styles.gridContainer, styles.mb40]}>
-              {invoice_imagen.map((row, rowIndex) => (
-                  <View key={rowIndex} >
-                    {row.selectedFile.map((imageData, index) => (
-                        <Image
-                            key={index}
-                            src={imageData}
-                            src={`data:image/jpeg;base64,${imageData}`}
-                            style={{width: 100 }}
-                        />
+              {invoice_imagen.map((row, index) => (
+                  <View key={index}>
+                    {row.selected_file.map((imageData, index) => (
+                        <Text key={index}>{imageData.file_url}</Text>
                     ))}
                   </View>
+
               ))}
             </View>
 

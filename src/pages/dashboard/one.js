@@ -3,7 +3,7 @@ import Head from 'next/head';
 import {
     Backdrop,
     Box, Button, CircularProgress,
-    Container, Divider, FormControl, FormControlLabel, Grid, IconButton, MenuItem, Radio, RadioGroup, Stack,
+    Container, Divider, FormControl, FormControlLabel, Grid, IconButton, Link, MenuItem, Radio, RadioGroup, Stack,
     Table,
     TableBody,
     TableCell,
@@ -163,7 +163,7 @@ export default function PageOne() {
                     .then(response => response.json())
                     .then(data => setJsonCantidadDataDetalle(data.data));
 
-                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?pedidoProveedor=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_lista_imagenes)
                     .then(response => response.json())
                     .then(data => setJsonDataListaImagenes(data.data));
@@ -198,7 +198,7 @@ export default function PageOne() {
                     .then(response => response.json())
                     .then(data => setJsonDataDetalle(data.data));
 
-                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?pedidoProveedor=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_lista_imagenes)
                     .then(response => response.json())
                     .then(data => setJsonDataListaImagenes(data.data));
@@ -370,20 +370,25 @@ export default function PageOne() {
 
                             <TableBody>
                                 {jsonDataListaImagenes.map((row) => (
-                                    <TableRow key={row._id}>
+                                    <TableRow key={row._id.$oid}>
 
-                                        <TableCell>{row.pedidoProveedor}</TableCell>
+                                        <TableCell>{row.pedido_proveedor}</TableCell>
                                         <TableCell>{row.procedencia}</TableCell>
-                                        <TableCell>{row.createdAt}</TableCell>
+                                        <TableCell>{row.created_at.$date.$numberLong}</TableCell>
                                         <TableCell>
-                                            {row.selectedFile.map((imageData, index) => (
-                                                <Image
-                                                    key={index}
-                                                    src={imageData}
-                                                    src={`data:image/jpeg;base64,${imageData}`}
+                                            {row.selected_file.map((imageData, index) => (
 
-                                                    sx={{width: 500, height: 500}}
-                                                />
+                                                <Link href={imageData.file_url} target="_blank" rel="noopener" underline="none">
+                                                    Evidencia___
+                                                </Link>
+
+                                                // <Image
+                                                //     key={index}
+                                                //     src={imageData}
+                                                //     src={`data:image/jpeg;base64,${imageData}`}
+                                                //
+                                                //     sx={{width: 500, height: 500}}
+                                                // />
                                             ))}
 
                                         </TableCell>
