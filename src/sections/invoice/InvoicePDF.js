@@ -8,6 +8,11 @@ import { fCurrency } from '../../utils/formatNumber';
 import styles from './InvoiceStyle';
 import {Link} from "@mui/material";
 
+import React from 'react';
+
+// Resto de tu código
+
+
 // ----------------------------------------------------------------------
 
 InvoicePDF.propTypes = {
@@ -145,11 +150,21 @@ export default function InvoicePDF({ invoice, invoice_detail, invoice_imagen}) {
 
 
 
-            <View style={[styles.gridContainer, styles.mb40]}>
+            <View>
               {invoice_imagen.map((row, index) => (
-                  <View key={index}>
+                  <View key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     {row.selected_file.map((imageData, index) => (
-                        <Text key={index}>{imageData.file_url}</Text>
+                        <React.Fragment key={index}>
+                          {['.png', 'jpeg', '.jpg'].includes(imageData.file_url.slice(-4).toLowerCase()) ? (
+                              <Image
+                                  src={imageData.file_url}
+                                  alt={`Image ${index}`}
+                                  style={{width: 180}}
+                              />
+                          ) : (
+                              <Text>{imageData.file_url}</Text>
+                          )}
+                        </React.Fragment>
                     ))}
                   </View>
 
