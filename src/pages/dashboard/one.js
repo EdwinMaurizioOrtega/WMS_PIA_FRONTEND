@@ -198,7 +198,7 @@ export default function PageOne() {
                     .then(response => response.json())
                     .then(data => setJsonDataDetalle(data.data));
 
-                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/dn_lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_lista_imagenes)
                     .then(response => response.json())
                     .then(data => setJsonDataListaImagenes(data.data));

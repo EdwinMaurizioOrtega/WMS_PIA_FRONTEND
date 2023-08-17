@@ -1,7 +1,7 @@
 import Head from "next/head";
 import {
     Button,
-    Container,
+    Container, Divider, MenuItem,
     Table,
     TableBody,
     TableCell,
@@ -23,6 +23,18 @@ import {TableHeadCustom} from "../../components/table";
 const style = {
     '& > *': {my: '8px !important'},
 };
+
+import FormProvider, {
+    RHFSelect,
+    RHFTextField,
+} from '../../components/hook-form';
+import {useForm} from "react-hook-form";
+
+const OPTIONS = [
+    {value: '9000', label: 'HT Miami'},
+    {value: '7001', label: 'CNT'},
+
+];
 
 PageCinco.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
@@ -54,8 +66,26 @@ export default function PageCinco() {
     const [jsonDataDespacho, setJsonDataDespacho] = useState([]);
     const [jsonDataDespachoDetalle, setJsonDataDespachoDetalle] = useState([]);
 
+    const defaultValues = {
+        pedidoProveedorX: '',
+        singleSelect: '',
+    };
 
-    const handleClick = () => {
+    const methods = useForm({
+        defaultValues,
+    });
+
+    const {
+        handleSubmit,
+    } = methods;
+
+    const onSubmit = async (dataAux) => {
+
+        console.log('pedidoProveedorX: ', dataAux.pedidoProveedorX);
+        console.log('procedencia: ', dataAux.singleSelect);
+
+        const pedidoProveedor = dataAux.pedidoProveedorX;
+        const procedencia = dataAux.singleSelect;
 
         if (pedidoProveedor !== '' && procedencia !== ''){
 
@@ -84,40 +114,39 @@ export default function PageCinco() {
             <Head>
                 <title> Page Cinco | Minimal UI</title>
             </Head>
-            <Container maxWidth={themeStretch ? false : 'xl'}>
 
 
-                <Masonry columns={{xs: 1, md: 2}} spacing={3}>
+                <Typography variant="h3" component="h1" paragraph>
+                    Despacho
+                </Typography>
+                <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+
                     <Block title="General" sx={style}>
 
-                        <Typography variant="h3" component="h1" paragraph>
-                            Despacho
-                        </Typography>
-
-                        <TextField type="text" className="form-control email" name="email" id="email2"
-                                   placeholder="PEDIDO" required
-                                   value={pedidoProveedor}
-                                   onChange={e => {
-                                       setPedidoProveedor(e.currentTarget.value);
-                                   }}
+                        <RHFTextField
+                            name="pedidoProveedorX"
+                            label="PEDIDO"
                         />
 
-                        <TextField type="text" className="form-control email" name="email" id="email2"
-                                   placeholder="PROCEDENCIA" required
-                                   value={procedencia}
-                                   onChange={e => {
-                                       setProcedencia(e.currentTarget.value);
-                                   }}
-                        />
+                        <RHFSelect name="singleSelect" label="PROCEDENCIA">
+                            <MenuItem value="">None</MenuItem>
+                            <Divider sx={{borderStyle: 'dashed'}}/>
+                            {OPTIONS.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </RHFSelect>
 
-                        <Button className="btn btn-dark"
-
-                                onClick={() => {
-                                    handleClick()
-                                }}
-                        >BUSCAR</Button>
                     </Block>
-                </Masonry>
+
+                    <Button fullWidth size="large" type="submit" variant="contained">
+                        Buscar
+                    </Button>
+
+                </FormProvider>
+
+            <Container maxWidth={themeStretch ? false : 'xl'}>
 
                 <Typography variant="h3" component="h1" paragraph>
                     Pedido.

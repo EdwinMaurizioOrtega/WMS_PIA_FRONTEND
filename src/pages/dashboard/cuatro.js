@@ -8,7 +8,7 @@ import {
     Container,
     Typography,
     CardHeader,
-    FormControlLabel, Switch, CardContent, Card
+    FormControlLabel, Switch, CardContent, Card, MenuItem, Divider, Select
 } from '@mui/material';
 
 
@@ -17,7 +17,13 @@ import DashboardLayout from "../../layouts/dashboard";
 import {Block} from "../../sections/_examples/Block";
 import {Upload} from "../../components/upload";
 import {API_URL} from "../../routes/paths"
+import {RHFSelect} from "../../components/hook-form";
 
+const OPTIONS = [
+    {value: '9000', label: 'HT Miami'},
+    {value: '7001', label: 'CNT'},
+
+];
 
 PageCuatro.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
@@ -76,6 +82,7 @@ export default function PageCuatro() {
     const {themeStretch} = useSettingsContext();
 
     const [pedidoProveedorr, setPedidoProveedor] = useState('');
+    const [dn, setDN] = useState('');
     const [procedenciaa, setProcedencia] = useState('');
     // const [jsonData, setJsonData] = useState([]);
     // const [jsonDataDetalle, setJsonDataDetalle] = useState([]);
@@ -136,13 +143,14 @@ export default function PageCuatro() {
 // Validar imágenes ==> https://codebeautify.org/base64-to-image-converter#
     const enviarDatos = () => {
 
-        if (pedidoProveedorr !== '' && procedenciaa !== '') {
+        if (pedidoProveedorr !== '' && procedenciaa !== '' && dn !== '') {
 
             // console.log(aaaaaaaa(files));
 
             const formData = new FormData();
             formData.append("pedidoProveedor", pedidoProveedorr);
             formData.append("procedencia", procedenciaa);
+            formData.append("dn", dn);
             formData.append("description", "MisArchivos");
 
             files.forEach((file, index) => {
@@ -210,7 +218,11 @@ export default function PageCuatro() {
     // Actividades pendientes
     // Las imágenes del pedido unicamente se podran cargar 24 horas despues de haber creado el pedido proveedor
 
-
+    const handleSingleSelectChange = (event) => {
+        const selectedValue = event.target.value;
+        setProcedencia(selectedValue);
+        console.log('Valor seleccionado:', selectedValue); // Imprime en la consola
+    };
     return (
         <>
             <Head>
@@ -234,12 +246,26 @@ export default function PageCuatro() {
                                }}
                     />
                     <TextField type="text" className="form-control email" name="email" id="email2"
-                               placeholder="PROCEDENCIA" required
-                               value={procedenciaa}
+                               placeholder="DN" required
+                               value={dn}
                                onChange={e => {
-                                   setProcedencia(e.currentTarget.value);
+                                   setDN(e.currentTarget.value);
                                }}
                     />
+
+                    <Select
+                        label="PROCEDENCIA"
+                        value={procedenciaa}
+                        onChange={handleSingleSelectChange}
+                    >
+                        <MenuItem value="">Ninguno</MenuItem>
+                        <Divider sx={{ borderStyle: 'dashed' }} />
+                        {OPTIONS.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
 
                     <Card>
                         <CardHeader
