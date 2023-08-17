@@ -155,14 +155,16 @@ export default function InvoicePDF({ invoice, invoice_detail, invoice_imagen}) {
                   <View key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     {row.selected_file.map((imageData, index) => (
                         <React.Fragment key={index}>
-                          {['.png', 'jpeg', '.jpg'].includes(imageData.file_url.slice(-4).toLowerCase()) ? (
-                              <Image
-                                  src={imageData.file_url}
-                                  alt={`Image ${index}`}
-                                  style={{width: 180}}
-                              />
-                          ) : (
+                          {['.pdf'].includes(imageData.file_url.slice(-4).toLowerCase()) ? (
                               <Text>{imageData.file_url}</Text>
+                          ) : (
+                              ['.png', 'jpeg', '.jpg'].includes(imageData.file_url.slice(-4).toLowerCase()) ? (
+                                  <Image
+                                      src={imageData.file_url}
+                                      alt={`Image ${index}`}
+                                      style={{width: 180}}
+                                  />
+                              ) : null // Puedes agregar otras condiciones aquí si es necesario
                           )}
                         </React.Fragment>
                     ))}
