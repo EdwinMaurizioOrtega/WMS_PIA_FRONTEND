@@ -179,35 +179,11 @@ export default function PageCuatro() {
                     console.error('Error:', error);
                 });
 
-
-            // // Crear un objeto FormData
-            // const formData = {
-            //     pedidoProveedor: pedidoProveedorr,
-            //     procedencia: procedenciaa,
-            //     description: "Imágen",
-            //     selectedFile: results_final
-            // };
-            //
-            // // console.log(`Arrived: ${JSON.stringify(formData)}`);
-            //
-            // const url = `${API_URL}/api/mogo-db-wms/upload_web_files`;
-            //
-            // fetch(url, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(formData)
-            // })
-            //     .then(response => {
-            //         // Manejar la respuesta
-            //
-            //         alert("El proceso de carga de las imágenes se ha completado exitosamente.")
-            //     })
-            //     .catch(error => {
-            //         // Manejar el error
-            //     });
-
+            // Limpiamos todos los campos.
+            setPedidoProveedor('')
+            setProcedencia('');
+            setDN('');
+            setFiles([]);
 
         } else {
             alert("Todos los campos son obligatorios.")
