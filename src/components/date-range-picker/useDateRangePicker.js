@@ -12,8 +12,7 @@ export default function useDateRangePicker(start, end) {
 
   const [startDate, setStartDate] = useState(start);
 
-  const isError =
-    (startDate && endDate && isBefore(new Date(endDate), new Date(startDate))) || false;
+  const isError = false;
 
   const currentYear = new Date().getFullYear();
 

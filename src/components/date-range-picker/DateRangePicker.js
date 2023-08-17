@@ -30,7 +30,7 @@ DateRangePicker.propTypes = {
 };
 
 export default function DateRangePicker({
-  title = 'Select date range',
+  title = 'Seleccionar rango de fechas',
   variant = 'input',
   //
   startDate,
@@ -122,7 +122,7 @@ export default function DateRangePicker({
 
         {isError && (
           <FormHelperText error sx={{ px: 2 }}>
-            End date must be later than start date
+            La fecha de finalización debe ser posterior a la fecha de inicio
           </FormHelperText>
         )}
       </DialogContent>
