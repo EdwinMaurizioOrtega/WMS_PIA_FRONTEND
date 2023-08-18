@@ -1,13 +1,13 @@
 import Head from "next/head";
 import {
-    Button,
-    Container, Divider, MenuItem,
+    Button, CircularProgress,
+    Container, Divider, IconButton, MenuItem,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableRow,
-    TextField,
+    TextField, Tooltip,
     Typography
 } from "@mui/material";
 import {Masonry} from "@mui/lab";
@@ -29,6 +29,10 @@ import FormProvider, {
     RHFTextField,
 } from '../../components/hook-form';
 import {useForm} from "react-hook-form";
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import InvoicePDF from "../../sections/invoice/InvoicePDF";
+import Iconify from "../../components/iconify";
+import DespachoInvoicePDF from "../../sections/invoice/DespachoInvoicePDF";
 
 const OPTIONS = [
     {value: '9000', label: 'HT Miami'},
@@ -145,6 +149,26 @@ export default function PageCinco() {
                     </Button>
 
                 </FormProvider>
+
+            {jsonDataDespacho && jsonDataDespachoDetalle.length > 0 ? (
+                <PDFDownloadLink
+                    document={<DespachoInvoicePDF invoice={jsonDataDespacho} invoice_detail={jsonDataDespachoDetalle}/>}
+                    fileName="Imprimir_PDF"
+                    style={{textDecoration: 'none'}}
+                >
+                    {({loading}) => (
+                        <Tooltip title="Download">
+                            <IconButton>
+                                {loading ? (
+                                    <CircularProgress size={24} color="inherit"/>
+                                ) : (
+                                    <Iconify icon="eva:download-fill"/>
+                                )}
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                </PDFDownloadLink>
+            ) : null}
 
             <Container maxWidth={themeStretch ? false : 'xl'}>
 
