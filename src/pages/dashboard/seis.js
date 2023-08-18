@@ -51,15 +51,15 @@ const TABLE_HEAD = [
     {id: 'PROVEEDOR', label: 'PROVEEDOR', align: 'right'},
     {id: 'DATO1', label: 'EMBARCADOR', align: 'right'},
     {id: 'DATO2', label: 'NOMBRE CONDUCTOR', align: 'right'},
-    {id: 'DATO3', label: 'DN', align: 'right'},
+    // {id: 'DATO3', label: 'DN', align: 'right'},
     // {id: 'DATO5', label: 'DATO5', align: 'right'},
-    {id: 'FACTURA_FAB', label: 'FACTURA_FAB', align: 'right'},
+    // {id: 'FACTURA_FAB', label: 'FACTURA_FAB', align: 'right'},
     {id: 'BULTOS', label: 'NUM_BULTOS', align: 'right'},
     // {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
     // {id: 'VAL2', label: 'VOLUMEN', align: 'right'},
     {id: 'PESO', label: 'PESO TOTAL', align: 'right'},
     {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
-    {id: 'USUARIO', label: 'USUARIO', align: 'right'},
+    // {id: 'USUARIO', label: 'USUARIO', align: 'right'},
     {id: 'DESCRIPCION_V2', label: 'DESCRIPCION', align: 'right'},
     {id: 'CANTIDAD', label: 'CANTIDAD', align: 'right'},
     {id: 'DN', label: 'DN', align: 'right'},
@@ -250,6 +250,7 @@ export default function PageSix() {
                                     <TableRow key={indexdos}>
                                         <TableCell>{row.PEDIDO_PROV}</TableCell>
                                         <TableCell align="right">{row.FEC_INGRESO}</TableCell>
+                                        <TableCell align="right">{row.FEC_ALTA}</TableCell>
 
                                         <TableCell
                                             align="right">{row.ESTATUS === 'N' ? 'NUEVO' : 'FINALIZADO'}</TableCell>
@@ -257,12 +258,12 @@ export default function PageSix() {
                                         <TableCell align="right">{row.PROVEEDOR}</TableCell>
                                         <TableCell align="right">{row.DATO1}</TableCell>
                                         <TableCell align="right">{row.DATO2}</TableCell>
-                                        <TableCell align="right">{row.DATO3}</TableCell>
-                                        <TableCell align="right">{row.FACTURA_FAB}</TableCell>
+                                        {/*<TableCell align="right">{row.DATO3}</TableCell>*/}
+                                        {/*<TableCell align="right">{row.FACTURA_FAB}</TableCell>*/}
                                         <TableCell align="right">{row.BULTOS}</TableCell>
                                         <TableCell align="right">{row.PESO}</TableCell>
                                         <TableCell align="right">{row.DATO4}</TableCell>
-                                        <TableCell align="right">{row.USUARIO}</TableCell>
+                                        {/*<TableCell align="right">{row.USUARIO}</TableCell>*/}
                                         <TableCell align="right">{row.DESCRIPCION_V2}</TableCell>
                                         <TableCell align="right">{row.CANTIDAD}</TableCell>
                                         <TableCell align="right">{row.DATA_DET1}</TableCell>
