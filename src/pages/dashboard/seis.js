@@ -63,6 +63,7 @@ const TABLE_HEAD = [
     {id: 'DESCRIPCION_V2', label: 'DESCRIPCION', align: 'right'},
     {id: 'CANTIDAD', label: 'CANTIDAD', align: 'right'},
     {id: 'DN', label: 'DN', align: 'right'},
+    {id: 'COSTO', label: 'COSTO', align: 'right'},
 
 ];
 
@@ -267,6 +268,7 @@ export default function PageSix() {
                                         <TableCell align="right">{row.DESCRIPCION_V2}</TableCell>
                                         <TableCell align="right">{row.CANTIDAD}</TableCell>
                                         <TableCell align="right">{row.DATA_DET1}</TableCell>
+                                        <TableCell align="right">{row.COSTO}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
