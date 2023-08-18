@@ -60,7 +60,9 @@ const TABLE_HEAD = [
     {id: 'PESO', label: 'PESO TOTAL', align: 'right'},
     {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
     {id: 'USUARIO', label: 'USUARIO', align: 'right'},
-    {id: 'Articulos', label: 'Articulos', align: 'right'},
+    {id: 'DESCRIPCION_V2', label: 'DESCRIPCION', align: 'right'},
+    {id: 'CANTIDAD', label: 'CANTIDAD', align: 'right'},
+    {id: 'DN', label: 'DN', align: 'right'},
 
 ];
 
@@ -217,7 +219,7 @@ export default function PageSix() {
                             onChange={handleChange}
                         >
                             <MenuItem value={9000}>HT miami</MenuItem>
-                            <MenuItem value={7001}>7001</MenuItem>
+                            <MenuItem value={7001}>CNT</MenuItem>
 
                         </Select>
                     </FormControl>
@@ -261,7 +263,9 @@ export default function PageSix() {
                                         <TableCell align="right">{row.PESO}</TableCell>
                                         <TableCell align="right">{row.DATO4}</TableCell>
                                         <TableCell align="right">{row.USUARIO}</TableCell>
-                                        <TableCell align="right">{row.Articulos}</TableCell>
+                                        <TableCell align="right">{row.DESCRIPCION_V2}</TableCell>
+                                        <TableCell align="right">{row.CANTIDAD}</TableCell>
+                                        <TableCell align="right">{row.DATA_DET1}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
