@@ -43,45 +43,48 @@ import DateRangePicker, {useDateRangePicker} from "../../components/date-range-p
 
 // ----------------------------------------------------------------------
 
+// const TABLE_HEAD = [
+//     {id: 'PEDIDO_PROV', label: 'PEDIDO_PROV'},
+//     {id: 'FEC_INGRESO', label: 'FEC_INGRESO', align: 'right'},
+//     {id: 'FEC_ALTA', label: 'FEC_ALTA', align: 'right'},
+//     {id: 'ESTATUS', label: 'ESTATUS', align: 'right'},
+//     {id: 'CLIENTE', label: 'CLIENTE', align: 'right'},
+//     {id: 'PROVEEDOR', label: 'PROVEEDOR', align: 'right'},
+//     {id: 'DATO1', label: 'EMBARCADOR', align: 'right'},
+//     {id: 'DATO2', label: 'NOMBRE CONDUCTOR', align: 'right'},
+//     // {id: 'DATO3', label: 'DN', align: 'right'},
+//     // {id: 'DATO5', label: 'DATO5', align: 'right'},
+//     // {id: 'FACTURA_FAB', label: 'FACTURA_FAB', align: 'right'},
+//     {id: 'BULTOS', label: 'NUM_BULTOS', align: 'right'},
+//     // {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
+//     // {id: 'VAL2', label: 'VOLUMEN', align: 'right'},
+//     {id: 'PESO', label: 'PESO TOTAL', align: 'right'},
+//     {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
+//     // {id: 'USUARIO', label: 'USUARIO', align: 'right'},
+//     {id: 'DESCRIPCION_V2', label: 'DESCRIPCION', align: 'right'},
+//     {id: 'CANTIDAD', label: 'CANTIDAD', align: 'right'},
+//     {id: 'DN', label: 'DN', align: 'right'},
+//     {id: 'COSTO', label: 'COSTO', align: 'right'},
+//
+// ];
+
 const TABLE_HEAD = [
-    {id: 'PEDIDO_PROV', label: 'PEDIDO_PROV'},
-    {id: 'FEC_INGRESO', label: 'FEC_INGRESO', align: 'right'},
-    {id: 'ESTATUS', label: 'ESTATUS', align: 'right'},
-    {id: 'CLIENTE', label: 'CLIENTE', align: 'right'},
-    {id: 'PROVEEDOR', label: 'PROVEEDOR', align: 'right'},
-    {id: 'DATO1', label: 'EMBARCADOR', align: 'right'},
-    {id: 'DATO2', label: 'NOMBRE CONDUCTOR', align: 'right'},
-    // {id: 'DATO3', label: 'DN', align: 'right'},
-    // {id: 'DATO5', label: 'DATO5', align: 'right'},
-    // {id: 'FACTURA_FAB', label: 'FACTURA_FAB', align: 'right'},
-    {id: 'BULTOS', label: 'NUM_BULTOS', align: 'right'},
-    // {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
-    // {id: 'VAL2', label: 'VOLUMEN', align: 'right'},
-    {id: 'PESO', label: 'PESO TOTAL', align: 'right'},
-    {id: 'DATO4', label: 'DIMENSIONES', align: 'right'},
-    // {id: 'USUARIO', label: 'USUARIO', align: 'right'},
-    {id: 'DESCRIPCION_V2', label: 'DESCRIPCION', align: 'right'},
-    {id: 'CANTIDAD', label: 'CANTIDAD', align: 'right'},
-    {id: 'DN', label: 'DN', align: 'right'},
-    {id: 'COSTO', label: 'COSTO', align: 'right'},
-
-];
-
-const TABLE_HEAD_CANTIDAD_DETALLE = [
     {field: 'PEDIDO_PROV', headerName: 'PEDIDO_PROV', width: 150},
-    {field: 'ARTICULO', headerName: 'ARTICULO', width: 150},
-    {field: 'DESCRIPCION', headerName: 'DESCRIPCION', width: 300},
+    {field: 'FEC_INGRESO', headerName: 'FEC_INGRESO', width: 150},
+    {field: 'FEC_ALTA', headerName: 'FEC_ALTA', width: 300},
+    {field: 'ESTATUS', headerName: 'ESTATUS', width: 150},
+    {field: 'CLIENTE', headerName: 'CLIENTE', width: 150},
+    {field: 'PROVEEDOR', headerName: 'PROVEEDOR', width: 150},
+    {field: 'DATO1', headerName: 'EMBARCADOR', width: 150},
+    {field: 'DATO2', headerName: 'NOMBRE CONDUCTOR', width: 150},
+    {field: 'BULTOS', headerName: 'NUM_BULTOS', width: 150},
+    {field: 'PESO', headerName: 'PESO TOTAL', width: 150},
+    {field: 'DATO4', headerName: 'DIMENSIONES', width: 150},
+    {field: 'DESCRIPCION_V2', headerName: 'DESCRIPCION', width: 150},
     {field: 'CANTIDAD', headerName: 'CANTIDAD', width: 150},
+    {field: 'DATA_DET1', headerName: 'DN', width: 150},
+    {field: 'COSTO', headerName: 'COSTO', width: 150},
 ];
-
-const TABLE_HEAD_DETALLE = [
-    {field: 'PEDIDO_PROV', headerName: 'PEDIDO_PROV', width: 150},
-    {field: 'PROCEDENCIA', headerName: 'PROCEDENCIA', width: 150},
-    {field: 'ARTICULO', headerName: 'ARTICULO', width: 150},
-    {field: 'DESCRIPCION', headerName: 'DESCRIPCION', width: 300},
-    {field: 'SERIE', headerName: 'SERIE', width: 150},
-];
-
 
 function CustomToolbar() {
     return (
@@ -241,40 +244,52 @@ export default function PageSix() {
                     Pedido.
                 </Typography>
 
-                <TableContainer sx={{mt: 3, overflow: 'unset'}} id="tabla_cantidad">
-                    <Scrollbar>
-                        <Table sx={{minWidth: 800}}>
-                            <TableHeadCustom headLabel={TABLE_HEAD}/>
+                <Box sx={{height: 720}}>
+                    <DataGrid
+                        rows={jsonData}
+                        columns={TABLE_HEAD}
+                        getRowId={getRowId}
+                        components={{
+                            Toolbar: CustomToolbar,
+                        }}
+                    />
 
-                            <TableBody>
-                                {jsonData.map((row, indexdos) => (
-                                    <TableRow key={indexdos}>
-                                        <TableCell>{row.PEDIDO_PROV}</TableCell>
-                                        <TableCell align="right">{row.FEC_INGRESO}</TableCell>
-                                        <TableCell align="right">{row.FEC_ALTA}</TableCell>
+                </Box>
 
-                                        <TableCell
-                                            align="right">{row.ESTATUS === 'N' ? 'NUEVO' : 'FINALIZADO'}</TableCell>
-                                        <TableCell align="right">{row.CLIENTE}</TableCell>
-                                        <TableCell align="right">{row.PROVEEDOR}</TableCell>
-                                        <TableCell align="right">{row.DATO1}</TableCell>
-                                        <TableCell align="right">{row.DATO2}</TableCell>
-                                        {/*<TableCell align="right">{row.DATO3}</TableCell>*/}
-                                        {/*<TableCell align="right">{row.FACTURA_FAB}</TableCell>*/}
-                                        <TableCell align="right">{row.BULTOS}</TableCell>
-                                        <TableCell align="right">{row.PESO}</TableCell>
-                                        <TableCell align="right">{row.DATO4}</TableCell>
-                                        {/*<TableCell align="right">{row.USUARIO}</TableCell>*/}
-                                        <TableCell align="right">{row.DESCRIPCION_V2}</TableCell>
-                                        <TableCell align="right">{row.CANTIDAD}</TableCell>
-                                        <TableCell align="right">{row.DATA_DET1}</TableCell>
-                                        <TableCell align="right">{row.COSTO}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </Scrollbar>
-                </TableContainer>
+                {/*<TableContainer sx={{mt: 3, overflow: 'unset'}} id="tabla_cantidad">*/}
+                {/*    <Scrollbar>*/}
+                {/*        <Table sx={{minWidth: 800}}>*/}
+                {/*            <TableHeadCustom headLabel={TABLE_HEAD}/>*/}
+
+                {/*            <TableBody>*/}
+                {/*                {jsonData.map((row, indexdos) => (*/}
+                {/*                    <TableRow key={indexdos}>*/}
+                {/*                        <TableCell>{row.PEDIDO_PROV}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.FEC_INGRESO}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.FEC_ALTA}</TableCell>*/}
+
+                {/*                        <TableCell*/}
+                {/*                            align="right">{row.ESTATUS === 'N' ? 'NUEVO' : 'FINALIZADO'}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.CLIENTE}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.PROVEEDOR}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.DATO1}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.DATO2}</TableCell>*/}
+                {/*                        /!*<TableCell align="right">{row.DATO3}</TableCell>*!/*/}
+                {/*                        /!*<TableCell align="right">{row.FACTURA_FAB}</TableCell>*!/*/}
+                {/*                        <TableCell align="right">{row.BULTOS}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.PESO}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.DATO4}</TableCell>*/}
+                {/*                        /!*<TableCell align="right">{row.USUARIO}</TableCell>*!/*/}
+                {/*                        <TableCell align="right">{row.DESCRIPCION_V2}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.CANTIDAD}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.DATA_DET1}</TableCell>*/}
+                {/*                        <TableCell align="right">{row.COSTO}</TableCell>*/}
+                {/*                    </TableRow>*/}
+                {/*                ))}*/}
+                {/*            </TableBody>*/}
+                {/*        </Table>*/}
+                {/*    </Scrollbar>*/}
+                {/*</TableContainer>*/}
 
 
             </Container>

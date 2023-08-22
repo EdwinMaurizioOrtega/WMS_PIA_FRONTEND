@@ -143,13 +143,13 @@ export default function Upload({
           <Stack direction="row" justifyContent="flex-end" spacing={1.5}>
             {onRemoveAll && (
               <Button color="inherit" variant="outlined" size="small" onClick={onRemoveAll}>
-                Remove all
+                Eliminar todo
               </Button>
             )}
 
             {onUpload && (
               <Button size="small" variant="contained" onClick={onUpload}>
-                Upload files
+                Subir archivos
               </Button>
             )}
           </Stack>

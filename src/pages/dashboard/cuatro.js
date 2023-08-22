@@ -8,7 +8,18 @@ import {
     Container,
     Typography,
     CardHeader,
-    FormControlLabel, Switch, CardContent, Card, MenuItem, Divider, Select
+    FormControlLabel,
+    Switch,
+    CardContent,
+    Card,
+    MenuItem,
+    Divider,
+    Select,
+    TableContainer,
+    Table,
+    TableBody,
+    TableRow,
+    TableCell, Link, Button
 } from '@mui/material';
 
 
@@ -18,10 +29,19 @@ import {Block} from "../../sections/_examples/Block";
 import {Upload} from "../../components/upload";
 import {API_URL} from "../../routes/paths"
 import {RHFSelect} from "../../components/hook-form";
+import Scrollbar from "../../components/scrollbar/Scrollbar";
+import {TableHeadCustom} from "../../components/table";
 
 const OPTIONS = [
     {value: '9000', label: 'HT Miami'},
     {value: '7001', label: 'CNT'},
+
+];
+
+const TABLE_HEAD_LISTA_IMAGENES = [
+
+    {id: 'ulr', label: 'URL', align: 'left'},
+    {id: 'opciones', label: 'Opciones', align: 'left'},
 
 ];
 
@@ -180,16 +200,78 @@ export default function PageCuatro() {
                 });
 
             // Limpiamos todos los campos.
-            setPedidoProveedor('')
-            setProcedencia('');
-            setDN('');
-            setFiles([]);
+            // setPedidoProveedor('')
+            // setProcedencia('');
+            // setDN('');
+            // setFiles([]);
+
+            //Enviamos el correo electronico por email
+            console.log("Enviar el correo electronico.")
+
+
+            const url_send_email = `${API_URL}/api/wms/send_email?n_pedido=${pedidoProveedorr}&procedencia=${procedenciaa}&dn=${dn}`;
+            fetch(url_send_email)
+                .then(response => response.json())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
 
         } else {
             alert("Todos los campos son obligatorios.")
         }
 
     };
+
+    const [jsonDataListaImagenes, setJsonDataListaImagenes] = useState([]);
+
+    //Buscamos las lista de imágenes por número de pedido proveedor y dn
+    const ListarImagenes = () => {
+
+        console.log('pedidoProveedorX: ', pedidoProveedorr);
+        console.log('procedencia: ', procedenciaa);
+        console.log('dn: ', dn);
+
+        if (pedidoProveedorr !== '' && procedenciaa !== '' && dn !== '') {
+
+            const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/imagenes_pedido_and_dn?n_pedido=${pedidoProveedorr}&procedencia=${procedenciaa}&dn=${dn}`;
+            fetch(url_lista_imagenes)
+                .then(response => response.json())
+                .then(data => setJsonDataListaImagenes(data.data));
+
+        } else {
+            alert("Todos los campos son obligatorios.")
+        }
+
+    };
+
+    const EliminarImagen = (id, file_name) => {
+        console.log("id:" + id);
+        console.log("file_name:" + file_name);
+
+
+        if (pedidoProveedorr !== '' && procedenciaa !== '' && dn !== '') {
+
+            var requestOptions = {
+                method: 'DELETE',
+                redirect: 'follow'
+            };
+
+            const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/delete_image?id=${id}&file_name=${file_name}`;
+
+
+            fetch(url_lista_imagenes, requestOptions)
+                .then(response => response.json())
+                //
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
+            ListarImagenes();
+
+        } else {
+            alert("Todos los campos son obligatorios.")
+        }
+
+    }
 
     // Actividades pendientes
     // Las imágenes del pedido unicamente se podran cargar 24 horas despues de haber creado el pedido proveedor
@@ -235,13 +317,18 @@ export default function PageCuatro() {
                         onChange={handleSingleSelectChange}
                     >
                         <MenuItem value="">Ninguno</MenuItem>
-                        <Divider sx={{ borderStyle: 'dashed' }} />
+                        <Divider sx={{borderStyle: 'dashed'}}/>
                         {OPTIONS.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}
                             </MenuItem>
                         ))}
                     </Select>
+
+                    <Button fullWidth size="large" type="submit" variant="contained" onClick={ListarImagenes}>
+                        Listar Imágenes
+                    </Button>
+
 
                     <Card>
                         <CardHeader
@@ -254,7 +341,7 @@ export default function PageCuatro() {
                                             onChange={(event) => setPreview(event.target.checked)}
                                         />
                                     }
-                                    label="Show Thumbnail"
+                                    label="Mostrar miniatura."
                                 />
                             }
                         />
@@ -272,6 +359,31 @@ export default function PageCuatro() {
                     </Card>
                 </Block>
 
+                <Typography variant="h3" component="h1" paragraph>
+                    Lista de imágenes.
+                </Typography>
+
+                <TableContainer sx={{mt: 3, overflow: 'unset'}}>
+                    <Scrollbar>
+                        <Table sx={{minWidth: 800}}>
+                            <TableHeadCustom headLabel={TABLE_HEAD_LISTA_IMAGENES}/>
+
+                            {jsonDataListaImagenes.map((row) => (
+                                <TableBody>
+                                    {row.selected_file.map((imageData, index) => (
+                                        <TableRow key={row.file_name}>
+                                            <TableCell key={index}>{imageData.file_url}</TableCell>
+                                            <TableCell key={index}>
+                                                <Button
+                                                    onClick={() => EliminarImagen(row._id.$oid, imageData.file_name)}>Eliminar</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            ))}
+                        </Table>
+                    </Scrollbar>
+                </TableContainer>
 
             </Container>
         </>
