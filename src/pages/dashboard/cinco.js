@@ -150,7 +150,7 @@ export default function PageCinco() {
 
                 </FormProvider>
 
-            {jsonDataDespacho && jsonDataDespachoDetalle.length > 0 ? (
+            {jsonDataDespacho.length >=1 && jsonDataDespachoDetalle.length >=1  ? (
                 <PDFDownloadLink
                     document={<DespachoInvoicePDF invoice={jsonDataDespacho} invoice_detail={jsonDataDespachoDetalle}/>}
                     fileName="Imprimir_PDF"

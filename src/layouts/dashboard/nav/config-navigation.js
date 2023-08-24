@@ -20,7 +20,7 @@ const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'general',
+    subheader: 'Operación Miami',
     items: [
       { title: 'Número pedido proveedor.', path: PATH_DASHBOARD.one, icon: ICONS.dashboard },
       { title: 'Fecha de creación (Fecha Alta)', path: PATH_DASHBOARD.two, icon: ICONS.ecommerce },
@@ -34,8 +34,10 @@ const navConfig = [
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: 'management',
+    subheader: 'Logística Nacional',
     items: [
+      { title: 'Clientes CNT.', path: PATH_DASHBOARD.one, icon: ICONS.dashboard },
+
       {
         title: 'user',
         path: PATH_DASHBOARD.user.root,
