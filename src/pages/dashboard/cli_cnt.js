@@ -31,7 +31,7 @@ import {API_URL} from "../../routes/paths";
 import Iconify from "../../components/iconify";
 import {LoadingButton} from "@mui/lab";
 import merge from "lodash/merge";
-import ActualizarDatos from "./CntForm";
+import ActualizarDatos from "../../components/cnt-form/cntform";
 
 // ----------------------------------------------------------------------
 

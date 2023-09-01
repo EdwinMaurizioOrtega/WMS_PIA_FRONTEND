@@ -1,9 +1,9 @@
 import {useForm, FormProvider} from 'react-hook-form';
 import {Box, Button, DialogActions, Divider, IconButton, MenuItem, Stack, TextField, Tooltip} from "@mui/material";
-import {RHFSelect, RHFTextField} from "../../components/hook-form";
+import {RHFSelect, RHFTextField} from "../hook-form";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import React from "react";
-import Iconify from "../../components/iconify";
+import Iconify from "../iconify";
 import {LoadingButton} from "@mui/lab";
 import {API_URL} from "../../routes/paths";
 import PropTypes from "prop-types";
