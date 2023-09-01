@@ -36,18 +36,18 @@ const navConfig = [
   {
     subheader: 'Logística Nacional',
     items: [
-      { title: 'Clientes CNT.', path: PATH_DASHBOARD.cli_cnt, icon: ICONS.dashboard },
+      { title: 'Clientes CNT.', path: PATH_DASHBOARD.cli_cnt, icon: ICONS.user },
 
-      {
-        title: 'user',
-        path: PATH_DASHBOARD.user.root,
-        icon: ICONS.user,
-        children: [
-          { title: 'Four', path: PATH_DASHBOARD.user.four },
-          { title: 'Five', path: PATH_DASHBOARD.user.five },
-          { title: 'Six', path: PATH_DASHBOARD.user.six },
-        ],
-      },
+      // {
+      //   title: 'user',
+      //   path: PATH_DASHBOARD.user.root,
+      //   icon: ICONS.user,
+      //   children: [
+      //     { title: 'Four', path: PATH_DASHBOARD.user.four },
+      //     { title: 'Five', path: PATH_DASHBOARD.user.five },
+      //     { title: 'Six', path: PATH_DASHBOARD.user.six },
+      //   ],
+      // },
     ],
   },
 ];

@@ -21,12 +21,12 @@ export const PATH_DASHBOARD = {
   five: path(ROOTS_DASHBOARD,'/cinco'),
   six: path(ROOTS_DASHBOARD,'/seis'),
   cli_cnt: path(ROOTS_DASHBOARD,'/cli_cnt'),
-  user: {
-    root: path(ROOTS_DASHBOARD, '/user'),
-    four: path(ROOTS_DASHBOARD, '/user/four'),
-    five: path(ROOTS_DASHBOARD, '/user/five'),
-    six: path(ROOTS_DASHBOARD, '/user/six'),
-  },
+  // user: {
+  //   root: path(ROOTS_DASHBOARD, '/user'),
+  //   four: path(ROOTS_DASHBOARD, '/user/four'),
+  //   five: path(ROOTS_DASHBOARD, '/user/five'),
+  //   six: path(ROOTS_DASHBOARD, '/user/six'),
+  // },
 };
 
 // Para consumir la API
