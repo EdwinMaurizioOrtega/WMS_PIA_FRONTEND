@@ -77,6 +77,8 @@ export function AuthProvider({ children }) {
 
         const response = await axios.get('/api/account/my-account');
 
+        console.log("my-account: "+ JSON.stringify(response.data));
+
         const { user } = response.data;
 
         dispatch({
@@ -117,6 +119,8 @@ export function AuthProvider({ children }) {
       email,
       password,
     });
+
+    console.log("login: "+ JSON.stringify(response.data));
     const { accessToken, user } = response.data;
 
     setSession(accessToken);
