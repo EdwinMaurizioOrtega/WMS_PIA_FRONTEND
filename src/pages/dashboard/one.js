@@ -38,6 +38,7 @@ import {PDFDownloadLink, PDFViewer} from '@react-pdf/renderer';
 
 import InvoicePDF from '../../sections/invoice/InvoicePDF';
 import Iconify from "../../components/iconify";
+import {HOST_API_KEY} from "../../config-global";
 
 // ----------------------------------------------------------------------
 
@@ -148,22 +149,22 @@ export default function PageOne() {
                 console.log('pedidoProveedor: ', pedidoProveedor);
                 console.log('procedencia: ', procedencia);
 
-                const url = `${API_URL}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url = `${HOST_API_KEY}/api/wms/reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url)
                     .then(response => response.json())
                     .then(data => setJsonData(data.data));
 
-                const url_detalle = `${API_URL}/api/wms/reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_detalle = `${HOST_API_KEY}/api/wms/reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_detalle)
                     .then(response => response.json())
                     .then(data => setJsonDataDetalle(data.data));
 
-                const url_cantidad_detalle = `${API_URL}/api/wms/reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_cantidad_detalle = `${HOST_API_KEY}/api/wms/reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_cantidad_detalle)
                     .then(response => response.json())
                     .then(data => setJsonCantidadDataDetalle(data.data));
 
-                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_lista_imagenes = `${HOST_API_KEY}/api/mogo-db-wms/lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_lista_imagenes)
                     .then(response => response.json())
                     .then(data => setJsonDataListaImagenes(data.data));
@@ -183,22 +184,22 @@ export default function PageOne() {
                 console.log('pedidoProveedor: ', pedidoProveedor);
                 console.log('procedencia: ', procedencia);
 
-                const url = `${API_URL}/api/wms/dn_reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url = `${HOST_API_KEY}/api/wms/dn_reporte_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url)
                     .then(response => response.json())
                     .then(data => setJsonData(data.data));
 
-                const url_cantidad_detalle = `${API_URL}/api/wms/dn_reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_cantidad_detalle = `${HOST_API_KEY}/api/wms/dn_reporte_cantidad_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_cantidad_detalle)
                     .then(response => response.json())
                     .then(data => setJsonCantidadDataDetalle(data.data));
 
-                const url_detalle = `${API_URL}/api/wms/dn_reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_detalle = `${HOST_API_KEY}/api/wms/dn_reporte_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_detalle)
                     .then(response => response.json())
                     .then(data => setJsonDataDetalle(data.data));
 
-                const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/dn_lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+                const url_lista_imagenes = `${HOST_API_KEY}/api/mogo-db-wms/dn_lista_imagenes?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
                 fetch(url_lista_imagenes)
                     .then(response => response.json())
                     .then(data => setJsonDataListaImagenes(data.data));

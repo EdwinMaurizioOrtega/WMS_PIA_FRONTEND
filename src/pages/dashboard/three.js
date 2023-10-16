@@ -22,6 +22,7 @@ import {API_URL} from "../../routes/paths";
 import {Block} from "../../sections/_examples/Block";
 import Scrollbar from "../../components/scrollbar/Scrollbar";
 import {TableHeadCustom} from "../../components/table";
+import {HOST_API_KEY} from "../../config-global";
 
 // ----------------------------------------------------------------------
 
@@ -77,7 +78,7 @@ export default function PageThree() {
       const fec_inicio = fDatePersonalized_1(pickerCalendar.startDate);
       const fec_fin = fDatePersonalized_1(pickerCalendar.endDate);
 
-      const url = `${API_URL}/api/wms/rango_fecha_llegada_pedido_proveedor_bodega?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}&proced=${procedencia}`;
+      const url = `${HOST_API_KEY}/api/wms/rango_fecha_llegada_pedido_proveedor_bodega?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}&proced=${procedencia}`;
 
       fetch(url)
           .then(response => response.json())

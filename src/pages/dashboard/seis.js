@@ -40,6 +40,7 @@ import InvoicePDF from '../../sections/invoice/InvoicePDF';
 import Iconify from "../../components/iconify";
 import {fDate, fDatePersonalized_1} from "../../utils/formatTime";
 import DateRangePicker, {useDateRangePicker} from "../../components/date-range-picker";
+import {HOST_API_KEY} from "../../config-global";
 
 // ----------------------------------------------------------------------
 
@@ -156,7 +157,7 @@ export default function PageSix() {
             const fec_inicio = fDatePersonalized_1(pickerCalendar.startDate);
             const fec_fin = fDatePersonalized_1(pickerCalendar.endDate);
 
-            const url = `${API_URL}/api/wms/reporte_pedido_proveedor_filtro_fecha?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}&proced=${procedencia}`;
+            const url = `${HOST_API_KEY}/api/wms/reporte_pedido_proveedor_filtro_fecha?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}&proced=${procedencia}`;
 
             fetch(url)
                 .then(response => response.json())

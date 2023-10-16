@@ -1,6 +1,7 @@
 // next
 import Head from 'next/head';
 import {
+    Autocomplete,
     Box,
     Button,
     Container,
@@ -32,6 +33,7 @@ import Iconify from "../../components/iconify";
 import {LoadingButton} from "@mui/lab";
 import merge from "lodash/merge";
 import ActualizarDatos from "../../components/cnt-form/cntform";
+import {HOST_API_KEY} from "../../config-global";
 
 // ----------------------------------------------------------------------
 
@@ -73,7 +75,15 @@ export default function PageCliCnt() {
             fecha_creacion: null,
             fecha_cierre: null,
             estado: '',
-            regional_canal: ''
+            regional: '',
+            canal: '',
+            descripcion_almacen: '',
+            direccion: '',
+            provincia: '',
+            ciudad: '',
+            nombre_contacto: '',
+            telefono_contacto: '',
+            fecha_modificacion: '',
         };
 
         console.log("initialEvent: " + initialEvent);
@@ -95,20 +105,22 @@ export default function PageCliCnt() {
 
     useEffect(() => {
         fetchDataInit();
-    }, []); // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
+    }, [jsonData]); // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
 
     const fetchDataInit = async () => {
         try {
-            const url = `${API_URL}/api/logistica-nacional/clientes_cnt`;
+            const url = `${HOST_API_KEY}/api/logistica-nacional/clientes_cnt`;
             const response = await fetch(url);
             const data = await response.json();
             setJsonData(data.data);
+
+            console.log("dataClientes: "+ JSON.stringify(data.data));
+
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
     const onSubmit = async (data) => {
-
 
         // Aquí puedes enviar los datos a través de una solicitud, por ejemplo.
         console.log(data);
@@ -116,17 +128,21 @@ export default function PageCliCnt() {
         const formattedFechaCreacion = new Date(data.fecha_creacion).toISOString().split('T')[0];
         const formattedFechaCierre = new Date(data.fecha_cierre).toISOString().split('T')[0];
 
-        const url = `${API_URL}/api/logistica-nacional/cliente_cnt`;
+        const url = `${HOST_API_KEY}/api/logistica-nacional/cliente_cnt`;
 
         // Crear los datos del cliente a insertar
         const clienteData = {
             open_smartflex: Number(data.open_smartflex),
             cl_sap: data.cl_sap,
             almacen_sap: Number(data.almacen_sap),
-            fecha_creacion: formattedFechaCreacion,
-            fecha_cierre: formattedFechaCierre,
             estado: data.estado,
-            regional_canal: data.regional_canal
+            regional: data.regional,
+            canal: data.canal,
+            descripcion_almacen: data.descripcion_almacen,
+            direccion: data.direccion,
+            provincia: JSON.stringify(selectedCityOrigen),
+            nombre_contacto: data.nombre_contacto,
+            telefono_contacto: data.telefono_contacto,
         };
 
         var myHeaders = new Headers();
@@ -134,6 +150,8 @@ export default function PageCliCnt() {
 
         // Convertir los datos del cliente a JSON
         const raw = JSON.stringify(clienteData);
+
+        console.log("raw: "+raw);
 
         var requestOptions = {
             method: 'POST',
@@ -181,6 +199,7 @@ export default function PageCliCnt() {
     };
 
     const [openForm, setOpenForm] = useState(false);
+
     const [openFormUpdate, setOpenFormUpdate] = useState(false);
 
     const handleOpenModal = () => {
@@ -225,7 +244,7 @@ export default function PageCliCnt() {
                 const handleDeleteByCVE = () => {
                     console.log(params.row.cve); // Print the 'CVE' value to the console
 
-                    const url = `${API_URL}/api/logistica-nacional/cliente_cnt`;
+                    const url = `${HOST_API_KEY}/api/logistica-nacional/cliente_cnt`;
 
                     // Crear los datos del cliente a insertar
                     const clienteData = {
@@ -268,6 +287,53 @@ export default function PageCliCnt() {
                     handleClose();
                 };
 
+                const handleCerrarLocalByCVE = () => {
+                    console.log(params.row.cve); // Print the 'CVE' value to the console
+
+                    const url = `${HOST_API_KEY}/api/logistica-nacional/close_local_cnt`;
+
+                    // Crear los datos del cliente a insertar
+                    const clienteData = {
+                        cve: Number(params.row.cve)
+                    };
+
+                    var myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+
+                    // Convertir los datos del cliente a JSON
+                    const raw = JSON.stringify(clienteData);
+
+                    var requestOptions = {
+                        method: 'PUT',
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: 'follow'
+                    };
+
+                    fetch(url, requestOptions)
+                        .then(response => {
+
+                            if (response.status === 200) {
+                                // El estado de respuesta es 200, ejecuta tu código aquí
+                                console.log('La solicitud tuvo éxito (código 200).');
+                                console.log('Fecha de cierre se ha registrado correctamente.');
+                                // Puedes agregar más código aquí para realizar acciones específicas.
+
+                                fetchDataInit();
+
+                            } else {
+                                console.log('La solicitud no tuvo éxito (código ' + response.status + ').');
+                            }
+
+                        })
+                        .catch(error => {
+                            console.error('Error en la solicitud:', error);
+                        });
+
+                    handleClose();
+                };
+
+
                 const handleUpdateByCVE = () => {
 
                     console.log("data: " + JSON.stringify(params.row)); // Print the 'CVE' value to the console
@@ -289,24 +355,79 @@ export default function PageCliCnt() {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleDeleteByCVE}>Eliminar</MenuItem>
+
                             <MenuItem onClick={handleUpdateByCVE}>Editar</MenuItem>
+                            <MenuItem onClick={handleDeleteByCVE}>Eliminar</MenuItem>
+                            <MenuItem onClick={handleCerrarLocalByCVE}>Cerrar Local</MenuItem>
 
                         </Menu>
                     </div>
                 );
             },
         },
-        {field: 'cve', headerName: 'CVE', width: 150},
-        {field: 'open_smartflex', headerName: 'OPEN_SMARTFLEX', width: 150},
-        {field: 'cl_sap', headerName: 'CL_SAP', width: 300},
-        {field: 'almacen_sap', headerName: 'ALMACEN_SAP', width: 150},
-        {field: 'fecha_creacion', headerName: 'FECHA_CREACION', width: 150},
-        {field: 'fecha_cierre', headerName: 'FECHA_CIERRE', width: 150},
-        {field: 'estado', headerName: 'ESTADO', width: 150},
-        {field: 'regional_canal', headerName: 'REGIONAL_CANAL', width: 150},
+
+        {field: 'cve', headerName: 'CVE'},
+        {field: 'open_smartflex', headerName: 'OPEN_SMARTFLEX'},
+        {field: 'cl_sap', headerName: 'CL_SAP'},
+        {field: 'almacen_sap', headerName: 'ALMACEN_SAP'},
+        {field: 'fecha_creacion', headerName: 'FECHA_CREACION'},
+        {field: 'estado', headerName: 'ESTADO'},
+        {field: 'regional', headerName: 'REGIONAL'},
+        {field: 'canal', headerName: 'CANAL'},
+        {field: 'descripcion_almacen', headerName: 'DESCRIPCION_ALMACEN'},
+        {field: 'direccion', headerName: 'DIRECCION'},
+        {field: 'provincia', headerName: 'PROVINCIA', renderCell: (params) => {
+                // Intenta analizar la cadena JSON en un objeto
+                let provinciaObj = {};
+                try {
+                    provinciaObj = JSON.parse(params.row.provincia);
+                } catch (error) {
+                    console.error('Error al analizar el JSON de la provincia', error);
+                }
+
+                // Accede al valor específico dentro del objeto JSON
+                const valorEspecifico = provinciaObj && provinciaObj.provincia + " " + provinciaObj.descripcioncanton + " " + provinciaObj.descripcionparroquia; // (Ejemplo: Supongamos que el objeto tiene una propiedad 'nombre')
+
+                return valorEspecifico;
+            }},
+        // {field: 'ciudad', headerName: 'CIUDAD'},
+        {field: 'nombre_contacto', headerName: 'NOMBRE_CONTACTO'},
+        {field: 'telefono_contacto', headerName: 'TELEFONO_CONTACTO'},
+        {field: 'fecha_modificacion', headerName: 'FECHA_MODIFICACION'},
+        {field: 'fecha_cierre', headerName: 'FECHA_CIERRE'},
 
     ];
+
+    const [dataCities, setDataCities] = useState([]);
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${HOST_API_KEY}/api/logistica-nacional/parroquias`);
+                const result = await response.json();
+                setDataCities(result.data);
+                console.log("Parroquias: "+ JSON.stringify(result.data));
+            } catch (error) {
+                console.log('error', error);
+            }
+        };
+
+        fetchData();
+
+        // Si necesitas hacer algo al desmontar el componente, puedes retornar una función desde useEffect
+        return () => {
+            // Por ejemplo, limpiar intervalos, cancelar solicitudes, etc.
+        };
+    }, []); // El segundo argumento es un array de dependencias, en este caso, está vacío para que se ejecute solo una vez
+
+    const [selectedCityOrigen, setSelectedCityOrigen] = useState('');
+    const handleCityChangeOrigen = (event, value) => {
+        if (value) {
+            console.log("Ciudad: "+ JSON.stringify(value));
+            setSelectedCityOrigen(value)
+        }
+    };
 
     return (
         <>
@@ -321,7 +442,7 @@ export default function PageCliCnt() {
             <Container maxWidth={themeStretch ? false : 'xl'}>
 
                 <Dialog fullWidth maxWidth="xs" open={openFormUpdate} onClose={handleCloseModalUpdate}>
-                    <DialogTitle>Añadir registro</DialogTitle>
+                    <DialogTitle>Actualizar registro</DialogTitle>
                 {selectedEvent && <ActualizarDatos
                     initialData={selectedEvent}
                     onCancel={handleCloseModalUpdate}
@@ -347,11 +468,15 @@ export default function PageCliCnt() {
                 <Box sx={{height: 720}}>
                     <DataGrid
                         rows={jsonData}
-                        columns={TABLE_HEAD}
+                        // columns={TABLE_HEAD}
                         getRowId={getRowId}
                         components={{
                             Toolbar: GridToolbar,
                         }}
+                        columns={TABLE_HEAD}
+                        pagination
+                        pageSize={100} // Aquí puedes especificar el número de elementos por página
+                        disableVirtualization
                     />
 
                 </Box>
@@ -386,27 +511,27 @@ export default function PageCliCnt() {
                             }}
                         />
 
-                        <DesktopDatePicker
-                            label="FECHA_CREACION"
-                            name="fecha_creacion"
-                            value={methods.watch('fecha_creacion')}
-                            minDate={new Date('2017-01-01')}
-                            onChange={(newValue) => {
-                                methods.setValue('fecha_creacion', newValue);
-                            }}
-                            renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}
-                        />
+                        {/*<DesktopDatePicker*/}
+                        {/*    label="FECHA_CREACION"*/}
+                        {/*    name="fecha_creacion"*/}
+                        {/*    value={methods.watch('fecha_creacion')}*/}
+                        {/*    minDate={new Date('2017-01-01')}*/}
+                        {/*    onChange={(newValue) => {*/}
+                        {/*        methods.setValue('fecha_creacion', newValue);*/}
+                        {/*    }}*/}
+                        {/*    renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}*/}
+                        {/*/>*/}
 
-                        <DesktopDatePicker
-                            label="FECHA_CIERRE"
-                            name="fecha_cierre"
-                            value={methods.watch('fecha_cierre')}
-                            minDate={new Date('2017-01-01')}
-                            onChange={(newValue) => {
-                                methods.setValue('fecha_cierre', newValue);
-                            }}
-                            renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}
-                        />
+                        {/*<DesktopDatePicker*/}
+                        {/*    label="FECHA_CIERRE"*/}
+                        {/*    name="fecha_cierre"*/}
+                        {/*    value={methods.watch('fecha_cierre')}*/}
+                        {/*    minDate={new Date('2017-01-01')}*/}
+                        {/*    onChange={(newValue) => {*/}
+                        {/*        methods.setValue('fecha_cierre', newValue);*/}
+                        {/*    }}*/}
+                        {/*    renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}*/}
+                        {/*/>*/}
 
                         <RHFSelect name="estado" label="ESTADO">
                             <MenuItem value="">Seleccionar...</MenuItem>
@@ -418,7 +543,7 @@ export default function PageCliCnt() {
                             ))}
                         </RHFSelect>
 
-                        <RHFSelect name="regional_canal" label="REGIONAL_CANAL">
+                        <RHFSelect name="regional" label="REGIONAL">
                             <MenuItem value="">Seleccionar...</MenuItem>
                             <Divider sx={{borderStyle: 'dashed'}}/>
                             {REGIONAL_CANAL.map((option) => (
@@ -427,6 +552,38 @@ export default function PageCliCnt() {
                                 </MenuItem>
                             ))}
                         </RHFSelect>
+
+                        <RHFTextField
+                            name="canal"
+                            label="CANAL"
+                        />
+                        <RHFTextField
+                            name="descripcion_almacen"
+                            label="DESCRIPCION_ALMACEN"
+                        />
+                        <RHFTextField
+                            name="direccion"
+                            label="DIRECCION"
+                        />
+                        <Autocomplete
+                            fullWidth
+                            options={dataCities}
+                            getOptionLabel={(option) => `${option.provincia} ${option.descripcioncanton} ${option.descripcionparroquia}`}
+                            renderInput={(params) => <TextField {...params} label="CIUDAD || CANTON || PARROQUIA"/>}
+                            onChange={(event, value) => {
+                                handleCityChangeOrigen(event, value);
+                            }}
+                            sx={{mb: 2}}
+                        />
+
+                        <RHFTextField
+                            name="nombre_contacto"
+                            label="NOMBRE_CONTACTO"
+                        />
+                        <RHFTextField
+                            name="telefono_contacto"
+                            label="TELEFONO_CONTACTO"
+                        />
 
                     </Stack>
 

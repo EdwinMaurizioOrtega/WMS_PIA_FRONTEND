@@ -31,6 +31,7 @@ import {API_URL} from "../../routes/paths"
 import {RHFSelect} from "../../components/hook-form";
 import Scrollbar from "../../components/scrollbar/Scrollbar";
 import {TableHeadCustom} from "../../components/table";
+import {HOST_API_KEY} from "../../config-global";
 
 const OPTIONS = [
     {value: '9000', label: 'HT Miami'},
@@ -177,7 +178,7 @@ export default function PageCuatro() {
                 formData.append(`selectedFile`, file);
             });
 
-            const url = `${API_URL}/api/mogo-db-wms/upload_web_files`;
+            const url = `${HOST_API_KEY}/api/mogo-db-wms/upload_web_files`;
 
             fetch(url, {
                 method: 'POST',
@@ -209,7 +210,7 @@ export default function PageCuatro() {
             console.log("Enviar el correo electronico.")
 
 
-            const url_send_email = `${API_URL}/api/wms/send_email?n_pedido=${pedidoProveedorr}&procedencia=${procedenciaa}&dn=${dn}`;
+            const url_send_email = `${HOST_API_KEY}/api/wms/send_email?n_pedido=${pedidoProveedorr}&procedencia=${procedenciaa}&dn=${dn}`;
             fetch(url_send_email)
                 .then(response => response.json())
                 .then(result => console.log(result))
@@ -233,7 +234,7 @@ export default function PageCuatro() {
 
         if (pedidoProveedorr !== '' && procedenciaa !== '' && dn !== '') {
 
-            const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/imagenes_pedido_and_dn?n_pedido=${pedidoProveedorr}&procedencia=${procedenciaa}&dn=${dn}`;
+            const url_lista_imagenes = `${HOST_API_KEY}/api/mogo-db-wms/imagenes_pedido_and_dn?n_pedido=${pedidoProveedorr}&procedencia=${procedenciaa}&dn=${dn}`;
             fetch(url_lista_imagenes)
                 .then(response => response.json())
                 .then(data => setJsonDataListaImagenes(data.data));
@@ -256,7 +257,7 @@ export default function PageCuatro() {
                 redirect: 'follow'
             };
 
-            const url_lista_imagenes = `${API_URL}/api/mogo-db-wms/delete_image?id=${id}&file_name=${file_name}`;
+            const url_lista_imagenes = `${HOST_API_KEY}/api/mogo-db-wms/delete_image?id=${id}&file_name=${file_name}`;
 
 
             fetch(url_lista_imagenes, requestOptions)

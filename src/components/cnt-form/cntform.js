@@ -1,12 +1,24 @@
 import {useForm, FormProvider} from 'react-hook-form';
-import {Box, Button, DialogActions, Divider, IconButton, MenuItem, Stack, TextField, Tooltip} from "@mui/material";
+import {
+    Autocomplete,
+    Box,
+    Button,
+    DialogActions,
+    Divider,
+    IconButton,
+    MenuItem,
+    Stack,
+    TextField,
+    Tooltip
+} from "@mui/material";
 import {RHFSelect, RHFTextField} from "../hook-form";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Iconify from "../iconify";
 import {LoadingButton} from "@mui/lab";
 import {API_URL} from "../../routes/paths";
 import PropTypes from "prop-types";
+import {HOST_API_KEY} from "../../config-global";
 
 const OPTIONS = [
     {value: 0, label: 'Cerrado'},
@@ -39,16 +51,25 @@ function ActualizarDatos({initialData, onCancel,}) {
 
     console.log("initialData: " + JSON.stringify(initialData)); // Print the 'CVE' value to the console
 
+    const initialDataParsed = JSON.parse(initialData.provincia);
+
+
     const methods = useForm({
         defaultValues: {
             open_smartflex: initialData.open_smartflex,
             cl_sap: initialData.cl_sap,
             almacen_sap: initialData.almacen_sap,
-            fecha_creacion: initialData.fecha_creacion,
-            fecha_cierre: initialData.fecha_cierre,
             estado: initialData.estado,
-            regional_canal: initialData.regional_canal,
+            regional: initialData.regional,
             cve: initialData.cve,
+            canal: initialData.canal,
+            descripcion_almacen: initialData.descripcion_almacen,
+            direccion: initialData.direccion,
+            provincia: initialDataParsed.provincia,
+            nombre_contacto: initialData.nombre_contacto,
+            telefono_contacto: initialData.telefono_contacto,
+            fecha_modificacion: initialData.fecha_modificacion,
+
         },
     });
 
@@ -57,26 +78,32 @@ function ActualizarDatos({initialData, onCancel,}) {
         handleSubmit,
     } = methods;
 
+
+    //Actualizar un cliente
     const onSubmit = async (data) => {
         // data contiene los valores del formulario
         console.log("data: " + JSON.stringify(data));
+        console.log("selectedCityOrigen: "+ JSON.stringify(selectedCityOrigen))
 
-        const formattedFechaCreacion = new Date(data.fecha_creacion).toISOString().split('T')[0];
-        const formattedFechaCierre = new Date(data.fecha_cierre).toISOString().split('T')[0];
+        // const formattedFechaCreacion = new Date(data.fecha_creacion).toISOString().split('T')[0];
+        // const formattedFechaCierre = new Date(data.fecha_cierre).toISOString().split('T')[0];
 
-        const url = `${API_URL}/api/logistica-nacional/cliente_cnt`;
+        const url = `${HOST_API_KEY}/api/logistica-nacional/cliente_cnt`;
 
         // Crear los datos del cliente a insertar
         const clienteData = {
             open_smartflex: Number(data.open_smartflex),
             cl_sap: data.cl_sap,
             almacen_sap: Number(data.almacen_sap),
-            fecha_creacion: formattedFechaCreacion,
-            fecha_cierre: formattedFechaCierre,
             estado: Number(data.estado),
-            regional_canal: data.regional_canal,
+            regional: data.regional,
             cve: Number(data.cve),
-
+            canal: data.canal,
+            descripcion_almacen: data.descripcion_almacen,
+            direccion: data.direccion,
+            provincia: JSON.stringify(selectedCityOrigen),
+            nombre_contacto: data.nombre_contacto,
+            telefono_contacto: data.telefono_contacto,
         };
 
         var myHeaders = new Headers();
@@ -123,6 +150,37 @@ function ActualizarDatos({initialData, onCancel,}) {
         reset();
     };
 
+    const [dataCities, setDataCities] = useState([]);
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${HOST_API_KEY}/api/logistica-nacional/parroquias`);
+                const result = await response.json();
+                setDataCities(result.data);
+                console.log("Parroquias: "+ JSON.stringify(result.data));
+            } catch (error) {
+                console.log('error', error);
+            }
+        };
+
+        fetchData();
+
+        // Si necesitas hacer algo al desmontar el componente, puedes retornar una función desde useEffect
+        return () => {
+            // Por ejemplo, limpiar intervalos, cancelar solicitudes, etc.
+        };
+    }, []); // El segundo argumento es un array de dependencias, en este caso, está vacío para que se ejecute solo una vez
+
+    const [selectedCityOrigen, setSelectedCityOrigen] = useState('');
+    const handleCityChangeOrigen = (event, value) => {
+        if (value) {
+            console.log("Ciudad: "+ JSON.stringify(value));
+            setSelectedCityOrigen(value)
+        }
+    };
+
     return (
 
         <FormProvider {...methods}>
@@ -159,27 +217,27 @@ function ActualizarDatos({initialData, onCancel,}) {
                         }}
                     />
 
-                    <DesktopDatePicker
-                        label="FECHA_CREACION"
-                        name="fecha_creacion"
-                        value={methods.watch('fecha_creacion')}
-                        minDate={new Date('2017-01-01')}
-                        onChange={(newValue) => {
-                            methods.setValue('fecha_creacion', newValue);
-                        }}
-                        renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}
-                    />
+                    {/*<DesktopDatePicker*/}
+                    {/*    label="FECHA_CREACION"*/}
+                    {/*    name="fecha_creacion"*/}
+                    {/*    value={methods.watch('fecha_creacion')}*/}
+                    {/*    minDate={new Date('2017-01-01')}*/}
+                    {/*    onChange={(newValue) => {*/}
+                    {/*        methods.setValue('fecha_creacion', newValue);*/}
+                    {/*    }}*/}
+                    {/*    renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}*/}
+                    {/*/>*/}
 
-                    <DesktopDatePicker
-                        label="FECHA_CIERRE"
-                        name="fecha_cierre"
-                        value={methods.watch('fecha_cierre')}
-                        minDate={new Date('2017-01-01')}
-                        onChange={(newValue) => {
-                            methods.setValue('fecha_cierre', newValue);
-                        }}
-                        renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}
-                    />
+                    {/*<DesktopDatePicker*/}
+                    {/*    label="FECHA_CIERRE"*/}
+                    {/*    name="fecha_cierre"*/}
+                    {/*    value={methods.watch('fecha_cierre')}*/}
+                    {/*    minDate={new Date('2017-01-01')}*/}
+                    {/*    onChange={(newValue) => {*/}
+                    {/*        methods.setValue('fecha_cierre', newValue);*/}
+                    {/*    }}*/}
+                    {/*    renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}*/}
+                    {/*/>*/}
 
                     <RHFSelect name="estado" label="ESTADO">
                         <MenuItem value="">Seleccionar...</MenuItem>
@@ -191,7 +249,7 @@ function ActualizarDatos({initialData, onCancel,}) {
                         ))}
                     </RHFSelect>
 
-                    <RHFSelect name="regional_canal" label="REGIONAL_CANAL">
+                    <RHFSelect name="regional" label="REGIONAL">
                         <MenuItem value="">Seleccionar...</MenuItem>
                         <Divider sx={{borderStyle: 'dashed'}}/>
                         {REGIONAL_CANAL.map((option) => (
@@ -200,6 +258,42 @@ function ActualizarDatos({initialData, onCancel,}) {
                             </MenuItem>
                         ))}
                     </RHFSelect>
+
+                    <RHFTextField
+                        name="canal"
+                        label="CANAL"
+                    />
+                    <RHFTextField
+                        name="descripcion_almacen"
+                        label="DESCRIPCION_ALMACEN"
+                    />
+                    <RHFTextField
+                        name="direccion"
+                        label="DIRECCION"
+                    />
+
+                    {/*<label>{initialDataParsed.provincia} {initialDataParsed.descripcioncanton} {initialDataParsed.descripcionparroquia}</label>*/}
+
+                    <Autocomplete
+                        fullWidth
+                        options={dataCities}
+                        getOptionLabel={(option) => `${option.provincia} ${option.descripcioncanton} ${option.descripcionparroquia}`}
+                        renderInput={(params) => <TextField {...params} label="CIUDAD || CANTON || PARROQUIA"/>}
+                        onChange={(event, value) => {
+                            handleCityChangeOrigen(event, value);
+                        }}
+                        value={initialDataParsed}
+                        sx={{mb: 2}}
+                    />
+                    <RHFTextField
+                        name="nombre_contacto"
+                        label="NOMBRE_CONTACTO"
+                    />
+                    <RHFTextField
+                        name="telefono_contacto"
+                        label="TELEFONO_CONTACTO"
+                    />
+
 
                 </Stack>
 

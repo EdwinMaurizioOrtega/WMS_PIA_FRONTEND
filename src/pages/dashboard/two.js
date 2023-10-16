@@ -26,6 +26,7 @@ import {API_URL} from "../../routes/paths";
 import {RHFSelect} from "../../components/hook-form";
 
 import React from 'react';
+import {HOST_API_KEY} from "../../config-global";
 
 
 
@@ -91,7 +92,7 @@ export default function PageTwo() {
       const fec_inicio = fDatePersonalized_1(pickerCalendar.startDate);
       const fec_fin = fDatePersonalized_1(pickerCalendar.endDate);
 
-      const url = `${API_URL}/api/wms/rango_fecha_creacion_pedido_proveedor?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}&proced=${procedencia}`;
+      const url = `${HOST_API_KEY}/api/wms/rango_fecha_creacion_pedido_proveedor?fec_inicio=${fec_inicio}&fec_fin=${fec_fin}&proced=${procedencia}`;
 
       fetch(url)
           .then(response => response.json())

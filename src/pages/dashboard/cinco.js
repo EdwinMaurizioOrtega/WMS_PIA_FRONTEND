@@ -33,6 +33,7 @@ import {PDFDownloadLink} from "@react-pdf/renderer";
 import InvoicePDF from "../../sections/invoice/InvoicePDF";
 import Iconify from "../../components/iconify";
 import DespachoInvoicePDF from "../../sections/invoice/DespachoInvoicePDF";
+import {HOST_API_KEY} from "../../config-global";
 
 const OPTIONS = [
     {value: '9000', label: 'HT Miami'},
@@ -95,13 +96,13 @@ export default function PageCinco() {
 
             console.log(`${pedidoProveedor} ${procedencia}`);
 
-            const url = `${API_URL}/api/wms/reporte_despacho_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+            const url = `${HOST_API_KEY}/api/wms/reporte_despacho_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => setJsonDataDespacho(data.data));
 
-            const url_detalle = `${API_URL}/api/wms/reporte_despacho_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
+            const url_detalle = `${HOST_API_KEY}/api/wms/reporte_despacho_detalle_pedido_proveedor?n_pedido=${pedidoProveedor}&procedencia=${procedencia}`;
 
             fetch(url_detalle)
                 .then(response => response.json())
