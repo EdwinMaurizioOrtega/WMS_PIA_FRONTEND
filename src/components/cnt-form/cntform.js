@@ -40,6 +40,13 @@ const REGIONAL_CANAL = [
 
 ];
 
+const TIEMPO_ENTREGA = [
+    {value: 0, label: '24 HORAS'},
+    {value: 1, label: '48 HORAS'},
+    {value: 2, label: '120 HORAS'},
+    {value: 3, label: '8 DIAS'},
+];
+
 ActualizarDatos.propTypes = {
 
     onCancel: PropTypes.func,
@@ -69,6 +76,9 @@ function ActualizarDatos({initialData, onCancel,}) {
             nombre_contacto: initialData.nombre_contacto,
             telefono_contacto: initialData.telefono_contacto,
             fecha_modificacion: initialData.fecha_modificacion,
+            cl_sap_indirecto: initialData.cl_sap_indirecto,
+            correo: initialData.correo,
+            tiempo_entrega: initialData.tiempo_entrega,
 
         },
     });
@@ -104,6 +114,9 @@ function ActualizarDatos({initialData, onCancel,}) {
             provincia: JSON.stringify(selectedCityOrigen),
             nombre_contacto: data.nombre_contacto,
             telefono_contacto: data.telefono_contacto,
+            cl_sap_indirecto: data.cl_sap_indirecto,
+            correo: data.correo,
+            tiempo_entrega: data.tiempo_entrega,
         };
 
         var myHeaders = new Headers();
@@ -293,6 +306,24 @@ function ActualizarDatos({initialData, onCancel,}) {
                         name="telefono_contacto"
                         label="TELEFONO_CONTACTO"
                     />
+                    <RHFTextField
+                        name="cl_sap_indirecto"
+                        label="CL_SAP_INDIRECTO"
+                    />
+                    <RHFTextField
+                        name="correo"
+                        label="CORREO"
+                    />
+
+                    <RHFSelect name="tiempo_entrega" label="TIEMPO_ENTREGA">
+                        <MenuItem value="">Seleccionar...</MenuItem>
+                        <Divider sx={{borderStyle: 'dashed'}}/>
+                        {TIEMPO_ENTREGA.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </RHFSelect>
 
 
                 </Stack>

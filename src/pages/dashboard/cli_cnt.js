@@ -44,6 +44,13 @@ const OPTIONS = [
 
 ];
 
+const TIEMPO_ENTREGA = [
+    {value: '0', label: '24 HORAS'},
+    {value: '1', label: '48 HORAS'},
+    {value: '2', label: '120 HORAS'},
+    {value: '3', label: '8 DIAS'},
+];
+
 const REGIONAL_CANAL = [
     {value: "INDIRECTO", label: 'INDIRECTO'},
     {value: "REGIONAL 1", label: 'REGIONAL 1'},
@@ -84,6 +91,9 @@ export default function PageCliCnt() {
             nombre_contacto: '',
             telefono_contacto: '',
             fecha_modificacion: '',
+            cl_sap_indirecto: '',
+            correo: '',
+            tiempo_entrega: '',
         };
 
         console.log("initialEvent: " + initialEvent);
@@ -143,6 +153,9 @@ export default function PageCliCnt() {
             provincia: JSON.stringify(selectedCityOrigen),
             nombre_contacto: data.nombre_contacto,
             telefono_contacto: data.telefono_contacto,
+            cl_sap_indirecto: data.cl_sap_indirecto,
+            correo: data.correo,
+            tiempo_entrega: data.tiempo_entrega
         };
 
         var myHeaders = new Headers();
@@ -395,6 +408,9 @@ export default function PageCliCnt() {
         {field: 'telefono_contacto', headerName: 'TELEFONO_CONTACTO'},
         {field: 'fecha_modificacion', headerName: 'FECHA_MODIFICACION'},
         {field: 'fecha_cierre', headerName: 'FECHA_CIERRE'},
+        {field: 'cl_sap_indirecto', headerName: 'CL_SAP_INDIRECTO'},
+        {field: 'correo', headerName: 'CORREO'},
+        {field: 'tiempo_entrega', headerName: 'TIEMPO_ENTREGA'},
 
     ];
 
@@ -584,6 +600,25 @@ export default function PageCliCnt() {
                             name="telefono_contacto"
                             label="TELEFONO_CONTACTO"
                         />
+
+                        <RHFTextField
+                            name="cl_sap_indirecto"
+                            label="CL_SAP_INDIRECTO"
+                        />
+                        <RHFTextField
+                            name="correo"
+                            label="CORREO"
+                        />
+
+                        <RHFSelect name="tiempo_entrega" label="TIEMPO_ENTREGA">
+                            <MenuItem value="">Seleccionar...</MenuItem>
+                            <Divider sx={{borderStyle: 'dashed'}}/>
+                            {TIEMPO_ENTREGA.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </RHFSelect>
 
                     </Stack>
 
