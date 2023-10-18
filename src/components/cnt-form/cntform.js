@@ -11,7 +11,7 @@ import {
     TextField,
     Tooltip
 } from "@mui/material";
-import {RHFSelect, RHFTextField} from "../hook-form";
+import {RHFAutocomplete, RHFSelect, RHFTextField} from "../hook-form";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import React, {useEffect, useState} from "react";
 import Iconify from "../iconify";
@@ -102,16 +102,16 @@ function ActualizarDatos({initialData, onCancel,}) {
 
         // Crear los datos del cliente a insertar
         const clienteData = {
-            open_smartflex: Number(data.open_smartflex),
+            open_smartflex: data.open_smartflex,
             cl_sap: data.cl_sap,
-            almacen_sap: Number(data.almacen_sap),
+            almacen_sap: data.almacen_sap,
             estado: Number(data.estado),
             regional: data.regional,
             cve: Number(data.cve),
             canal: data.canal,
             descripcion_almacen: data.descripcion_almacen,
             direccion: data.direccion,
-            provincia: JSON.stringify(selectedCityOrigen),
+            provincia: data.provincia,
             nombre_contacto: data.nombre_contacto,
             telefono_contacto: data.telefono_contacto,
             cl_sap_indirecto: data.cl_sap_indirecto,
@@ -285,18 +285,12 @@ function ActualizarDatos({initialData, onCancel,}) {
                         label="DIRECCION"
                     />
 
-                    {/*<label>{initialDataParsed.provincia} {initialDataParsed.descripcioncanton} {initialDataParsed.descripcionparroquia}</label>*/}
-
-                    <Autocomplete
-                        fullWidth
+                    <RHFAutocomplete
+                        name="provincia"
+                        label="CIUDAD | PROVINCIA"
                         options={dataCities}
-                        getOptionLabel={(option) => `${option.provincia} ${option.descripcioncanton} ${option.descripcionparroquia}`}
-                        renderInput={(params) => <TextField {...params} label="CIUDAD || CANTON || PARROQUIA"/>}
-                        onChange={(event, value) => {
-                            handleCityChangeOrigen(event, value);
-                        }}
-                        value={initialDataParsed}
-                        sx={{mb: 2}}
+                        getOptionLabel={(option) => `${option.NOMBRE_CIUDAD} ${option.NOMBRE_PROVINCIA}`}
+                        isOptionEqualToValue={(option, value) => option.value === value.value}
                     />
                     <RHFTextField
                         name="nombre_contacto"

@@ -23,7 +23,7 @@ import React, {useEffect, useState} from "react";
 import {DataGrid, GridToolbar,} from "@mui/x-data-grid";
 import {useForm} from 'react-hook-form';
 
-import FormProvider, {RHFSelect, RHFTextField,} from '../../components/hook-form';
+import FormProvider, {RHFAutocomplete, RHFSelect, RHFTextField,} from '../../components/hook-form';
 
 import DashboardLayout from '../../layouts/dashboard';
 // components
@@ -41,6 +41,12 @@ const OPTIONS = [
     {value: 0, label: 'Cerrado'},
     {value: 1, label: 'Abierto'},
     {value: 2, label: 'Temporal'},
+
+];
+
+const CANAL = [
+    {value: '800', label: 'DIRECTO'},
+    {value: '986', label: 'INDIRECTO'},
 
 ];
 
@@ -87,7 +93,6 @@ export default function PageCliCnt() {
             descripcion_almacen: '',
             direccion: '',
             provincia: '',
-            ciudad: '',
             nombre_contacto: '',
             telefono_contacto: '',
             fecha_modificacion: '',
@@ -135,22 +140,22 @@ export default function PageCliCnt() {
         // Aquí puedes enviar los datos a través de una solicitud, por ejemplo.
         console.log(data);
 
-        const formattedFechaCreacion = new Date(data.fecha_creacion).toISOString().split('T')[0];
-        const formattedFechaCierre = new Date(data.fecha_cierre).toISOString().split('T')[0];
+        // const formattedFechaCreacion = new Date(data.fecha_creacion).toISOString().split('T')[0];
+        // const formattedFechaCierre = new Date(data.fecha_cierre).toISOString().split('T')[0];
 
         const url = `${HOST_API_KEY}/api/logistica-nacional/cliente_cnt`;
 
         // Crear los datos del cliente a insertar
         const clienteData = {
-            open_smartflex: Number(data.open_smartflex),
+            open_smartflex: data.open_smartflex,
             cl_sap: data.cl_sap,
-            almacen_sap: Number(data.almacen_sap),
+            almacen_sap: data.almacen_sap,
             estado: data.estado,
             regional: data.regional,
             canal: data.canal,
             descripcion_almacen: data.descripcion_almacen,
             direccion: data.direccion,
-            provincia: JSON.stringify(selectedCityOrigen),
+            provincia: data.provincia.ID_CIUDAD.toString(),
             nombre_contacto: data.nombre_contacto,
             telefono_contacto: data.telefono_contacto,
             cl_sap_indirecto: data.cl_sap_indirecto,
@@ -384,22 +389,60 @@ export default function PageCliCnt() {
         {field: 'cl_sap', headerName: 'CL_SAP'},
         {field: 'almacen_sap', headerName: 'ALMACEN_SAP'},
         {field: 'fecha_creacion', headerName: 'FECHA_CREACION'},
-        {field: 'estado', headerName: 'ESTADO'},
-        {field: 'regional', headerName: 'REGIONAL'},
-        {field: 'canal', headerName: 'CANAL'},
-        {field: 'descripcion_almacen', headerName: 'DESCRIPCION_ALMACEN'},
-        {field: 'direccion', headerName: 'DIRECCION'},
-        {field: 'provincia', headerName: 'PROVINCIA', renderCell: (params) => {
+        {field: 'estado', headerName: 'ESTADO', renderCell: (params) => {
                 // Intenta analizar la cadena JSON en un objeto
-                let provinciaObj = {};
+                let estadoObj = {};
+                let id = '';
                 try {
-                    provinciaObj = JSON.parse(params.row.provincia);
+
+                    id = params.row.estado;
+                    estadoObj =  OPTIONS.find((pro) => pro.value == id)
+
                 } catch (error) {
                     console.error('Error al analizar el JSON de la provincia', error);
                 }
 
                 // Accede al valor específico dentro del objeto JSON
-                const valorEspecifico = provinciaObj && provinciaObj.provincia + " " + provinciaObj.descripcioncanton + " " + provinciaObj.descripcionparroquia; // (Ejemplo: Supongamos que el objeto tiene una propiedad 'nombre')
+                const valorEspecifico = estadoObj && estadoObj.label ; // (Ejemplo: Supongamos que el objeto tiene una propiedad 'nombre')
+
+                return valorEspecifico;
+            }},
+        {field: 'regional', headerName: 'REGIONAL'},
+        {field: 'canal', headerName: 'CANAL', renderCell: (params) => {
+                // Intenta analizar la cadena JSON en un objeto
+                let canalObj = {};
+                let id = '';
+                try {
+
+                    id = params.row.canal;
+                    canalObj =  CANAL.find((pro) => pro.value == id)
+
+                } catch (error) {
+                    console.error('Error al analizar el JSON de la provincia', error);
+                }
+
+                // Accede al valor específico dentro del objeto JSON
+                const valorEspecifico = canalObj && canalObj.label ; // (Ejemplo: Supongamos que el objeto tiene una propiedad 'nombre')
+
+                return valorEspecifico;
+            }},
+        {field: 'descripcion_almacen', headerName: 'DESCRIPCION_ALMACEN'},
+        {field: 'direccion', headerName: 'DIRECCION'},
+        {field: 'provincia', headerName: 'PROVINCIA', renderCell: (params) => {
+                // Intenta analizar la cadena JSON en un objeto
+                let provinciaObj = {};
+                let id = '';
+                try {
+
+                    id = params.row.provincia;
+                    provinciaObj =  dataCities.find((pro) => pro.ID_CIUDAD == id)
+
+                } catch (error) {
+                    console.error('Error al analizar el JSON de la provincia', error);
+                }
+
+                // Accede al valor específico dentro del objeto JSON
+                const valorEspecifico = provinciaObj && provinciaObj.NOMBRE_CIUDAD + " " + provinciaObj.NOMBRE_PROVINCIA; // (Ejemplo: Supongamos que el objeto tiene una propiedad 'nombre')
 
                 return valorEspecifico;
             }},
@@ -410,7 +453,24 @@ export default function PageCliCnt() {
         {field: 'fecha_cierre', headerName: 'FECHA_CIERRE'},
         {field: 'cl_sap_indirecto', headerName: 'CL_SAP_INDIRECTO'},
         {field: 'correo', headerName: 'CORREO'},
-        {field: 'tiempo_entrega', headerName: 'TIEMPO_ENTREGA'},
+        {field: 'tiempo_entrega', headerName: 'TIEMPO_ENTREGA', renderCell: (params) => {
+                // Intenta analizar la cadena JSON en un objeto
+                let tiempo_entregaObj = {};
+                let id = '';
+                try {
+
+                    id = params.row.tiempo_entrega;
+                    tiempo_entregaObj =  TIEMPO_ENTREGA.find((pro) => pro.value == id)
+
+                } catch (error) {
+                    console.error('Error al analizar el JSON de la provincia', error);
+                }
+
+                // Accede al valor específico dentro del objeto JSON
+                const valorEspecifico = tiempo_entregaObj && tiempo_entregaObj.label ; // (Ejemplo: Supongamos que el objeto tiene una propiedad 'nombre')
+
+                return valorEspecifico;
+            }},
 
     ];
 
@@ -581,15 +641,12 @@ export default function PageCliCnt() {
                             name="direccion"
                             label="DIRECCION"
                         />
-                        <Autocomplete
-                            fullWidth
+                        <RHFAutocomplete
+                            name="provincia"
+                            label="CIUDAD | PROVINCIA"
                             options={dataCities}
-                            getOptionLabel={(option) => `${option.provincia} ${option.descripcioncanton} ${option.descripcionparroquia}`}
-                            renderInput={(params) => <TextField {...params} label="CIUDAD || CANTON || PARROQUIA"/>}
-                            onChange={(event, value) => {
-                                handleCityChangeOrigen(event, value);
-                            }}
-                            sx={{mb: 2}}
+                            getOptionLabel={(option) => `${option.NOMBRE_CIUDAD} ${option.NOMBRE_PROVINCIA}`}
+                            isOptionEqualToValue={(option, value) => option.value === value.value}
                         />
 
                         <RHFTextField
