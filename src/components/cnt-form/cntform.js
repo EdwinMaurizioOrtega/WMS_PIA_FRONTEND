@@ -111,7 +111,7 @@ function ActualizarDatos({initialData, onCancel,}) {
             canal: data.canal,
             descripcion_almacen: data.descripcion_almacen,
             direccion: data.direccion,
-            provincia: data.provincia,
+            provincia: data.provincia.ID_CIUDAD.toString(),
             nombre_contacto: data.nombre_contacto,
             telefono_contacto: data.telefono_contacto,
             cl_sap_indirecto: data.cl_sap_indirecto,
