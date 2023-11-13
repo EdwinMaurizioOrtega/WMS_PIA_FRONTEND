@@ -92,7 +92,7 @@ export default function PageCliCnt() {
             canal: '',
             descripcion_almacen: '',
             direccion: '',
-            provincia: '',
+            provincia: null,
             nombre_contacto: '',
             telefono_contacto: '',
             fecha_modificacion: '',
@@ -120,7 +120,7 @@ export default function PageCliCnt() {
 
     useEffect(() => {
         fetchDataInit();
-    }, [jsonData]); // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
+    }, []); // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
 
     const fetchDataInit = async () => {
         try {
@@ -519,10 +519,9 @@ export default function PageCliCnt() {
 
                 <Dialog fullWidth maxWidth="xs" open={openFormUpdate} onClose={handleCloseModalUpdate}>
                     <DialogTitle>Actualizar registro</DialogTitle>
-                {selectedEvent && <ActualizarDatos
-                    initialData={selectedEvent}
-                    onCancel={handleCloseModalUpdate}
-                />}
+                {selectedEvent &&
+                    <ActualizarDatos dataCities={dataCities} initialData={selectedEvent} onCancel={handleCloseModalUpdate}/>
+                }
                 </Dialog>
 
             </Container>

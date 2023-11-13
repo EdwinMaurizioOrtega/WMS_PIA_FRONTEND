@@ -37,6 +37,7 @@ const navConfig = [
     subheader: 'Logística Nacional',
     items: [
       { title: 'Clientes CNT.', path: PATH_DASHBOARD.cli_cnt, icon: ICONS.user },
+      { title: 'Plantillas.', path: PATH_DASHBOARD.templates, icon: ICONS.user },
 
       // {
       //   title: 'user',

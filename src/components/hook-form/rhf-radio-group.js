@@ -1,26 +1,14 @@
 import PropTypes from 'prop-types';
-// form
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import {
-  Radio,
-  FormLabel,
-  RadioGroup,
-  FormControl,
-  FormHelperText,
-  FormControlLabel,
-} from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import Radio from '@mui/material/Radio';
+import FormLabel from '@mui/material/FormLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 // ----------------------------------------------------------------------
-
-RHFRadioGroup.propTypes = {
-  row: PropTypes.bool,
-  name: PropTypes.string,
-  label: PropTypes.string,
-  options: PropTypes.array,
-  spacing: PropTypes.number,
-  helperText: PropTypes.node,
-};
 
 export default function RHFRadioGroup({
   row,
@@ -79,3 +67,12 @@ export default function RHFRadioGroup({
     />
   );
 }
+
+RHFRadioGroup.propTypes = {
+  helperText: PropTypes.string,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  options: PropTypes.array,
+  row: PropTypes.bool,
+  spacing: PropTypes.number,
+};

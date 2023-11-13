@@ -1,31 +1,27 @@
 import PropTypes from 'prop-types';
-// form
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import {
-  Box,
-  Chip,
-  Select,
-  Checkbox,
-  MenuItem,
-  TextField,
-  InputLabel,
-  FormControl,
-  OutlinedInput,
-  FormHelperText,
-} from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 
 // ----------------------------------------------------------------------
 
-RHFSelect.propTypes = {
-  name: PropTypes.string,
-  native: PropTypes.bool,
-  children: PropTypes.node,
-  helperText: PropTypes.node,
-  maxHeight: PropTypes.number,
-};
-
-export function RHFSelect({ name, native, children, helperText, maxHeight = 220, ...other }) {
+export function RHFSelect({
+  name,
+  native,
+  maxHeight = 220,
+  helperText,
+  children,
+  PaperPropsSx,
+  ...other
+}) {
   const { control } = useFormContext();
 
   return (
@@ -43,15 +39,9 @@ export function RHFSelect({ name, native, children, helperText, maxHeight = 220,
               PaperProps: {
                 sx: {
                   ...(!native && {
-                    px: 1,
                     maxHeight: typeof maxHeight === 'number' ? maxHeight : 'unset',
-                    '& .MuiMenuItem-root': {
-                      px: 1,
-                      borderRadius: 0.75,
-                      typography: 'body2',
-                      textTransform: 'capitalize',
-                    },
                   }),
+                  ...PaperPropsSx,
                 },
               },
             },
@@ -68,18 +58,16 @@ export function RHFSelect({ name, native, children, helperText, maxHeight = 220,
   );
 }
 
-// ----------------------------------------------------------------------
-
-RHFMultiSelect.propTypes = {
+RHFSelect.propTypes = {
+  PaperPropsSx: PropTypes.object,
+  children: PropTypes.node,
+  helperText: PropTypes.object,
+  maxHeight: PropTypes.number,
   name: PropTypes.string,
-  chip: PropTypes.bool,
-  label: PropTypes.string,
-  options: PropTypes.array,
-  checkbox: PropTypes.bool,
-  placeholder: PropTypes.string,
-  helperText: PropTypes.node,
-  sx: PropTypes.object,
+  native: PropTypes.bool,
 };
+
+// ----------------------------------------------------------------------
 
 export function RHFMultiSelect({
   name,
@@ -89,7 +77,6 @@ export function RHFMultiSelect({
   checkbox,
   placeholder,
   helperText,
-  sx,
   ...other
 }) {
   const { control } = useFormContext();
@@ -98,11 +85,7 @@ export function RHFMultiSelect({
     const selectedItems = options.filter((item) => selectedIds.includes(item.value));
 
     if (!selectedItems.length && placeholder) {
-      return (
-        <Box component="em" sx={{ color: 'text.disabled' }}>
-          {placeholder}
-        </Box>
-      );
+      return <Box sx={{ color: 'text.disabled' }}>{placeholder}</Box>;
     }
 
     if (chip) {
@@ -123,59 +106,24 @@ export function RHFMultiSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <FormControl sx={sx}>
+        <FormControl error={!!error} {...other}>
           {label && <InputLabel id={name}> {label} </InputLabel>}
 
           <Select
             {...field}
             multiple
             displayEmpty={!!placeholder}
+            id={`multiple-${name}`}
             labelId={name}
-            input={<OutlinedInput fullWidth label={label} error={!!error} />}
+            label={label}
             renderValue={renderValues}
-            MenuProps={{
-              PaperProps: {
-                sx: { px: 1, maxHeight: 280 },
-              },
-            }}
-            {...other}
           >
-            {placeholder && (
-              <MenuItem
-                disabled
-                value=""
-                sx={{
-                  py: 1,
-                  px: 2,
-                  borderRadius: 0.75,
-                  typography: 'body2',
-                }}
-              >
-                <em> {placeholder} </em>
-              </MenuItem>
-            )}
-
             {options.map((option) => {
               const selected = field.value.includes(option.value);
 
               return (
-                <MenuItem
-                  key={option.value}
-                  value={option.value}
-                  sx={{
-                    py: 1,
-                    px: 2,
-                    borderRadius: 0.75,
-                    typography: 'body2',
-                    ...(selected && {
-                      fontWeight: 'fontWeightMedium',
-                    }),
-                    ...(checkbox && {
-                      p: 0.25,
-                    }),
-                  }}
-                >
-                  {checkbox && <Checkbox disableRipple size="small" checked={selected} />}
+                <MenuItem key={option.value} value={option.value}>
+                  {checkbox && <Checkbox size="small" disableRipple checked={selected} />}
 
                   {option.label}
                 </MenuItem>
@@ -191,3 +139,13 @@ export function RHFMultiSelect({
     />
   );
 }
+
+RHFMultiSelect.propTypes = {
+  checkbox: PropTypes.bool,
+  chip: PropTypes.bool,
+  helperText: PropTypes.object,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  options: PropTypes.array,
+  placeholder: PropTypes.string,
+};

@@ -1,18 +1,12 @@
 import PropTypes from 'prop-types';
-// form
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import { Autocomplete, TextField } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 // ----------------------------------------------------------------------
 
-RHFAutocomplete.propTypes = {
-  name: PropTypes.string,
-  label: PropTypes.string,
-  helperText: PropTypes.node,
-};
-
-export default function RHFAutocomplete({ name, label, helperText, ...other }) {
+export default function RHFAutocomplete({ name, label, placeholder, helperText, ...other }) {
   const { control, setValue } = useFormContext();
 
   return (
@@ -26,6 +20,7 @@ export default function RHFAutocomplete({ name, label, helperText, ...other }) {
           renderInput={(params) => (
             <TextField
               label={label}
+              placeholder={placeholder}
               error={!!error}
               helperText={error ? error?.message : helperText}
               {...params}
@@ -37,3 +32,10 @@ export default function RHFAutocomplete({ name, label, helperText, ...other }) {
     />
   );
 }
+
+RHFAutocomplete.propTypes = {
+  helperText: PropTypes.string,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
+};

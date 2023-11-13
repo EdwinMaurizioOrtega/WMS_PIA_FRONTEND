@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
-// form
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import { Switch, FormControlLabel, FormHelperText } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import Switch from '@mui/material/Switch';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 // ----------------------------------------------------------------------
-
-RHFSwitch.propTypes = {
-  name: PropTypes.string,
-  helperText: PropTypes.node,
-};
 
 export default function RHFSwitch({ name, helperText, ...other }) {
   const { control } = useFormContext();
@@ -30,3 +26,8 @@ export default function RHFSwitch({ name, helperText, ...other }) {
     />
   );
 }
+
+RHFSwitch.propTypes = {
+  helperText: PropTypes.string,
+  name: PropTypes.string,
+};

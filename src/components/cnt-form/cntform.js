@@ -19,6 +19,7 @@ import {LoadingButton} from "@mui/lab";
 import {API_URL} from "../../routes/paths";
 import PropTypes from "prop-types";
 import {HOST_API_KEY} from "../../config-global";
+import {useAuthContext} from "../../auth/useAuthContext";
 
 const OPTIONS = [
     {value: 0, label: 'Cerrado'},
@@ -54,12 +55,18 @@ ActualizarDatos.propTypes = {
 };
 
 
-function ActualizarDatos({initialData, onCancel,}) {
+function ActualizarDatos({initialData, dataCities, onCancel,}) {
 
-    console.log("initialData: " + JSON.stringify(initialData)); // Print the 'CVE' value to the console
+    const { user } = useAuthContext();
 
-    const initialDataParsed = JSON.parse(initialData.provincia);
 
+    console.log("initialData: " + JSON.stringify(initialData));
+
+    console.log("initialData.provincia: "+JSON.stringify(initialData.provincia));
+
+    const provin =  dataCities.find((prov) => prov.ID_CIUDAD == initialData.provincia);
+
+    console.log("provin: "+JSON.stringify(provin));
 
     const methods = useForm({
         defaultValues: {
@@ -72,7 +79,7 @@ function ActualizarDatos({initialData, onCancel,}) {
             canal: initialData.canal,
             descripcion_almacen: initialData.descripcion_almacen,
             direccion: initialData.direccion,
-            provincia: initialDataParsed.provincia,
+            provincia: provin,
             nombre_contacto: initialData.nombre_contacto,
             telefono_contacto: initialData.telefono_contacto,
             fecha_modificacion: initialData.fecha_modificacion,
@@ -82,6 +89,10 @@ function ActualizarDatos({initialData, onCancel,}) {
 
         },
     });
+
+    //1. Usuarion quien hizo la actualizacion.
+    //2. Que campo modifico enviar por correo.
+    //3. Puntos temporales || Fecha Inicio - Fecha de cierre.
 
     const {
         reset,
@@ -111,13 +122,16 @@ function ActualizarDatos({initialData, onCancel,}) {
             canal: data.canal,
             descripcion_almacen: data.descripcion_almacen,
             direccion: data.direccion,
-            provincia: data.provincia.ID_CIUDAD.toString(),
+            provincia: `${data.provincia.ID_CIUDAD}`,
             nombre_contacto: data.nombre_contacto,
             telefono_contacto: data.telefono_contacto,
             cl_sap_indirecto: data.cl_sap_indirecto,
             correo: data.correo,
             tiempo_entrega: data.tiempo_entrega,
+            user_update: user?.username
         };
+
+        console.log("clienteData: "+ JSON.stringify(clienteData));
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -163,28 +177,6 @@ function ActualizarDatos({initialData, onCancel,}) {
         reset();
     };
 
-    const [dataCities, setDataCities] = useState([]);
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${HOST_API_KEY}/api/logistica-nacional/parroquias`);
-                const result = await response.json();
-                setDataCities(result.data);
-                console.log("Parroquias: "+ JSON.stringify(result.data));
-            } catch (error) {
-                console.log('error', error);
-            }
-        };
-
-        fetchData();
-
-        // Si necesitas hacer algo al desmontar el componente, puedes retornar una función desde useEffect
-        return () => {
-            // Por ejemplo, limpiar intervalos, cancelar solicitudes, etc.
-        };
-    }, []); // El segundo argumento es un array de dependencias, en este caso, está vacío para que se ejecute solo una vez
 
     const [selectedCityOrigen, setSelectedCityOrigen] = useState('');
     const handleCityChangeOrigen = (event, value) => {
@@ -192,6 +184,12 @@ function ActualizarDatos({initialData, onCancel,}) {
             console.log("Ciudad: "+ JSON.stringify(value));
             setSelectedCityOrigen(value)
         }
+    };
+
+    const defaultValue = {
+        ID_CIUDAD: 30,
+        NOMBRE_CIUDAD: "BAHIA DE CARAQUEZ",
+        NOMBRE_PROVINCIA: "MANABI"
     };
 
     return (
@@ -208,7 +206,6 @@ function ActualizarDatos({initialData, onCancel,}) {
                             disabled: true // Aquí establecemos disabled en true para deshabilitar la edición
                         }}
                     />
-
                     <RHFTextField
                         name="open_smartflex"
                         label="OPEN_SMARTFLEX"
@@ -216,7 +213,6 @@ function ActualizarDatos({initialData, onCancel,}) {
                             type: 'number',
                         }}
                     />
-
                     <RHFTextField
                         name="cl_sap"
                         label="CL_SAP"
@@ -290,8 +286,18 @@ function ActualizarDatos({initialData, onCancel,}) {
                         label="CIUDAD | PROVINCIA"
                         options={dataCities}
                         getOptionLabel={(option) => `${option.NOMBRE_CIUDAD} ${option.NOMBRE_PROVINCIA}`}
-                        isOptionEqualToValue={(option, value) => option.value === value.value}
                     />
+
+                    {/*<RHFSelect name="provincia" label="CIUDAD | PROVINCIA">*/}
+                    {/*    <MenuItem value="">Seleccionar...</MenuItem>*/}
+                    {/*    <Divider sx={{borderStyle: 'dashed'}}/>*/}
+                    {/*    {dataCities.map((option) => (*/}
+                    {/*        <MenuItem key={option.ID_CIUDAD} value={option.ID_CIUDAD}>*/}
+                    {/*            {option.NOMBRE_CIUDAD}*/}
+                    {/*        </MenuItem>*/}
+                    {/*    ))}*/}
+                    {/*</RHFSelect>*/}
+
                     <RHFTextField
                         name="nombre_contacto"
                         label="NOMBRE_CONTACTO"

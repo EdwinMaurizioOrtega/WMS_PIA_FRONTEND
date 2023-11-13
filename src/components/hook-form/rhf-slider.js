@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
-// form
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import { Slider, FormHelperText } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import Slider from '@mui/material/Slider';
+import FormHelperText from '@mui/material/FormHelperText';
 
 // ----------------------------------------------------------------------
-
-RHFSlider.propTypes = {
-  name: PropTypes.string,
-  helperText: PropTypes.node,
-};
 
 export default function RHFSlider({ name, helperText, ...other }) {
   const { control } = useFormContext();
@@ -19,14 +14,19 @@ export default function RHFSlider({ name, helperText, ...other }) {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <div>
+        <>
           <Slider {...field} valueLabelDisplay="auto" {...other} />
 
           {(!!error || helperText) && (
             <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>
           )}
-        </div>
+        </>
       )}
     />
   );
 }
+
+RHFSlider.propTypes = {
+  helperText: PropTypes.string,
+  name: PropTypes.string,
+};

@@ -1,22 +1,14 @@
 import PropTypes from 'prop-types';
-// form
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import {
-  Checkbox,
-  FormLabel,
-  FormGroup,
-  FormControl,
-  FormHelperText,
-  FormControlLabel,
-} from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControlLabel, { formControlLabelClasses } from '@mui/material/FormControlLabel';
 
 // ----------------------------------------------------------------------
-
-RHFCheckbox.propTypes = {
-  name: PropTypes.string,
-  helperText: PropTypes.node,
-};
 
 export function RHFCheckbox({ name, helperText, ...other }) {
   const { control } = useFormContext();
@@ -38,18 +30,14 @@ export function RHFCheckbox({ name, helperText, ...other }) {
   );
 }
 
-// ----------------------------------------------------------------------
-
-RHFMultiCheckbox.propTypes = {
-  row: PropTypes.bool,
+RHFCheckbox.propTypes = {
+  helperText: PropTypes.string,
   name: PropTypes.string,
-  label: PropTypes.string,
-  options: PropTypes.array,
-  spacing: PropTypes.number,
-  helperText: PropTypes.node,
 };
 
-export function RHFMultiCheckbox({ row, name, label, options, spacing, helperText, ...other }) {
+// ----------------------------------------------------------------------
+
+export function RHFMultiCheckbox({ row, name, label, options, spacing, helperText, sx, ...other }) {
   const { control } = useFormContext();
 
   const getSelected = (selectedItems, item) =>
@@ -74,7 +62,7 @@ export function RHFMultiCheckbox({ row, name, label, options, spacing, helperTex
               ...(row && {
                 flexDirection: 'row',
               }),
-              '& .MuiFormControlLabel-root': {
+              [`& .${formControlLabelClasses.root}`]: {
                 '&:not(:last-of-type)': {
                   mb: spacing || 0,
                 },
@@ -85,6 +73,7 @@ export function RHFMultiCheckbox({ row, name, label, options, spacing, helperTex
                   },
                 }),
               },
+              ...sx,
             }}
           >
             {options.map((option) => (
@@ -112,3 +101,13 @@ export function RHFMultiCheckbox({ row, name, label, options, spacing, helperTex
     />
   );
 }
+
+RHFMultiCheckbox.propTypes = {
+  helperText: PropTypes.string,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  options: PropTypes.array,
+  row: PropTypes.bool,
+  spacing: PropTypes.number,
+  sx: PropTypes.object,
+};
