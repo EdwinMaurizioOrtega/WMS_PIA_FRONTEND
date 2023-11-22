@@ -22,10 +22,9 @@ import {HOST_API_KEY} from "../../config-global";
 import {useAuthContext} from "../../auth/useAuthContext";
 
 const OPTIONS = [
-    {value: 0, label: 'Cerrado'},
     {value: 1, label: 'Abierto'},
+    {value: 0, label: 'Cerrado'},
     {value: 2, label: 'Temporal'},
-
 ];
 
 const REGIONAL_CANAL = [
@@ -38,7 +37,6 @@ const REGIONAL_CANAL = [
     {value: "REGIONAL 6", label: 'REGIONAL 6'},
     {value: "REGIONAL 7", label: 'REGIONAL 7'},
     {value: "REGIONAL 8", label: 'REGIONAL 8'},
-
 ];
 
 const TIEMPO_ENTREGA = [
@@ -49,24 +47,22 @@ const TIEMPO_ENTREGA = [
 ];
 
 ActualizarDatos.propTypes = {
-
     onCancel: PropTypes.func,
-
 };
 
 
 function ActualizarDatos({initialData, dataCities, onCancel,}) {
 
-    const { user } = useAuthContext();
+    const {user} = useAuthContext();
 
 
     console.log("initialData: " + JSON.stringify(initialData));
 
-    console.log("initialData.provincia: "+JSON.stringify(initialData.provincia));
+    console.log("initialData.provincia: " + JSON.stringify(initialData.provincia));
 
-    const provin =  dataCities.find((prov) => prov.ID_CIUDAD == initialData.provincia);
+    const provin = dataCities.find((prov) => prov.ID_CIUDAD == initialData.provincia);
 
-    console.log("provin: "+JSON.stringify(provin));
+    console.log("provin: " + JSON.stringify(provin));
 
     const methods = useForm({
         defaultValues: {
@@ -103,8 +99,9 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
     //Actualizar un cliente
     const onSubmit = async (data) => {
         // data contiene los valores del formulario
-        console.log("data: " + JSON.stringify(data));
-        console.log("selectedCityOrigen: "+ JSON.stringify(selectedCityOrigen))
+        console.log("data_actualizar: " + JSON.stringify(data));
+        console.log("selectedCityOrigen: " + JSON.stringify(selectedCityOrigen))
+        console.log("selectedOption: "+ selectedOption)
 
         // const formattedFechaCreacion = new Date(data.fecha_creacion).toISOString().split('T')[0];
         // const formattedFechaCierre = new Date(data.fecha_cierre).toISOString().split('T')[0];
@@ -116,7 +113,7 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
             open_smartflex: data.open_smartflex,
             cl_sap: data.cl_sap,
             almacen_sap: data.almacen_sap,
-            estado: Number(data.estado),
+            estado: Number(selectedOption),
             regional: data.regional,
             cve: Number(data.cve),
             canal: data.canal,
@@ -128,10 +125,12 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
             cl_sap_indirecto: data.cl_sap_indirecto,
             correo: data.correo,
             tiempo_entrega: data.tiempo_entrega,
-            user_update: user?.username
+            user_update: user?.username,
+            temp_loc_fecha_cierre: data.fecha_cierre,
+            temp_loc_fecha_apertura: data.fecha_apertura,
         };
 
-        console.log("clienteData: "+ JSON.stringify(clienteData));
+        console.log("clienteData: " + JSON.stringify(clienteData));
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -167,7 +166,6 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
             .catch(error => {
                 console.error('Error en la solicitud:', error);
             });
-
     };
 
     const handleCloseModal = () => {
@@ -181,7 +179,7 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
     const [selectedCityOrigen, setSelectedCityOrigen] = useState('');
     const handleCityChangeOrigen = (event, value) => {
         if (value) {
-            console.log("Ciudad: "+ JSON.stringify(value));
+            console.log("Ciudad: " + JSON.stringify(value));
             setSelectedCityOrigen(value)
         }
     };
@@ -190,6 +188,12 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
         ID_CIUDAD: 30,
         NOMBRE_CIUDAD: "BAHIA DE CARAQUEZ",
         NOMBRE_PROVINCIA: "MANABI"
+    };
+
+    const [selectedOption, setSelectedOption] = useState(initialData.estado);
+
+    const handleSelectChange = (event) => {
+        setSelectedOption(event.target.value);
     };
 
     return (
@@ -248,7 +252,8 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
                     {/*    renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}*/}
                     {/*/>*/}
 
-                    <RHFSelect name="estado" label="ESTADO">
+                    <RHFSelect name="estado" label="ESTADO" value={selectedOption}
+                               onChange={handleSelectChange}>
                         <MenuItem value="">Seleccionar...</MenuItem>
                         <Divider sx={{borderStyle: 'dashed'}}/>
                         {OPTIONS.map((option) => (
@@ -257,6 +262,35 @@ function ActualizarDatos({initialData, dataCities, onCancel,}) {
                             </MenuItem>
                         ))}
                     </RHFSelect>
+
+
+                    {selectedOption === 2 && (
+                        <div>
+                            {/* Aquí coloca el texto que deseas mostrar cuando la opción temporal está seleccionada */}
+                            {/*Temporal:*/}
+                            <DesktopDatePicker
+                                label="FECHA_CIERRE"
+                                name="fecha_cierre"
+                                value={methods.watch('fecha_cierre')}
+                                minDate={new Date('2023-06-01')}
+                                onChange={(newValue) => {
+                                    methods.setValue('fecha_cierre', newValue);
+                                }}
+                                renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}
+                            />
+
+                            <DesktopDatePicker
+                                label="FECHA_APERTURA"
+                                name="fecha_apertura"
+                                value={methods.watch('fecha_apertura')}
+                                minDate={new Date('2023-06-01')}
+                                onChange={(newValue) => {
+                                    methods.setValue('fecha_apertura', newValue);
+                                }}
+                                renderInput={(params) => <TextField fullWidth {...params} margin="normal"/>}
+                            />
+                        </div>
+                    )}
 
                     <RHFSelect name="regional" label="REGIONAL">
                         <MenuItem value="">Seleccionar...</MenuItem>

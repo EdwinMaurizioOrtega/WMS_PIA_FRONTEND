@@ -471,6 +471,9 @@ export default function PageCliCnt() {
 
                 return valorEspecifico;
             }},
+        {field: 'temp_loc_fecha_cierre', headerName: 'TEMP_CIERRE'},
+        {field: 'temp_loc_fecha_apertura', headerName: 'TEMP_APERTURA'},
+
 
     ];
 
