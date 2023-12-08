@@ -28,7 +28,7 @@ import DashboardLayout from "../../layouts/dashboard";
 import {Block} from "../../sections/_examples/Block";
 import {Upload} from "../../components/upload";
 import {API_URL} from "../../routes/paths"
-import FormProvider, { RHFRadioGroup, RHFUpload } from "../../components/hook-form";
+import FormProvider, {RHFRadioGroup, RHFUpload} from "../../components/hook-form";
 import Scrollbar from "../../components/scrollbar/Scrollbar";
 import {TableHeadCustom} from "../../components/table";
 import {HOST_API_KEY} from "../../config-global";
@@ -82,7 +82,7 @@ export default function PageTemplate() {
         control,
         setValue,
         handleSubmit,
-        formState: { isSubmitting },
+        formState: {isSubmitting},
     } = methods;
 
     const handleDropSingleFile = useCallback(
@@ -94,7 +94,7 @@ export default function PageTemplate() {
             });
 
             if (newFile) {
-                setValue('singleUpload', newFile, { shouldValidate: true });
+                setValue('singleUpload', newFile, {shouldValidate: true});
             }
         },
         [setValue]
@@ -102,14 +102,66 @@ export default function PageTemplate() {
 
     const onSubmit = handleSubmit(async (data) => {
         try {
+
             //await new Promise((resolve) => setTimeout(resolve, 3000));
             reset();
             console.info('DATA', data);
+            //console.log(data.singleUpload.preview);
+
+            if (data.radioGroup !== "" && data.singleUpload != null) {
+
+                let url;
+
+                if (data.radioGroup === "1") {
+                    url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
+
+                }
+
+                if (data.radioGroup === "2") {
+                    url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
+
+                }
+
+                if (data.radioGroup === "3") {
+                    url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
+
+                }
+
+                if (data.radioGroup === "4") {
+                    url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
+
+                }
+
+                console.log("url: " + url);
+
+                const formData = new FormData();
+                formData.append(`fileCNT`, data.singleUpload);
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json(); // If expecting JSON response
+                        } else {
+                            throw new Error('Network response was not ok.');
+                        }
+                    })
+                    .then(data => {
+                        // Handle the successful response data here
+                        console.log("Body: " + data);
+                        alert("Respuesta: " + data);
+                    })
+                    .catch(error => {
+                        // Handle errors here
+                        console.error('Error:', error);
+                    });
 
 
-
-
-
+            } else {
+                alert("VERIFICAR EL TIPO DE PLANTILLA Y EL ARCHIVO CARGADO.");
+            }
 
         } catch (error) {
             console.error(error);
@@ -119,7 +171,7 @@ export default function PageTemplate() {
     return (
         <>
             <Head>
-                <title> Page Cuatro | Minimal UI</title>
+                <title> Plantillas</title>
             </Head>
 
             <Container maxWidth={themeStretch ? false : 'xl'}>
@@ -146,7 +198,7 @@ export default function PageTemplate() {
                                 name="singleUpload"
                                 maxSize={3145728}
                                 onDrop={handleDropSingleFile}
-                                onDelete={() => setValue('singleUpload', null, { shouldValidate: true })}
+                                onDelete={() => setValue('singleUpload', null, {shouldValidate: true})}
                             />
                         </Block>
 

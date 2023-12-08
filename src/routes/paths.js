@@ -22,6 +22,7 @@ export const PATH_DASHBOARD = {
   six: path(ROOTS_DASHBOARD,'/seis'),
   cli_cnt: path(ROOTS_DASHBOARD,'/cli_cnt'),
   templates: path(ROOTS_DASHBOARD,'/plantillas'),
+  consolidado: path(ROOTS_DASHBOARD,'/consolidado'),
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),
   //   four: path(ROOTS_DASHBOARD, '/user/four'),
