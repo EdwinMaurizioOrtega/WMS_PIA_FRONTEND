@@ -69,6 +69,7 @@ export default function PageTemplate() {
     };
 
     const TABLE_HEAD = [
+        {field: 'ID', headerName: 'ID'},
         {field: 'FECHA', headerName: 'FECHA'},
         {field: 'PEDIDO_TRASLADO', headerName: 'PEDIDO_TRASLADO'},
         {field: 'CENTRO_SUMINISTRADOR', headerName: 'CENTRO_SUMINISTRADOR'},

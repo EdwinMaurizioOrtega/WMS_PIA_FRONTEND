@@ -34,6 +34,7 @@ function ActualizarConsolidado({initialData, onCancel,}) {
 
     const methods = useForm({
         defaultValues: {
+            id: initialData.ID,
             pedido: initialData.PEDIDO,
         },
     });
@@ -53,49 +54,50 @@ function ActualizarConsolidado({initialData, onCancel,}) {
         // data contiene los valores del formulario
         console.log("data_actualizar: " + JSON.stringify(data));
 
-        // const url = `${HOST_API_KEY}/api/logistica-nacional/cliente_cnt`;
-        //
-        // // Crear los datos del cliente a insertar
-        // const clienteData = {
-        //     pedido: data.pedido,
-        // };
-        //
-        // console.log("clienteData: " + JSON.stringify(clienteData));
-        //
-        // var myHeaders = new Headers();
-        // myHeaders.append("Content-Type", "application/json");
-        //
-        // // Convertir los datos del cliente a JSON
-        // const raw = JSON.stringify(clienteData);
-        //
-        // var requestOptions = {
-        //     method: 'PUT',
-        //     headers: myHeaders,
-        //     body: raw,
-        //     redirect: 'follow'
-        // };
-        //
-        // fetch(url, requestOptions)
-        //     .then(response => {
-        //
-        //         if (response.status === 200) {
-        //
-        //             // El estado de respuesta es 200, ejecuta tu código aquí
-        //             console.log('Actualizacion tuvo éxito (código 200).');
-        //             //alert("La actualización tuvo exito.");
-        //
-        //             onCancel();
-        //             reset();
-        //             // Puedes agregar más código aquí para realizar acciones específicas.
-        //
-        //         } else {
-        //             console.log('Actualizacion no tuvo éxito (código ' + response.status + ').');
-        //         }
-        //
-        //     })
-        //     .catch(error => {
-        //         console.error('Error en la solicitud:', error);
-        //     });
+        const url = `${HOST_API_KEY}/api/plantilla/add_pedido_consolidado`;
+
+        // Crear los datos del cliente a insertar
+        const clienteData = {
+            ID: data.id,
+            PEDIDO: data.pedido,
+        };
+
+        console.log("clienteData: " + JSON.stringify(clienteData));
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        // Convertir los datos del cliente a JSON
+        const raw = JSON.stringify(clienteData);
+
+        var requestOptions = {
+            method: 'PUT',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(url, requestOptions)
+            .then(response => {
+
+                if (response.status === 200) {
+
+                    // El estado de respuesta es 200, ejecuta tu código aquí
+                    console.log('Actualizacion tuvo éxito (código 200).');
+                    //alert("La actualización tuvo exito.");
+
+                    onCancel();
+                    reset();
+                    // Puedes agregar más código aquí para realizar acciones específicas.
+
+                } else {
+                    console.log('Actualizacion no tuvo éxito (código ' + response.status + ').');
+                }
+
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
     };
 
     const handleCloseModal = () => {
