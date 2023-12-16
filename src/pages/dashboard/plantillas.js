@@ -118,17 +118,17 @@ export default function PageTemplate() {
                 }
 
                 if (data.radioGroup === "2") {
-                    url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
+                    url = `${HOST_API_KEY}/api/plantilla/pedido_indirecto`;
 
                 }
 
                 if (data.radioGroup === "3") {
-                    url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
+                    url = `${HOST_API_KEY}/api/plantilla/pedido_reabastecimiento`;
 
                 }
 
                 if (data.radioGroup === "4") {
-                    url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
+                    url = `${HOST_API_KEY}/api/plantilla/pedido_pop`;
 
                 }
 
