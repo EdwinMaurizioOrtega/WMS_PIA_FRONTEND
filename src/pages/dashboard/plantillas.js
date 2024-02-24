@@ -3,73 +3,34 @@ import Head from 'next/head';
 
 // @mui
 import {
-    TextField,
-
     Container,
-    Typography,
-    CardHeader,
-    FormControlLabel,
-    Switch,
-    CardContent,
-    Card,
-    MenuItem,
-    Divider,
-    Select,
-    TableContainer,
-    Table,
-    TableBody,
-    TableRow,
-    TableCell, Link, Button
 } from '@mui/material';
-
 
 import {useSettingsContext} from "../../components/settings";
 import DashboardLayout from "../../layouts/dashboard";
 import {Block} from "../../sections/_examples/Block";
-import {Upload} from "../../components/upload";
-import {API_URL} from "../../routes/paths"
 import FormProvider, {RHFRadioGroup, RHFUpload} from "../../components/hook-form";
-import Scrollbar from "../../components/scrollbar/Scrollbar";
-import {TableHeadCustom} from "../../components/table";
 import {HOST_API_KEY} from "../../config-global";
 import {useForm} from "react-hook-form";
 import {LoadingButton} from "@mui/lab";
-
-const OPTIONS = [
-    {value: '9000', label: 'HT Miami'},
-    {value: '7001', label: 'CNT'},
-
-];
-
-const TABLE_HEAD_LISTA_IMAGENES = [
-
-    {id: 'ulr', label: 'URL', align: 'left'},
-    {id: 'opciones', label: 'Opciones', align: 'left'},
-
-];
+import LoadingScreen from "../../components/loading-screen";
 
 PageTemplate.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
 
 const style = {
     '& > *': {my: '8px !important'},
 };
 
-
 export const defaultValues = {
-
-    //
     radioGroup: '',
-    //
     singleUpload: null,
-
 };
-
 
 export default function PageTemplate() {
 
     const {themeStretch} = useSettingsContext();
 
+    const [isLoading, setIsLoading] = useState(false); // Nuevo estado para controlar la carga
 
     const methods = useForm({
         // resolver: yupResolver(FormSchema),
@@ -103,10 +64,8 @@ export default function PageTemplate() {
     const onSubmit = handleSubmit(async (data) => {
         try {
 
-            //await new Promise((resolve) => setTimeout(resolve, 3000));
             reset();
             console.info('DATA', data);
-            //console.log(data.singleUpload.preview);
 
             if (data.radioGroup !== "" && data.singleUpload != null) {
 
@@ -114,22 +73,18 @@ export default function PageTemplate() {
 
                 if (data.radioGroup === "1") {
                     url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
-
                 }
 
                 if (data.radioGroup === "2") {
                     url = `${HOST_API_KEY}/api/plantilla/pedido_indirecto`;
-
                 }
 
                 if (data.radioGroup === "3") {
                     url = `${HOST_API_KEY}/api/plantilla/pedido_reabastecimiento`;
-
                 }
 
                 if (data.radioGroup === "4") {
                     url = `${HOST_API_KEY}/api/plantilla/pedido_pop`;
-
                 }
 
                 console.log("url: " + url);
@@ -137,27 +92,34 @@ export default function PageTemplate() {
                 const formData = new FormData();
                 formData.append(`fileCNT`, data.singleUpload);
 
+                setIsLoading(true); // Activar indicador de carga
+
                 fetch(url, {
                     method: 'POST',
                     body: formData
                 })
                     .then(response => {
+                        setIsLoading(false); // Desactivar indicador de carga
                         if (response.ok) {
-                            return response.json(); // If expecting JSON response
+                            // Verificar el código de estado de la respuesta
+                            if (response.status === 200) {
+                                return response.json(); // Si se espera una respuesta JSON
+                            } else {
+                                throw new Error('El código de estado de la respuesta no es 200.');
+                            }
                         } else {
-                            throw new Error('Network response was not ok.');
+                            throw new Error('La respuesta de la red no fue exitosa.');
                         }
                     })
                     .then(data => {
-                        // Handle the successful response data here
-                        console.log("Body: " + data);
-                        alert("Respuesta: " + data);
+                        // Manejar aquí los datos de respuesta exitosos
+                        console.log("Body: " + JSON.stringify(data));
+                        alert("Respuesta: " + JSON.stringify(data));
                     })
                     .catch(error => {
-                        // Handle errors here
+                        // Manejar errores aquí
                         console.error('Error:', error);
                     });
-
 
             } else {
                 alert("VERIFICAR EL TIPO DE PLANTILLA Y EL ARCHIVO CARGADO.");
@@ -175,40 +137,40 @@ export default function PageTemplate() {
             </Head>
 
             <Container maxWidth={themeStretch ? false : 'xl'}>
-
-                <FormProvider methods={methods} onSubmit={onSubmit}>
-
-                    <Block title="General" sx={style}>
-
-                        <RHFRadioGroup
-                            row
-                            name="radioGroup"
-                            label="Plantilla Pedidos"
-                            spacing={4}
-                            options={[
-                                {value: '1', label: 'PEDIDOS_PUNTUALES'},
-                                {value: '2', label: 'PEDIDOS_INDIRECTOS'},
-                                {value: '3', label: 'PEDIDOS_REABASTECIMIENTO'},
-                                {value: '4', label: 'POP'},
-                            ]}
-                        />
-
-                        <Block label="RHFUpload">
-                            <RHFUpload
-                                name="singleUpload"
-                                maxSize={3145728}
-                                onDrop={handleDropSingleFile}
-                                onDelete={() => setValue('singleUpload', null, {shouldValidate: true})}
+                {isLoading ? (
+                    // <h2>Cargando...</h2>
+                    <LoadingScreen />
+                ) : (
+                    <FormProvider methods={methods} onSubmit={onSubmit}>
+                        <Block title="General" sx={style}>
+                            <RHFRadioGroup
+                                row
+                                name="radioGroup"
+                                label="Plantilla Pedidos"
+                                spacing={4}
+                                options={[
+                                    {value: '1', label: 'PEDIDOS_PUNTUALES'},
+                                    {value: '2', label: 'PEDIDOS_INDIRECTOS'},
+                                    {value: '3', label: 'PEDIDOS_REABASTECIMIENTO'},
+                                    {value: '4', label: 'POP'},
+                                ]}
                             />
+
+                            <Block label="RHFUpload">
+                                <RHFUpload
+                                    name="singleUpload"
+                                    maxSize={3145728}
+                                    onDrop={handleDropSingleFile}
+                                    onDelete={() => setValue('singleUpload', null, {shouldValidate: true})}
+                                />
+                            </Block>
+
+                            <LoadingButton type="submit" variant="contained" loading={isLoading}>
+                                VALIDAR
+                            </LoadingButton>
                         </Block>
-
-                        <LoadingButton type="submit" variant="contained">
-                            VALIDAR
-                        </LoadingButton>
-
-                    </Block>
-                </FormProvider>
-
+                    </FormProvider>
+                )}
             </Container>
         </>
 
