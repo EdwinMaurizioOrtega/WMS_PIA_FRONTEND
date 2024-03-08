@@ -50,36 +50,6 @@ export default function PageFuxionTemplate() {
 
     const values = watch();
 
-    const handleDropSingleFile1 = useCallback(
-        (acceptedFiles) => {
-            const file = acceptedFiles[0];
-
-            const newFile = Object.assign(file, {
-                preview: URL.createObjectURL(file),
-            });
-
-            if (newFile) {
-                setValue('singleUpload1', newFile, {shouldValidate: true});
-            }
-        },
-        [setValue]
-    );
-
-    const handleDropSingleFile2 = useCallback(
-        (acceptedFiles) => {
-            const file = acceptedFiles[0];
-
-            const newFile = Object.assign(file, {
-                preview: URL.createObjectURL(file),
-            });
-
-            if (newFile) {
-                setValue('singleUpload2', newFile, {shouldValidate: true});
-            }
-        },
-        [setValue]
-    );
-
     const onSubmit = handleSubmit(async (data) => {
         try {
 
@@ -88,57 +58,42 @@ export default function PageFuxionTemplate() {
 
             if (data.multiUpload != null && data.multiUpload.length === 2) {
 
-            //     let url;
-            //
-            //     if (data.radioGroup === "1") {
-            //         url = `${HOST_API_KEY}/api/plantilla/pedido_puntual`;
-            //     }
-            //
-            //     if (data.radioGroup === "2") {
-            //         url = `${HOST_API_KEY}/api/plantilla/pedido_indirecto`;
-            //     }
-            //
-            //     if (data.radioGroup === "3") {
-            //         url = `${HOST_API_KEY}/api/plantilla/pedido_reabastecimiento`;
-            //     }
-            //
-            //     if (data.radioGroup === "4") {
-            //         url = `${HOST_API_KEY}/api/plantilla/pedido_pop`;
-            //     }
-            //
-            //     console.log("url: " + url);
-            //
-            //     const formData = new FormData();
-            //     formData.append(`fileCNT`, data.singleUpload);
-            //
-            //     setIsLoading(true); // Activar indicador de carga
-            //
-            //     fetch(url, {
-            //         method: 'POST',
-            //         body: formData
-            //     })
-            //         .then(response => {
-            //             setIsLoading(false); // Desactivar indicador de carga
-            //             if (response.ok) {
-            //                 // Verificar el código de estado de la respuesta
-            //                 if (response.status === 200) {
-            //                     return response.json(); // Si se espera una respuesta JSON
-            //                 } else {
-            //                     throw new Error('El código de estado de la respuesta no es 200.');
-            //                 }
-            //             } else {
-            //                 throw new Error('La respuesta de la red no fue exitosa.');
-            //             }
-            //         })
-            //         .then(data => {
-            //             // Manejar aquí los datos de respuesta exitosos
-            //             console.log("Body: " + JSON.stringify(data));
-            //             alert("Respuesta: " + JSON.stringify(data));
-            //         })
-            //         .catch(error => {
-            //             // Manejar errores aquí
-            //             console.error('Error:', error);
-            //         });
+                let url = `${HOST_API_KEY}/api/fuxion/pedidos`;
+
+                console.log("url: " + url);
+
+                const formData = new FormData();
+                formData.append(`multiUpload`, data.multiUpload[0]);
+                formData.append(`multiUpload`, data.multiUpload[1]);
+
+                setIsLoading(true); // Activar indicador de carga
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        setIsLoading(false); // Desactivar indicador de carga
+                        if (response.ok) {
+                            // Verificar el código de estado de la respuesta
+                            if (response.status === 200) {
+                                return response.json(); // Si se espera una respuesta JSON
+                            } else {
+                                throw new Error('El código de estado de la respuesta no es 200.');
+                            }
+                        } else {
+                            throw new Error('La respuesta de la red no fue exitosa.');
+                        }
+                    })
+                    .then(data => {
+                        // Manejar aquí los datos de respuesta exitosos
+                        console.log("Body: " + JSON.stringify(data));
+                        alert("Respuesta: " + JSON.stringify(data));
+                    })
+                    .catch(error => {
+                        // Manejar errores aquí
+                        console.error('Error:', error);
+                    });
 
             } else {
                 alert("Subir dos archivos.");
@@ -206,14 +161,13 @@ export default function PageFuxionTemplate() {
                                         setValue(
                                             'multiUpload',
                                             values.multiUpload && values.multiUpload?.filter((file) => file !== inputFile),
-                                            { shouldValidate: true }
+                                            {shouldValidate: true}
                                         )
                                     }
                                     // onRemoveAll={() => setValue('multiUpload', [], { shouldValidate: true })}
                                     // onUpload={() => console.info('ON UPLOAD')}
                                 />
                             </Block>
-
 
 
                             {/*<Typography variant="subtitle1" component="div" gutterBottom>*/}
