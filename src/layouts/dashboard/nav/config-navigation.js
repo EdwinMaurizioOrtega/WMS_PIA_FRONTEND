@@ -34,7 +34,7 @@ const navConfig = [
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: 'Logística Nacional',
+    subheader: 'CNT',
     items: [
       { title: 'Clientes CNT.', path: PATH_DASHBOARD.cli_cnt, icon: ICONS.user },
       { title: 'Plantillas.', path: PATH_DASHBOARD.templates, icon: ICONS.user },
@@ -58,8 +58,8 @@ const navConfig = [
     subheader: 'FUXION',
     items: [
       { title: 'Gestión de Pedidos', path: PATH_DASHBOARD.fuxion_templates, icon: ICONS.user },
-      { title: 'Reporte Inventarios', path: PATH_DASHBOARD.fuxion_templates, icon: ICONS.user },
-      { title: 'Reporte Despachos', path: PATH_DASHBOARD.fuxion_templates, icon: ICONS.user },
+      { title: 'Reporte Inventarios', path: PATH_DASHBOARD.six, icon: ICONS.user },
+      { title: 'Reporte Despachos', path: PATH_DASHBOARD.five, icon: ICONS.user },
 
       // {
       //   title: 'user',
