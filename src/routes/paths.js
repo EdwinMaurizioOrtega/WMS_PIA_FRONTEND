@@ -23,6 +23,8 @@ export const PATH_DASHBOARD = {
   cli_cnt: path(ROOTS_DASHBOARD,'/cli_cnt'),
   templates: path(ROOTS_DASHBOARD,'/plantillas'),
   consolidado: path(ROOTS_DASHBOARD,'/consolidado'),
+  fuxion_templates: path(ROOTS_DASHBOARD,'/template_fuxion'),
+
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),
   //   four: path(ROOTS_DASHBOARD, '/user/four'),
