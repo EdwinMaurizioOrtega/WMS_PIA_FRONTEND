@@ -28,15 +28,15 @@ export default function LoginLayout({ children, illustration, title }) {
       />
 
       <StyledSection>
-        <Typography variant="h3" sx={{ mb: 10, maxWidth: 480, textAlign: 'center' }}>
-          {title || 'Hola, bienvenido de nuevo.'}
-        </Typography>
+        {/*<Typography variant="h3" sx={{ mb: 10, maxWidth: 480, textAlign: 'center' }}>*/}
+        {/*  {title || 'Hola, bienvenido de nuevo.'}*/}
+        {/*</Typography>*/}
 
         <Image
           disabledEffect
           visibleByDefault
           alt="auth"
-          src={illustration || '/assets/illustrations/illustration_dashboard.png'}
+          src={illustration || '/assets/illustrations/login.jpg'}
           sx={{ maxWidth: 720 }}
         />
 
