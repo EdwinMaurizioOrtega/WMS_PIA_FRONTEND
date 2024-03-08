@@ -34,9 +34,9 @@ export default function Login() {
         </Tooltip>
       </Stack>
 
-      <Alert severity="info" sx={{ mb: 3 }}>
-        Usar email : <strong>admin@admin.com</strong> / contraseña :<strong> 0123456</strong>
-      </Alert>
+      {/*<Alert severity="info" sx={{ mb: 3 }}>*/}
+      {/*  Usar email : <strong>admin@admin.com</strong> / contraseña :<strong> 0123456</strong>*/}
+      {/*</Alert>*/}
 
       <AuthLoginForm />
 
