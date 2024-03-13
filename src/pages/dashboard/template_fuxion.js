@@ -9,7 +9,7 @@ import {
 import {useSettingsContext} from "../../components/settings";
 import DashboardLayout from "../../layouts/dashboard";
 import {Block} from "../../sections/_examples/Block";
-import FormProvider, {RHFRadioGroup, RHFUpload} from "../../components/hook-form";
+import FormProvider, {RHFRadioGroup, RHFTextField, RHFUpload} from "../../components/hook-form";
 import {HOST_API_KEY} from "../../config-global";
 import {useForm} from "react-hook-form";
 import {LoadingButton} from "@mui/lab";
@@ -56,13 +56,26 @@ export default function PageFuxionTemplate() {
             reset();
             console.info('DATA', data);
 
-            if (data.multiUpload != null && data.multiUpload.length === 2) {
+            if (data.multiUpload != null
+                && data.multiUpload.length === 2
+                && data.radioGroup != null
+                && data.corte != null
+            ) {
 
-                let url = `${HOST_API_KEY}/api/fuxion/pedidos`;
+                let url;
+
+                if (data.radioGroup === "1") {
+                    url = `${HOST_API_KEY}/api/fuxion/pedidos_delivery`;
+                }
+
+                if (data.radioGroup === "2") {
+                    url = `${HOST_API_KEY}/api/fuxion/pedidos_consolidado`;
+                }
 
                 console.log("url: " + url);
 
                 const formData = new FormData();
+                formData.append(`corte`, data.corte);
                 formData.append(`multiUpload`, data.multiUpload[0]);
                 formData.append(`multiUpload`, data.multiUpload[1]);
 
@@ -132,8 +145,32 @@ export default function PageFuxionTemplate() {
                     // <h2>Cargando...</h2>
                     <LoadingScreen/>
                 ) : (
+
+
+
+
                     <FormProvider methods={methods} onSubmit={onSubmit}>
+
                         <Block title="Archivos" sx={style}>
+
+                            <RHFTextField
+                                name="corte"
+                                label="CORTE"
+                            />
+
+                            <RHFRadioGroup
+                                row
+                                name="radioGroup"
+                                label="Tipo"
+                                spacing={4}
+                                options={[
+                                    {value: '1', label: 'CONSOLIDADO'},
+                                    {value: '2', label: 'DELIVERY'},
+
+                                ]}
+                            />
+
+
                             {/*<RHFRadioGroup*/}
                             {/*    row*/}
                             {/*    name="radioGroup"*/}
@@ -148,7 +185,7 @@ export default function PageFuxionTemplate() {
                             {/*/>*/}
 
                             <Typography variant="subtitle1" component="div" gutterBottom>
-                                1 MECANIZADO + 2 BASE COMPLETA
+                                (1) MECANIZADO + (2) BASE COMPLETA
                             </Typography>
                             <Block label="RHFUpload">
                                 <RHFUpload
