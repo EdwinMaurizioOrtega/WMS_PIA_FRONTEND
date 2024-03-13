@@ -164,8 +164,8 @@ export default function PageFuxionTemplate() {
                                 label="Tipo"
                                 spacing={4}
                                 options={[
-                                    {value: '1', label: 'CONSOLIDADO'},
-                                    {value: '2', label: 'DELIVERY'},
+                                    {value: '1', label: 'DELIVERY'},
+                                    {value: '2', label: 'CONSOLIDADO'},
 
                                 ]}
                             />
