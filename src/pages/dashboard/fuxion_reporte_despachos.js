@@ -67,7 +67,7 @@ export default function FuxionReporteDespachosTemplate() {
 
         {
             field: 'FECHA_FORMATEADA',
-            headerName: 'FECHA_FORMATEADA',
+            headerName: 'FECHA',
             width: 200
         },
         {
@@ -77,12 +77,12 @@ export default function FuxionReporteDespachosTemplate() {
         },
         {
             field: 'DESCRIPCION',
-            headerName: 'DESCRIPCION',
+            headerName: 'TIPO',
             width: 200,
         },
         {
             field: 'NUM_PEDIDO',
-            headerName: 'NUM_PEDIDO',
+            headerName: 'ORDEN',
             width: 200,
         },
         {

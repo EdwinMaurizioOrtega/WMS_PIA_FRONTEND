@@ -127,6 +127,20 @@ export default function PageFuxionTemplate() {
                                 label="Número de guia"
                             />
 
+                            <Typography variant="subtitle1" component="div" gutterBottom>
+                                PDF SERVIENTREGA
+                            </Typography>
+                            <Block label="RHFUpload">
+                                <RHFUpload
+                                    multiple
+                                    thumbnail
+                                    name="multiUpload"
+                                    maxSize={3145728}
+
+                                />
+                            </Block>
+
+
                             <Button type="submit" variant="contained" >
                                 Actualizar
                             </Button>
