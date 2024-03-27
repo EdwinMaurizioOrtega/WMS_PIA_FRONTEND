@@ -58,6 +58,7 @@ const navConfig = [
     subheader: 'FUXION',
     items: [
       { title: 'Gestión de Pedidos', path: PATH_DASHBOARD.fuxion_templates, icon: ICONS.user },
+      { title: 'Actualizar Guia', path: PATH_DASHBOARD.update_guia, icon: ICONS.user },
       { title: 'Reporte Inventarios', path: PATH_DASHBOARD.six, icon: ICONS.user },
       { title: 'Reporte Despachos', path: PATH_DASHBOARD.five, icon: ICONS.user },
 

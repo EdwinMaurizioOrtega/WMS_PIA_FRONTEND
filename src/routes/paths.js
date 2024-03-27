@@ -24,6 +24,7 @@ export const PATH_DASHBOARD = {
   templates: path(ROOTS_DASHBOARD,'/plantillas'),
   consolidado: path(ROOTS_DASHBOARD,'/consolidado'),
   fuxion_templates: path(ROOTS_DASHBOARD,'/template_fuxion'),
+  update_guia: path(ROOTS_DASHBOARD,'/update_guia'),
 
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),
