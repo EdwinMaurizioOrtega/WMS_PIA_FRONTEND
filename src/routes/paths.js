@@ -25,6 +25,7 @@ export const PATH_DASHBOARD = {
   consolidado: path(ROOTS_DASHBOARD,'/consolidado'),
   fuxion_templates: path(ROOTS_DASHBOARD,'/template_fuxion'),
   update_guia: path(ROOTS_DASHBOARD,'/update_guia'),
+  fuxion_reporte_despachos: path(ROOTS_DASHBOARD,'/fuxion_reporte_despachos'),
 
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),
