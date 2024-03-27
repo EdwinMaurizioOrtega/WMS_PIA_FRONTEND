@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Head from 'next/head';
 
 // @mui
@@ -10,6 +10,7 @@ import {
 
 import {useSettingsContext} from "../../components/settings";
 import DashboardLayout from "../../layouts/dashboard";
+
 import {HOST_API_KEY} from "../../config-global";
 import {
     DataGrid,
@@ -19,9 +20,9 @@ import {
 } from "@mui/x-data-grid";
 import EmptyContent from "../../components/empty-content";
 
-FuxionReporteDespachosTemplate.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+FuxionReporteInventariosTemplate.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default function FuxionReporteDespachosTemplate() {
+export default function FuxionReporteInventariosTemplate() {
 
     const {themeStretch} = useSettingsContext();
 
@@ -30,7 +31,7 @@ export default function FuxionReporteDespachosTemplate() {
     useEffect(() => {
         async function fetchDataInit() {
             try {
-                const url = `${HOST_API_KEY}/api/fuxion/reporte_despachos`;
+                const url = `${HOST_API_KEY}/api/fuxion/reporte_inventarios`;
                 const response = await fetch(url);
                 const data = await response.json();
                 setJsonData(data.data);
@@ -46,50 +47,33 @@ export default function FuxionReporteDespachosTemplate() {
 
 
     const TABLE_HEAD = [
-
         {
             field: 'id',
             hide: true,
         },
-
         {
-            field: 'FECHA_FORMATEADA',
-            headerName: 'FECHA',
+            field: 'NOM_PRODUCTO',
+            headerName: 'NOM_PRODUCTO',
             width: 200
         },
         {
-            field: 'COURIER',
-            headerName: 'COURIER',
+            field: 'CANTIDAD',
+            headerName: 'CANTIDAD',
             width: 200,
         },
         {
-            field: 'DESCRIPCION',
-            headerName: 'TIPO',
+            field: 'OBS',
+            headerName: 'OBS',
             width: 200,
         },
         {
-            field: 'NUM_PEDIDO',
-            headerName: 'ORDEN',
+            field: 'NOTAS',
+            headerName: 'NOTAS',
             width: 200,
         },
         {
-            field: 'GUIA',
-            headerName: 'GUIA',
-            width: 200,
-        },
-        {
-            field: 'PESO',
-            headerName: 'PESO',
-            width: 200,
-        },
-        {
-            field: 'RESPONSABLE',
-            headerName: 'RESPONSABLE',
-            width: 200,
-        },
-        {
-            field: 'ESTATUS',
-            headerName: 'ESTATUS',
+            field: 'ALMACEN',
+            headerName: 'ALMACEN',
             width: 200,
         },
 
@@ -107,7 +91,7 @@ export default function FuxionReporteDespachosTemplate() {
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
                             <Card>
-                                <CardHeader title="Fuxion Reporte Despachos"/>
+                                <CardHeader title="Fuxion Reporte Inventarios"/>
 
                                 <CardContent>
                                     <Box sx={{height: 720}}>
