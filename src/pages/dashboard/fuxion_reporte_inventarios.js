@@ -63,12 +63,12 @@ export default function FuxionReporteInventariosTemplate() {
         },
         {
             field: 'OBS',
-            headerName: 'OBS',
+            headerName: 'LOTE',
             width: 200,
         },
         {
             field: 'NOTAS',
-            headerName: 'NOTAS',
+            headerName: 'FECHA_VENC.',
             width: 200,
         },
         {
