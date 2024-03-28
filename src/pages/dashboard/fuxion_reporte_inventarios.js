@@ -57,13 +57,13 @@ export default function FuxionReporteInventariosTemplate() {
             width: 200
         },
         {
-            field: 'UNI_MEDIDA',
-            headerName: 'UNI_MEDIDA',
+            field: 'NOM_PRODUCTO',
+            headerName: 'NOM_PRODUCTO',
             width: 200
         },
         {
-            field: 'NOM_PRODUCTO',
-            headerName: 'NOM_PRODUCTO',
+            field: 'UNI_MEDIDA',
+            headerName: 'UNI_MEDIDA',
             width: 200
         },
         {

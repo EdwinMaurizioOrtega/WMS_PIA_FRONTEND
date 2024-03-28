@@ -166,6 +166,7 @@ export default function PageFuxionTemplate() {
                                 options={[
                                     {value: '1', label: 'DELIVERY'},
                                     {value: '2', label: 'CONSOLIDADO'},
+                                    {value: '3', label: 'ESPECIALES'},
 
                                 ]}
                             />
