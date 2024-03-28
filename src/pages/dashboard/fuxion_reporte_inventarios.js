@@ -52,6 +52,16 @@ export default function FuxionReporteInventariosTemplate() {
             hide: true,
         },
         {
+            field: 'COD_ART',
+            headerName: 'COD_ART',
+            width: 200
+        },
+        {
+            field: 'UNI_MEDIDA',
+            headerName: 'UNI_MEDIDA',
+            width: 200
+        },
+        {
             field: 'NOM_PRODUCTO',
             headerName: 'NOM_PRODUCTO',
             width: 200
