@@ -72,6 +72,10 @@ export default function PageFuxionTemplate() {
                     url = `${HOST_API_KEY}/api/fuxion/pedidos_consolidado`;
                 }
 
+                if (data.radioGroup === "3") {
+                    url = `${HOST_API_KEY}/api/fuxion/pedidos_especiales`;l
+                }
+
                 console.log("url: " + url);
 
                 const formData = new FormData();
