@@ -1,23 +1,29 @@
-import React, { useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Head from 'next/head';
 
 // @mui
 import {
     Box, Card,
-    CardContent, CardHeader,
-    Container, Grid
+    CardContent, CardHeader, CircularProgress,
+    Container, Grid, IconButton, Tooltip
 } from '@mui/material';
 
 import {useSettingsContext} from "../../components/settings";
 import DashboardLayout from "../../layouts/dashboard";
 import {HOST_API_KEY} from "../../config-global";
 import {
-    DataGrid,
+    DataGrid, GridActionsCellItem,
     GridToolbarColumnsButton,
     GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton,
     GridToolbarQuickFilter
 } from "@mui/x-data-grid";
 import EmptyContent from "../../components/empty-content";
+import Iconify from "../../components/iconify";
+import {PDFDownloadLink, Text} from "@react-pdf/renderer";
+import EtiquetasPDF from "../../sections/invoice/EtiquetasPDF";
+import Barcode from "react-barcode";
+import {useReactToPrint} from "react-to-print";
+import styles from "../../sections/invoice/InvoiceStyle";
 
 FuxionReporteDespachosTemplate.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
@@ -45,7 +51,36 @@ export default function FuxionReporteDespachosTemplate() {
     }, []); // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
 
 
+    const handleViewRow = (row) => {
+        console.log("Datos de la fila: " + JSON.stringify(row));
+    };
+
+    const handleDownloadClick = async (id) => {
+        // Your method or logic to execute after the download icon is clicked
+        console.log('Download icon clicked!');
+        console.log("Número de orden: " + id);
+
+    }
+
     const TABLE_HEAD = [
+
+
+        {
+            type: 'actions',
+            field: 'actions',
+            headerName: ' ',
+            align: 'right',
+            headerAlign: 'right',
+            width: 80,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            getActions: (params) => [
+
+                <BarcodeComponent key={params.row.id} value={params.row} />,
+
+            ],
+        },
 
         {
             field: 'id',
@@ -94,6 +129,9 @@ export default function FuxionReporteDespachosTemplate() {
         },
 
     ];
+
+
+
 
     return (
         <>
@@ -145,3 +183,27 @@ function CustomToolbar() {
         </GridToolbarContainer>
     );
 }
+
+
+const BarcodeComponent = ({value}) => {
+    const componentRef = useRef(null);
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
+    return (
+        <div ref={componentRef} onClick={handlePrint}>
+            <div style={{display: 'inline-block', textAlign: 'center'}}>
+                <p>FUXION</p>
+                <p>INFORMACIÓN DEL DESPACHO</p>
+                <p>Fecha: {value.FECHA_FORMATEADA}</p>
+                <p>Courier: {value.COURIER}</p>
+                <p>Tipo: {value.DESCRIPCION}</p>
+                <Barcode value={value.NUM_PEDIDO}/>
+                <p>Guia: {value.GUIA}</p>
+                <p>Peso (KG): {value.PESO}</p>
+            </div>
+        </div>
+    );
+};
