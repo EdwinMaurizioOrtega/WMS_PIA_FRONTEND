@@ -110,7 +110,7 @@ export default function FuxionReporteDespachosTemplate() {
         // Crear los datos del cliente a insertar
         const clienteData = {
             num_orden: `${selected.row.NUM_PEDIDO}`,
-            peso: `${valueNew}`,
+            peso: `${valueNew} kg`,
         };
 
         var myHeaders = new Headers();
@@ -137,6 +137,8 @@ export default function FuxionReporteDespachosTemplate() {
 
                     fetchDataInit();
 
+                    handleClosePriceUnit();
+
                 } else {
                     console.log('La solicitud no tuvo éxito (código ' + response.status + ').');
                 }
@@ -146,7 +148,6 @@ export default function FuxionReporteDespachosTemplate() {
                 console.error('Error en la solicitud:', error);
             });
 
-        handleClosePriceUnit();
     }
 
     const TABLE_HEAD = [
