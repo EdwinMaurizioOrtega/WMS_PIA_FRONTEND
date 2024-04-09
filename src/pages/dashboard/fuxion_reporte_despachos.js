@@ -351,14 +351,12 @@ const BarcodeComponent = ({value}) => {
     return (
         <div ref={componentRef} onClick={handlePrint}>
             <div style={{display: 'inline-block', textAlign: 'center'}}>
-                <p>FUXION</p>
-                <p>INFORMACIÓN DEL DESPACHO</p>
                 <p>Fecha: {value.FECHA_FORMATEADA}</p>
                 <p>Courier: {value.COURIER}</p>
                 <p>Tipo: {value.DESCRIPCION}</p>
-                <Barcode value={value.NUM_PEDIDO}/>
                 <p>Guia: {value.GUIA}</p>
                 <p>Peso (KG): {value.PESO}</p>
+                <Barcode value={value.NUM_PEDIDO}/>
             </div>
         </div>
     );
