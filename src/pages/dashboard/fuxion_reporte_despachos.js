@@ -3,9 +3,9 @@ import Head from 'next/head';
 
 // @mui
 import {
-    Box, Card,
+    Box, Button, Card,
     CardContent, CardHeader, CircularProgress,
-    Container, Grid, IconButton, Tooltip
+    Container, Divider, Grid, IconButton, Menu, MenuItem, TextField, Tooltip
 } from '@mui/material';
 
 import {useSettingsContext} from "../../components/settings";
@@ -24,6 +24,9 @@ import EtiquetasPDF from "../../sections/invoice/EtiquetasPDF";
 import Barcode from "react-barcode";
 import {useReactToPrint} from "react-to-print";
 import styles from "../../sections/invoice/InvoiceStyle";
+import ConfirmDialog from "../../components/confirm-dialog";
+import MenuPopover from "../../components/menu-popover";
+
 
 FuxionReporteDespachosTemplate.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
@@ -33,23 +36,28 @@ export default function FuxionReporteDespachosTemplate() {
 
     const [jsonData, setJsonData] = useState([]);
 
+    const [openPriceUnit, setOpenPriceUnit] = useState(false);
+
+    const [valueNew, setValueNew] = useState('');
+
+
     useEffect(() => {
-        async function fetchDataInit() {
-            try {
-                const url = `${HOST_API_KEY}/api/fuxion/reporte_despachos`;
-                const response = await fetch(url);
-                const data = await response.json();
-                setJsonData(data.data);
-
-                console.log("dataClientes: " + JSON.stringify(data.data));
-
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
         fetchDataInit();
     }, []); // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
 
+    async function fetchDataInit() {
+        try {
+            const url = `${HOST_API_KEY}/api/fuxion/reporte_despachos`;
+            const response = await fetch(url);
+            const data = await response.json();
+            setJsonData(data.data);
+
+            console.log("dataClientes: " + JSON.stringify(data.data));
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     const handleViewRow = (row) => {
         console.log("Datos de la fila: " + JSON.stringify(row));
@@ -62,7 +70,87 @@ export default function FuxionReporteDespachosTemplate() {
 
     }
 
+    const [openPopover, setOpenPopover] = useState(null);
+
+    const [selected, setSelected] = useState(false);
+
+    const handleOpenPopover = (event, rowData) => {
+        setOpenPopover(event.currentTarget);
+
+        console.log("ID seleccionado:", rowData);
+        setSelected(rowData);
+    };
+
+    const handleOpenPriceUnit = () => {
+        setOpenPriceUnit(true);
+    };
+
+    const handleClosePopover = () => {
+        setOpenPopover(null);
+    };
+
+    const handleClosePriceUnit = () => {
+        setOpenPriceUnit(false);
+    };
+
+    const handleChange = (event) => {
+        setValueNew(event.target.value);
+        // console.log(`Nuevo precio unitario ${valueNew}`);
+    };
+
+
+    const handleChangePriceUnit = async () => {
+
+        console.log("ID: " + selected.id);
+        console.log("JSON Pedido: " + JSON.stringify(selected.row.NUM_PEDIDO));
+        console.log("valueNew: " + valueNew);
+
+        const url = `${HOST_API_KEY}/api/fuxion/update_kg_orden`;
+
+        // Crear los datos del cliente a insertar
+        const clienteData = {
+            num_orden: `${selected.row.NUM_PEDIDO}`,
+            peso: `${valueNew}`,
+        };
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        // Convertir los datos del cliente a JSON
+        const raw = JSON.stringify(clienteData);
+
+        var requestOptions = {
+            method: 'PUT',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(url, requestOptions)
+            .then(response => {
+
+                if (response.status === 200) {
+                    // El estado de respuesta es 200, ejecuta tu código aquí
+                    console.log('La solicitud tuvo éxito (código 200).');
+                    console.log('Fecha de cierre se ha registrado correctamente.');
+                    // Puedes agregar más código aquí para realizar acciones específicas.
+
+                    fetchDataInit();
+
+                } else {
+                    console.log('La solicitud no tuvo éxito (código ' + response.status + ').');
+                }
+
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
+
+        handleClosePriceUnit();
+    }
+
     const TABLE_HEAD = [
+
 
 
         {
@@ -80,6 +168,32 @@ export default function FuxionReporteDespachosTemplate() {
                 <BarcodeComponent key={params.row.id} value={params.row} />,
 
             ],
+        },
+
+
+
+        {
+            field: 'action',
+            headerName: ' ',
+            width: 80,
+            align: 'right',
+            sortable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => {
+
+
+
+                return (
+                    <div>
+
+                        <IconButton color={openPopover ? 'inherit' : 'default'}
+                                    onClick={(event) => handleOpenPopover(event, params)}>
+                            <Iconify icon="eva:more-vertical-fill"/>
+                        </IconButton>
+                    </div>
+                )
+
+            },
         },
 
         {
@@ -131,8 +245,6 @@ export default function FuxionReporteDespachosTemplate() {
     ];
 
 
-
-
     return (
         <>
             <Head>
@@ -166,6 +278,50 @@ export default function FuxionReporteDespachosTemplate() {
                     </Grid>
                 </div>
             </Container>
+
+
+            <MenuPopover
+                open={openPopover}
+                onClose={handleClosePopover}
+                arrow="right-top"
+                sx={{width: 160}}
+            >
+                <MenuItem
+                    onClick={() => {
+                        handleOpenPriceUnit();
+                        handleClosePopover();
+                    }}
+                >
+                    <Iconify icon="eva:edit-fill"/>
+                    Peso.
+                </MenuItem>
+
+                {/*<Divider sx={{borderStyle: 'dashed'}}/>*/}
+
+            </MenuPopover>
+
+
+            <ConfirmDialog
+                open={openPriceUnit}
+                onClose={handleClosePriceUnit}
+                title="Nuevo peso para el pedido."
+                content={`¿Estás seguro de que quieres actualizar el peso KG? `}
+                action={
+                    <>
+                        <TextField
+                            label="Nuevo KG."
+                            value={valueNew}
+                            onChange={handleChange}
+                        />
+                        <Button variant="contained" color="error" onClick={() => {
+                            handleChangePriceUnit();
+                        }}
+                        >
+                            Guardar
+                        </Button>
+                    </>
+                }
+            />
         </>
 
     );
