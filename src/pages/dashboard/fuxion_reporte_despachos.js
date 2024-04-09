@@ -352,12 +352,12 @@ const BarcodeComponent = ({value}) => {
         <div ref={componentRef} onClick={handlePrint}>
             <div style={{display: 'inline-block', textAlign: 'center'}}>
                 <p style={{fontSize: '12px', margin: '10px 0'}}>&nbsp;</p>
-                <p style={{fontSize: '12px'}}>Fecha: {obtenerFecha(value.FECHA_FORMATEADA)}</p>
-                <p style={{fontSize: '12px'}}>Courier: {value.COURIER}</p>
-                <p style={{fontSize: '12px'}}>Tipo: {value.DESCRIPCION}</p>
-                <p style={{fontSize: '12px'}}>Guia: {value.GUIA}</p>
-                <p style={{fontSize: '12px'}}>Peso (KG): {value.PESO}</p>
-                <p style={{fontSize: '12px'}}>NUM. PEDIDO: {value.NUM_PEDIDO}</p>
+                <p style={{fontSize: '12px', marginLeft: '10px'}}>FECHA: {obtenerFecha(value.FECHA_FORMATEADA)}</p>
+                <p style={{fontSize: '12px', marginLeft: '10px'}}>COURIER: {value.COURIER}</p>
+                <p style={{fontSize: '12px', marginLeft: '10px'}}>TIPO: {value.DESCRIPCION}</p>
+                <p style={{fontSize: '12px', marginLeft: '10px'}}>NUM. ORDEN: {value.NUM_PEDIDO}</p>
+                <p style={{fontSize: '12px', marginLeft: '10px'}}>GUIA: {value.GUIA}</p>
+                <p style={{fontSize: '12px', marginLeft: '10px'}}>PESO(KG): {value.PESO}</p>
                 {/*<Barcode style={{fontSize: '12px'}} value={value.NUM_PEDIDO}/>*/}
             </div>
         </div>
