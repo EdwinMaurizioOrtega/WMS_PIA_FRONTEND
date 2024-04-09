@@ -351,13 +351,17 @@ const BarcodeComponent = ({value}) => {
     return (
         <div ref={componentRef} onClick={handlePrint}>
             <div style={{display: 'inline-block', textAlign: 'center'}}>
-                <p>Fecha: {value.FECHA_FORMATEADA}</p>
-                <p>Courier: {value.COURIER}</p>
-                <p>Tipo: {value.DESCRIPCION}</p>
-                <p>Guia: {value.GUIA}</p>
-                <p>Peso (KG): {value.PESO}</p>
-                <Barcode value={value.NUM_PEDIDO}/>
+                <p style={{fontSize: '25px'}}>Fecha: {obtenerFecha(value.FECHA_FORMATEADA)}</p>
+                <p style={{fontSize: '25px'}}>Courier: {value.COURIER}</p>
+                <p style={{fontSize: '25px'}}>Tipo: {value.DESCRIPCION}</p>
+                <p style={{fontSize: '25px'}}>Guia: {value.GUIA}</p>
+                <p style={{fontSize: '25px'}}>Peso (KG): {value.PESO}</p>
+                <Barcode style={{fontSize: '25px'}} value={value.NUM_PEDIDO}/>
             </div>
         </div>
     );
 };
+
+function obtenerFecha(fechaCompleta) {
+    return fechaCompleta.split(' ')[0];
+}
