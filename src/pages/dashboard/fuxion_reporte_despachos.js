@@ -357,7 +357,7 @@ const BarcodeComponent = ({value}) => {
                 <p style={{fontSize: '12px'}}>Tipo: {value.DESCRIPCION}</p>
                 <p style={{fontSize: '12px'}}>Guia: {value.GUIA}</p>
                 <p style={{fontSize: '12px'}}>Peso (KG): {value.PESO}</p>
-                <Barcode style={{fontSize: '12px'}} value={value.NUM_PEDIDO}/>
+                {/*<Barcode style={{fontSize: '12px'}} value={value.NUM_PEDIDO}/>*/}
             </div>
         </div>
     );
