@@ -38,6 +38,8 @@ export default function FuxionReporteDespachosTemplate() {
 
     const [openPriceUnit, setOpenPriceUnit] = useState(false);
 
+    const [openInsertPedidoContrato, setOpenInsertPedidoContrato] = useState(false);
+
     const [valueNew, setValueNew] = useState('');
 
 
@@ -85,6 +87,10 @@ export default function FuxionReporteDespachosTemplate() {
         setOpenPriceUnit(true);
     };
 
+    const handleOpenInsertPedidoContrato = () => {
+        setOpenInsertPedidoContrato(true);
+    };
+
     const handleClosePopover = () => {
         setOpenPopover(null);
     };
@@ -93,12 +99,16 @@ export default function FuxionReporteDespachosTemplate() {
         setOpenPriceUnit(false);
     };
 
+    const handleCloseInsertPedidoContrato = () => {
+        setOpenInsertPedidoContrato(false);
+    };
+
     const handleChange = (event) => {
         setValueNew(event.target.value);
         // console.log(`Nuevo precio unitario ${valueNew}`);
     };
 
-
+    //Actualizar fila
     const handleChangePriceUnit = async () => {
 
         console.log("ID: " + selected.id);
@@ -150,9 +160,59 @@ export default function FuxionReporteDespachosTemplate() {
 
     }
 
+    //Insertar fila
+    const handleInsertPedidoContrato = async () => {
+
+        console.log("ID: " + selected.id);
+        console.log("JSON Pedido: " + JSON.stringify(selected.row.NUM_PEDIDO));
+        console.log("valueNew: " + valueNew);
+
+        const url = `${HOST_API_KEY}/api/fuxion/insert_pedido_contrato`;
+
+        // Crear los datos del cliente a insertar
+        const clienteData = {
+            num_orden: `${selected.row.NUM_PEDIDO}`,
+            peso: `${valueNew} kg`,
+        };
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        // Convertir los datos del cliente a JSON
+        const raw = JSON.stringify(clienteData);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(url, requestOptions)
+            .then(response => {
+
+                if (response.status === 200) {
+                    // El estado de respuesta es 200, ejecuta tu código aquí
+                    console.log('La solicitud tuvo éxito (código 200).');
+                    console.log('Fecha de cierre se ha registrado correctamente.');
+                    // Puedes agregar más código aquí para realizar acciones específicas.
+
+                    fetchDataInit();
+
+                    handleCloseInsertPedidoContrato();
+
+                } else {
+                    console.log('La solicitud no tuvo éxito (código ' + response.status + ').');
+                }
+
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
+
+    }
+
     const TABLE_HEAD = [
-
-
 
         {
             type: 'actions',
@@ -287,6 +347,7 @@ export default function FuxionReporteDespachosTemplate() {
                 arrow="right-top"
                 sx={{width: 160}}
             >
+
                 <MenuItem
                     onClick={() => {
                         handleOpenPriceUnit();
@@ -294,10 +355,20 @@ export default function FuxionReporteDespachosTemplate() {
                     }}
                 >
                     <Iconify icon="eva:edit-fill"/>
-                    Peso.
+                    Actualizar
                 </MenuItem>
 
-                {/*<Divider sx={{borderStyle: 'dashed'}}/>*/}
+                <Divider sx={{borderStyle: 'dashed'}}/>
+
+                <MenuItem
+                    onClick={() => {
+                        handleOpenInsertPedidoContrato();
+                        handleClosePopover();
+                    }}
+                >
+                    <Iconify icon="eva:edit-fill"/>
+                    Insertar
+                </MenuItem>
 
             </MenuPopover>
 
@@ -316,6 +387,28 @@ export default function FuxionReporteDespachosTemplate() {
                         />
                         <Button variant="contained" color="error" onClick={() => {
                             handleChangePriceUnit();
+                        }}
+                        >
+                            Guardar
+                        </Button>
+                    </>
+                }
+            />
+
+            <ConfirmDialog
+                open={openInsertPedidoContrato}
+                onClose={handleCloseInsertPedidoContrato}
+                title="Insertar Pedido Contrato"
+                content={`¿Estás seguro de que quieres insertar un pedido contrato + el peso KG? `}
+                action={
+                    <>
+                        <TextField
+                            label="Nuevo KG."
+                            value={valueNew}
+                            onChange={handleChange}
+                        />
+                        <Button variant="contained" color="error" onClick={() => {
+                            handleInsertPedidoContrato();
                         }}
                         >
                             Guardar
