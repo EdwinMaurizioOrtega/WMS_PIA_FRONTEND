@@ -283,6 +283,11 @@ export default function FuxionReporteDespachosTemplate() {
             width: 200,
         },
         {
+            field: 'NUM_CORTE',
+            headerName: 'CORTE',
+            width: 200,
+        },
+        {
             field: 'GUIA',
             headerName: 'GUIA',
             width: 200,
@@ -450,6 +455,7 @@ const BarcodeComponent = ({value}) => {
                 <p style={{fontSize: '12px', marginLeft: '10px'}}>COURIER: {value.COURIER}</p>
                 <p style={{fontSize: '12px', marginLeft: '10px'}}>TIPO: {value.DESCRIPCION}</p>
                 <p style={{fontSize: '12px', marginLeft: '10px'}}>NUM. ORDEN: {value.NUM_PEDIDO}</p>
+                <p style={{fontSize: '12px', marginLeft: '10px'}}>NUM. CORTE: {value.NUM_CORTE}</p>
                 <p style={{fontSize: '12px', marginLeft: '10px'}}>GUIA: {value.GUIA}</p>
                 <p style={{fontSize: '12px', marginLeft: '10px'}}>PESO(KG): {value.PESO}</p>
                 {/*<Barcode style={{fontSize: '12px'}} value={value.NUM_PEDIDO}/>*/}
