@@ -261,20 +261,14 @@ export default function FuxionReporteDespachosTemplate() {
             field: 'id',
             hide: true,
         },
-
         {
-            field: 'FECHA_FORMATEADA',
-            headerName: 'FECHA',
-            width: 200
-        },
-        {
-            field: 'COURIER',
-            headerName: 'COURIER',
+            field: 'PESO',
+            headerName: 'PESO',
             width: 200,
         },
         {
-            field: 'DESCRIPCION',
-            headerName: 'TIPO',
+            field: 'GUIA',
+            headerName: 'GUIA',
             width: 200,
         },
         {
@@ -288,13 +282,18 @@ export default function FuxionReporteDespachosTemplate() {
             width: 200,
         },
         {
-            field: 'GUIA',
-            headerName: 'GUIA',
+            field: 'FECHA_FORMATEADA',
+            headerName: 'FECHA',
+            width: 200
+        },
+        {
+            field: 'COURIER',
+            headerName: 'COURIER',
             width: 200,
         },
         {
-            field: 'PESO',
-            headerName: 'PESO',
+            field: 'DESCRIPCION',
+            headerName: 'TIPO',
             width: 200,
         },
         {
