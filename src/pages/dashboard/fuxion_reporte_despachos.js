@@ -224,10 +224,8 @@ export default function FuxionReporteDespachosTemplate() {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
-            getActions: (params) => [
-
-                <BarcodeComponent key={params.row.id} value={params.row} />,
-
+            renderCell: (params) => [
+                    params.row?.PESO != null && <BarcodeComponent key={params.row.id} value={params.row}/>
             ],
         },
 
