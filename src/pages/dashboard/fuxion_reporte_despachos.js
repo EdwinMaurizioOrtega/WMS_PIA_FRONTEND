@@ -40,6 +40,8 @@ export default function FuxionReporteDespachosTemplate() {
 
     const [openInsertPedidoContrato, setOpenInsertPedidoContrato] = useState(false);
 
+    const [openInsertPallets, setOpenInsertPallets] = useState(false);
+
     const [valueNew, setValueNew] = useState('');
 
 
@@ -91,6 +93,10 @@ export default function FuxionReporteDespachosTemplate() {
         setOpenInsertPedidoContrato(true);
     };
 
+    const handleOpenInsertPallets = () => {
+        setOpenInsertPallets(true);
+    };
+
     const handleClosePopover = () => {
         setOpenPopover(null);
     };
@@ -101,6 +107,10 @@ export default function FuxionReporteDespachosTemplate() {
 
     const handleCloseInsertPedidoContrato = () => {
         setOpenInsertPedidoContrato(false);
+    };
+
+    const handleCloseInsertPallets = () => {
+        setOpenInsertPallets(false);
     };
 
     const handleChange = (event) => {
@@ -209,6 +219,16 @@ export default function FuxionReporteDespachosTemplate() {
             .catch(error => {
                 console.error('Error en la solicitud:', error);
             });
+
+    }
+
+    //Insertar fila
+    const handleInsertPallets = async () => {
+
+        console.log("ID: " + selected.id);
+        console.log("JSON Pedido: " + JSON.stringify(selected.row.NUM_PEDIDO));
+        console.log("valueNew: " + valueNew);
+
 
     }
 
@@ -372,7 +392,16 @@ export default function FuxionReporteDespachosTemplate() {
 
 
 
-                {/*<Divider sx={{borderStyle: 'dashed'}}/>*/}
+                <Divider sx={{borderStyle: 'dashed'}}/>
+                <MenuItem
+                    onClick={() => {
+                        handleOpenInsertPallets();
+                        handleClosePopover();
+                    }}
+                >
+                    <Iconify icon="eva:edit-fill"/>
+                    Pallets
+                </MenuItem>
 
 
             </MenuPopover>
@@ -421,6 +450,29 @@ export default function FuxionReporteDespachosTemplate() {
                     </>
                 }
             />
+
+            <ConfirmDialog
+                open={openInsertPallets}
+                onClose={handleCloseInsertPallets}
+                title="Insertar Pallets"
+                content={`¿Estás seguro de que quieres insertar un pallets? `}
+                action={
+                    <>
+                        <TextField
+                            label="Nuevo pallets."
+                            value={valueNew}
+                            onChange={handleChange}
+                        />
+                        <Button variant="contained" color="error" onClick={() => {
+                            handleInsertPallets();
+                        }}
+                        >
+                            Guardar
+                        </Button>
+                    </>
+                }
+            />
+
         </>
 
     );
