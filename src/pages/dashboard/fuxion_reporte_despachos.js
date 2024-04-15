@@ -217,7 +217,7 @@ export default function FuxionReporteDespachosTemplate() {
         {
             type: 'actions',
             field: 'actions',
-            headerName: ' ',
+            headerName: 'Imprimir',
             align: 'right',
             headerAlign: 'right',
             width: 80,
