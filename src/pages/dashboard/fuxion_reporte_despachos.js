@@ -231,8 +231,6 @@ export default function FuxionReporteDespachosTemplate() {
             ],
         },
 
-
-
         {
             field: 'action',
             headerName: ' ',
@@ -242,11 +240,8 @@ export default function FuxionReporteDespachosTemplate() {
             disableColumnMenu: true,
             renderCell: (params) => {
 
-
-
                 return (
                     <div>
-
                         <IconButton color={openPopover ? 'inherit' : 'default'}
                                     onClick={(event) => handleOpenPopover(event, params)}>
                             <Iconify icon="eva:more-vertical-fill"/>
@@ -352,27 +347,35 @@ export default function FuxionReporteDespachosTemplate() {
                 sx={{width: 160}}
             >
 
-                <MenuItem
-                    onClick={() => {
-                        handleOpenPriceUnit();
-                        handleClosePopover();
-                    }}
-                >
-                    <Iconify icon="eva:edit-fill"/>
-                    Actualizar
-                </MenuItem>
+                { selected.row?.PESO != null ? (
+                    <MenuItem
+                        onClick={() => {
+                            handleOpenPriceUnit();
+                            handleClosePopover();
+                        }}
+                    >
+                        <Iconify icon="eva:edit-fill"/>
+                        Actualizar
+                    </MenuItem>
+                ) : (
+                    <MenuItem
+                        onClick={() => {
+                            handleOpenInsertPedidoContrato();
+                            handleClosePopover();
+                        }}
+                    >
+                        <Iconify icon="eva:edit-fill"/>
+                        Insertar
+                    </MenuItem>
 
-                <Divider sx={{borderStyle: 'dashed'}}/>
+                )
 
-                <MenuItem
-                    onClick={() => {
-                        handleOpenInsertPedidoContrato();
-                        handleClosePopover();
-                    }}
-                >
-                    <Iconify icon="eva:edit-fill"/>
-                    Insertar
-                </MenuItem>
+                }
+
+
+
+                {/*<Divider sx={{borderStyle: 'dashed'}}/>*/}
+
 
             </MenuPopover>
 
