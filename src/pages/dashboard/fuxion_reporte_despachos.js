@@ -280,6 +280,11 @@ export default function FuxionReporteDespachosTemplate() {
             width: 200,
         },
         {
+            field: 'PESO_REF',
+            headerName: 'PESO_REF',
+            width: 200,
+        },
+        {
             field: 'GUIA',
             headerName: 'GUIA',
             width: 200,
