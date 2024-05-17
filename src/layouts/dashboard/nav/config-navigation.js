@@ -40,6 +40,9 @@ const navConfig = [
       { title: 'Plantillas.', path: PATH_DASHBOARD.templates, icon: ICONS.user },
       { title: 'Consolidado.', path: PATH_DASHBOARD.consolidado, icon: ICONS.user },
 
+      { title: 'DespachosConsolidados', path: PATH_DASHBOARD.full_reporte_despachos_consolidados, icon: ICONS.user },
+      { title: 'DespachosSinSeries', path: PATH_DASHBOARD.full_reporte_despachos_sin_series, icon: ICONS.user },
+
       // {
       //   title: 'user',
       //   path: PATH_DASHBOARD.user.root,
