@@ -29,6 +29,7 @@ export const PATH_DASHBOARD = {
   fuxion_reporte_despachos: path(ROOTS_DASHBOARD,'/fuxion_reporte_despachos'),
   full_reporte_despachos_consolidados: path(ROOTS_DASHBOARD,'/full_reporte_despachos_consolidados'),
   full_reporte_despachos_sin_series: path(ROOTS_DASHBOARD,'/full_reporte_despachos_sin_series'),
+  full_reporte_inventario_inicial_bodega: path(ROOTS_DASHBOARD,'/full_reporte_inventario_inicial_bodega'),
 
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),
