@@ -43,6 +43,7 @@ const navConfig = [
       { title: 'DespachosConsolidados', path: PATH_DASHBOARD.full_reporte_despachos_consolidados, icon: ICONS.user },
       { title: 'DespachosSinSeries', path: PATH_DASHBOARD.full_reporte_despachos_sin_series, icon: ICONS.user },
       { title: 'InventarioInicialBodega', path: PATH_DASHBOARD.full_reporte_inventario_inicial_bodega, icon: ICONS.user },
+      { title: 'InventarioInicialInterno', path: PATH_DASHBOARD.full_reporte_inventario_inicial_interno, icon: ICONS.user },
 
       // {
       //   title: 'user',
