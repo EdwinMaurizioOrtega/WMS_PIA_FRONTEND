@@ -31,6 +31,7 @@ export const PATH_DASHBOARD = {
   full_reporte_despachos_sin_series: path(ROOTS_DASHBOARD,'/full_reporte_despachos_sin_series'),
   full_reporte_inventario_inicial_bodega: path(ROOTS_DASHBOARD,'/full_reporte_inventario_inicial_bodega'),
   full_reporte_inventario_inicial_interno: path(ROOTS_DASHBOARD,'/full_reporte_inventario_inicial_interno'),
+  carga_masiva_guias_servientrega: path(ROOTS_DASHBOARD,'/carga_masiva_guias_servientrega'),
 
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),
