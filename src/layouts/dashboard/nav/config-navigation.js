@@ -45,6 +45,7 @@ const navConfig = [
       { title: 'InventarioInicialBodega', path: PATH_DASHBOARD.full_reporte_inventario_inicial_bodega, icon: ICONS.user },
       { title: 'InventarioInicialInterno', path: PATH_DASHBOARD.full_reporte_inventario_inicial_interno, icon: ICONS.user },
       { title: 'Carga Masiva Guias Servientrega', path: PATH_DASHBOARD.carga_masiva_guias_servientrega, icon: ICONS.user },
+      { title: 'Orden Despacho PDF', path: PATH_DASHBOARD.orden_despacho_pdf, icon: ICONS.user },
 
       // {
       //   title: 'user',
