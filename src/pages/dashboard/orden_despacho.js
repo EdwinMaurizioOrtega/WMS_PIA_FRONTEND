@@ -156,7 +156,7 @@ export default function PageCinco() {
             {jsonDataDespacho.length >=1 && jsonDataDespachoDetalle.length >=1  ? (
                 <PDFDownloadLink
                     document={<DespachoOrdenAlbaranPDF invoice={jsonDataDespacho} invoice_detail={jsonDataDespachoDetalle}/>}
-                    fileName={pedidoProveedorX}
+                    fileName={`${pedidoProveedorX} - ${jsonDataDespacho[0].PEDIDO_SAP}`}
                     style={{textDecoration: 'none'}}
                 >
                     {({loading}) => (
