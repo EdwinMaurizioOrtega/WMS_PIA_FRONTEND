@@ -10,11 +10,63 @@ import { NavSectionMini } from '../../../components/nav-section';
 //
 import navConfig from './config-navigation';
 import NavToggleButton from './NavToggleButton';
+import {useEffect, useState} from "react";
+
+import axios from "../../../utils/axios";
 
 // ----------------------------------------------------------------------
 
 export default function NavMini() {
-  return (
+
+    const [allItems, setAllItems] = useState([]);
+
+    useEffect(() => {
+        fetchDataInit();
+    }, []); // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
+
+
+    const fetchDataInit = async () => {
+
+        try {
+
+            const accessToken = localStorage.getItem('accessToken');
+
+            const response = await axios.get('/api/account/my-access', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            const myAccessData = response.data.data;
+            //console.log("myAccessData: " + JSON.stringify(myAccessData));
+
+            const navConfigFiltrado = myAccessData.map(
+                permisosSubheader => {
+                    const subheaderIndex = permisosSubheader.SUBHEADER;
+                    const permisos = JSON.parse(permisosSubheader.PAGE); // Parsear el string JSON a un array
+                    const section = navConfig[subheaderIndex];
+
+                    if (section) {
+                        return {
+                            subheader: section.subheader,
+                            items: section.items.filter((item, index) => permisos.includes(index)),
+                        };
+                    }
+
+                    return null;
+
+                }).filter(Boolean);
+
+            //console.log(navConfigFiltrado);
+
+            setAllItems(navConfigFiltrado);
+
+        } catch (error) {
+            console.error("Error al cargar datos:", error);
+        }
+    };
+
+    return (
     <Box
       component="nav"
       sx={{
@@ -41,7 +93,7 @@ export default function NavMini() {
       >
         <Logo sx={{ mx: 'auto', my: 2 }} />
 
-        <NavSectionMini data={navConfig} />
+        <NavSectionMini data={allItems} />
       </Stack>
     </Box>
   );

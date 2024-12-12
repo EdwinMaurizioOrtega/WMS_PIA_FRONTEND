@@ -81,6 +81,14 @@ const navConfig = [
       // },
     ],
   },
+
+  {
+    subheader: 'NEXT CNT',
+    items: [
+      { title: 'Albarán', path: PATH_DASHBOARD.orden_despacho_pdf, icon: ICONS.user },
+    ],
+  },
+
 ];
 
 export default navConfig;
