@@ -37,7 +37,7 @@ import {HOST_API_KEY} from "../../config-global";
 import DespachoOrdenAlbaranPDF from "../../sections/invoice/DespachoOrdenAlbaranPDF";
 
 const OPTIONS = [
-    {value: '9000', label: 'HT Miami'},
+    // {value: '9000', label: 'HT Miami'},
     {value: '7001', label: 'CNT'},
 
 ];
