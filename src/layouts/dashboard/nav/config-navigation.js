@@ -92,7 +92,7 @@ const navConfig = [
 
   // 4 - OTRO ANDREA IBARRA
   {
-    subheader: 'OTRO',
+    subheader: 'PARKENOR',
     items: [
       { title: 'IMÁGEN', path: PATH_DASHBOARD.gestion_imagenes, icon: ICONS.user },
       { title: 'PRODUCTOS', path: PATH_DASHBOARD.parkenor_products, icon: ICONS.user },

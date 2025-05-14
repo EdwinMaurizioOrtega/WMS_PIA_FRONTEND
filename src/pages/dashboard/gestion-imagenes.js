@@ -86,7 +86,7 @@ export default function GestionImagenes() {
 
     }, []);
 
-    const [textFieldValues, setTextFieldValues] = useState('00.00.00');
+    const [textFieldValues, setTextFieldValues] = useState('00');
 
     // Manejador del cambio del TextField
     const handleTextFieldChange = (event) => {
@@ -128,7 +128,7 @@ export default function GestionImagenes() {
                     console.log('Archivo subido con éxito. Enlace:', data.link);
 
                     // Actualizar una orden.
-                    const response = await axios.post('/hanadb/api/products/save_url_img_product', {
+                    const response = await axios.post('/api/parkenor/save_url_img_product', {
                         COD_PROD: cod,
                         URL: data.link,
 
@@ -211,7 +211,7 @@ export default function GestionImagenes() {
             // Puedes hacer algo con las coordenadas seleccionadas aquí, si es necesario
 
             // Actualizar una orden.
-            const response = await axios.delete(`/hanadb/api/products/delete_image_product?URL=${data.URL}`
+            const response = await axios.delete(`/api/parkenor/delete_image_product?URL=${data.IMAGEN}`
             );
 
             console.log("Orden actualizada correctamente.");
@@ -240,39 +240,39 @@ export default function GestionImagenes() {
                     <Grid item xs={12} md={12}>
                         <Card sx={{p: 3}}>
 
-                            {/*<CardContent>*/}
+                            <CardContent>
 
 
-                            {/*    <TextField*/}
-                            {/*        name="precioProducto"*/}
-                            {/*        label="Código del producto (07.06.1993)"*/}
-                            {/*        value={textFieldValues} // Valor del TextField desde el estado*/}
-                            {/*        onChange={handleTextFieldChange} // Actualiza el estado cuando cambia el valor*/}
-                            {/*        InputProps={{*/}
-                            {/*            endAdornment: (*/}
-                            {/*                <InputAdornment position="end">*/}
-                            {/*                    <Stack direction="row" spacing={1} alignItems="center">*/}
-                            {/*                        <Button*/}
-                            {/*                            variant="contained"*/}
-                            {/*                            component="label"*/}
-                            {/*                            startIcon={<CloudUploadIcon/>}*/}
-                            {/*                        >*/}
-                            {/*                            Archivo*/}
-                            {/*                            <input*/}
-                            {/*                                type="file"*/}
-                            {/*                                hidden*/}
-                            {/*                                onChange={(event) => handleFileChange(event)}*/}
-                            {/*                            />*/}
-                            {/*                        </Button>*/}
-                            {/*                    </Stack>*/}
-                            {/*                </InputAdornment>*/}
-                            {/*            ),*/}
-                            {/*        }}*/}
-                            {/*        sx={{width: 525}} // Establece el ancho del TextField*/}
-                            {/*    />*/}
+                                <TextField
+                                    name="precioProducto"
+                                    label="Código del producto (00)"
+                                    value={textFieldValues} // Valor del TextField desde el estado
+                                    onChange={handleTextFieldChange} // Actualiza el estado cuando cambia el valor
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <Stack direction="row" spacing={1} alignItems="center">
+                                                    <Button
+                                                        variant="contained"
+                                                        component="label"
+                                                        startIcon={<CloudUploadIcon/>}
+                                                    >
+                                                        Archivo
+                                                        <input
+                                                            type="file"
+                                                            hidden
+                                                            onChange={(event) => handleFileChange(event)}
+                                                        />
+                                                    </Button>
+                                                </Stack>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    sx={{width: 525}} // Establece el ancho del TextField
+                                />
 
 
-                            {/*</CardContent>*/}
+                            </CardContent>
 
                             <Stack spacing={3}>
                                 <DataGrid

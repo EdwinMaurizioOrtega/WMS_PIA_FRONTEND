@@ -96,12 +96,12 @@ export default function EcommerceProductListPage() {
 
   const baseColumns = [
 
-    // {
-    //   field: 'IMAGEN',
-    //   headerName: 'IMAGEN',
-    //   flex: 1,
-    //   maxWidth: 500,
-    // },
+    {
+      field: 'IMAGEN',
+      headerName: 'IMAGEN',
+      flex: 1,
+      maxWidth: 500,
+    },
     {
       field: 'ARTICULO',
       headerName: 'ARTICULO',
