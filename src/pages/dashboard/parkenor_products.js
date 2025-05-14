@@ -100,7 +100,19 @@ export default function EcommerceProductListPage() {
       field: 'IMAGEN',
       headerName: 'IMAGEN',
       flex: 1,
-      maxWidth: 500,
+      minWidth: 150,
+      renderCell: (params) => (
+        //console.log("params.value: " + params.value),
+        <img
+          src={params.value}
+          alt="Image"
+          style={{
+            width: '100px',
+            height: 'auto',
+            objectFit: 'contain'
+          }} // Ajusta el estilo según tus necesidades
+        />
+      ),
     },
     {
       field: 'ARTICULO',
