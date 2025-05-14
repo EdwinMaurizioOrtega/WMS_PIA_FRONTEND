@@ -82,10 +82,20 @@ const navConfig = [
     ],
   },
 
+  // 3 - NEXT CNT
   {
     subheader: 'NEXT CNT',
     items: [
       { title: 'Albarán', path: PATH_DASHBOARD.orden_despacho_pdf, icon: ICONS.user },
+    ],
+  },
+
+  // 4 - OTRO ANDREA IBARRA
+  {
+    subheader: 'OTRO',
+    items: [
+      { title: 'IMÁGEN', path: PATH_DASHBOARD.gestion_imagenes, icon: ICONS.user },
+      { title: 'PRODUCTOS', path: PATH_DASHBOARD.parkenor_products, icon: ICONS.user },
     ],
   },
 
