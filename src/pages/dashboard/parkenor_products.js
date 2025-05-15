@@ -1,34 +1,14 @@
-import { paramCase } from 'change-case';
 import React, { useState, useEffect } from 'react';
 // next
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 // @mui
 import {
   Card,
-  Table,
-  Button,
-  Tooltip,
-  TableBody,
   Container,
-  IconButton,
-  TableContainer, Stack, Box,
+  Stack, Box, Dialog, DialogTitle, DialogContent, CircularProgress, Button,
 } from '@mui/material';
 
 import { HOST_API_KEY } from '../../config-global';
-import ConfirmDialog from '../../components/confirm-dialog';
-import {
-  emptyRows,
-  getComparator,
-  TableEmptyRows,
-  TableHeadCustom,
-  TableNoData,
-  TablePaginationCustom,
-  TableSelectedAction, TableSkeleton, useTable,
-} from '../../components/table';
-import Scrollbar from '../../components/scrollbar';
-import Iconify from '../../components/iconify';
-import { useAuthContext } from '../../auth/useAuthContext';
 import { useSettingsContext } from '../../components/settings';
 import * as PropTypes from 'prop-types';
 import DashboardLayout from '../../layouts/dashboard';
@@ -40,6 +20,7 @@ import {
   GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 import EmptyContent from '../../components/empty-content';
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -62,11 +43,15 @@ ProductTableRow.propTypes = {
 
 export default function EcommerceProductListPage() {
 
-  const { user } = useAuthContext();
-
   const { themeStretch } = useSettingsContext();
 
   const [products, setProducts] = useState([]);
+
+  const [open, setOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,7 +94,7 @@ export default function EcommerceProductListPage() {
           style={{
             width: '100px',
             height: 'auto',
-            objectFit: 'contain'
+            objectFit: 'contain',
           }} // Ajusta el estilo según tus necesidades
         />
       ),
@@ -144,10 +129,99 @@ export default function EcommerceProductListPage() {
       flex: 1,
       maxWidth: 100,
     },
+    {
+      field: '',
+      headerName: 'Acción',
+      width: 200,
+      renderCell: (params) => {
 
+        return (
+          <>
+            <Button
+              variant="contained"
+              onClick={() => handleDetalles(params.row)}
+            >
+              DETALLES
+            </Button>
+          </>
+
+        );
+      },
+    },
 
   ];
 
+  const handleDetalles = async (data) => {
+    //Enviar a la páguina de creación de la nota de credito
+    if (data) {
+      console.log('Fila seleccionada:', data);
+      setLoading(true);
+      try {
+
+        // Actualizar una orden.
+        const response = await axios.get(`/api/parkenor/detalle_product?cod_articulo=${data.ARTICULO}`,
+        );
+        console.log('Data:', response.data.data);
+        setRows(response.data.data);
+        setOpen(true); // Mostrar el diálogo
+
+      } catch (error) {
+        console.error('Error al obtener los detalles:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      console.log('No se ha seleccionado ningún marcador.');
+    }
+  };
+
+  // Suponiendo que conoces las columnas que devuelve tu API
+  const columns = [
+    {
+      field: 'id',
+      headerName: 'ID',
+      width: 50,
+    },
+    {
+      field: 'DESCRIPCION',
+      headerName: 'DESCRIPCION',
+      width: 300,
+    },
+    {
+      field: 'COD_PIA',
+      headerName: 'COD_PIA',
+      width: 100,
+    },
+    {
+      field: 'COD_ANTIGUO',
+      headerName: 'COD_ANTIGUO',
+      width: 130,
+    },
+    {
+      field: 'PRE_PAGO_MERCH',
+      headerName: 'PRE_PAGO_MERCH',
+      width: 150,
+    },
+
+    {
+      field: 'BTL_MERCH',
+      headerName: 'BTL_MERCH',
+      width: 130,
+    },
+
+    {
+      field: 'PUBLICIDAD',
+      headerName: 'PUBLICIDAD',
+      width: 130,
+    },
+
+    {
+      field: 'UBICACION',
+      headerName: 'UBICACION',
+      width: 130,
+    },
+
+    ]
 
   return (
     <>
@@ -170,17 +244,34 @@ export default function EcommerceProductListPage() {
                 noResultsOverlay: () => <EmptyContent title="No results found" />,
               }}
             />
+
+
+            <Dialog open={open} onClose={() => setOpen(false)} maxWidth="md" fullWidth>
+              <DialogTitle>Detalle del Producto</DialogTitle>
+              <DialogContent>
+                {loading ? (
+                  <CircularProgress />
+                ) : (
+                  <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                      rows={rows.map((row, index) => ({ id: index, ...row }))}
+                      columns={columns}
+                      pageSize={5}
+                    />
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
+
           </Stack>
         </Card>
       </Container>
-
 
     </>
   );
 }
 
 // ----------------------------------------------------------------------
-
 
 function CustomToolbar() {
   return (
