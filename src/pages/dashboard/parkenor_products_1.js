@@ -73,9 +73,9 @@ export default function EcommerceProductListPage() {
 
         console.log('Data: ' + JSON.stringify(businessPartnersWithId));
 
-        // Filtramos los productos con PRE_PAGO_MERCH > 0
+        // Filtramos los productos con BTL_MERCH > 0
         const filteredProducts = businessPartnersWithId.filter(
-          (product) => product.PRE_PAGO_MERCH > 0
+          (product) => product.BTL_MERCH > 0
         );
 
         setProducts(filteredProducts);
@@ -125,13 +125,13 @@ export default function EcommerceProductListPage() {
       flex: 1,
       maxWidth: 800,
     },
+
     {
-      field: 'PRE_PAGO_MERCH',
-      headerName: 'Merchandising Trade Prepago',
+      field: 'BTL_MERCH',
+      headerName: 'Merchandising Patrocinios',
       flex: 1,
       maxWidth: 300,
     },
-
 
     user.id === 1 && {
       field: '',

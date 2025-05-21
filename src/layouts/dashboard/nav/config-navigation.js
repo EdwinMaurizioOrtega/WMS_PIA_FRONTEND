@@ -95,7 +95,9 @@ const navConfig = [
     subheader: 'PARKENOR',
     items: [
       { title: 'IMÁGEN', path: PATH_DASHBOARD.gestion_imagenes, icon: ICONS.user },
-      { title: 'PRODUCTOS', path: PATH_DASHBOARD.parkenor_products, icon: ICONS.user },
+      { title: 'Merchandising Trade Prepago', path: PATH_DASHBOARD.merchandising_trade_prepago, icon: ICONS.user },
+      { title: 'Merchandising Patrocinios', path: PATH_DASHBOARD.merchandising_patrocinios, icon: ICONS.user },
+      { title: 'Merchandising de Marca', path: PATH_DASHBOARD.merchandising_de_marca, icon: ICONS.user },
     ],
   },
 

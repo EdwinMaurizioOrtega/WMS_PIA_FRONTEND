@@ -35,7 +35,9 @@ export const PATH_DASHBOARD = {
   carga_masiva_guias_servientrega: path(ROOTS_DASHBOARD,'/carga_masiva_guias_servientrega'),
   orden_despacho_pdf: path(ROOTS_DASHBOARD,'/orden_despacho'),
   gestion_imagenes: path(ROOTS_DASHBOARD,'/gestion-imagenes'),
-  parkenor_products: path(ROOTS_DASHBOARD,'/parkenor_products'),
+  merchandising_trade_prepago: path(ROOTS_DASHBOARD,'/parkenor_products'),
+  merchandising_patrocinios: path(ROOTS_DASHBOARD,'/parkenor_products_1'),
+  merchandising_de_marca: path(ROOTS_DASHBOARD,'/parkenor_products_2'),
 
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),

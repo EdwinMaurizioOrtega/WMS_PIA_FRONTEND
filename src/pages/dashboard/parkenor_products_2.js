@@ -73,9 +73,9 @@ export default function EcommerceProductListPage() {
 
         console.log('Data: ' + JSON.stringify(businessPartnersWithId));
 
-        // Filtramos los productos con PRE_PAGO_MERCH > 0
+        // Filtramos los productos con PUBLICIDAD > 0
         const filteredProducts = businessPartnersWithId.filter(
-          (product) => product.PRE_PAGO_MERCH > 0
+          (product) => product.PUBLICIDAD > 0
         );
 
         setProducts(filteredProducts);
@@ -126,12 +126,11 @@ export default function EcommerceProductListPage() {
       maxWidth: 800,
     },
     {
-      field: 'PRE_PAGO_MERCH',
-      headerName: 'Merchandising Trade Prepago',
+      field: 'PUBLICIDAD',
+      headerName: 'Materiales de Marca',
       flex: 1,
       maxWidth: 300,
     },
-
 
     user.id === 1 && {
       field: '',
