@@ -124,8 +124,18 @@ export default function EcommerceProductListPage() {
       headerName: 'DESCRIPCION',
       flex: 1,
       maxWidth: 800,
+      renderCell: (params) => (
+        <div
+          style={{
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+            lineHeight: '1.4em',
+          }}
+        >
+          {params.value}
+        </div>
+      ),
     },
-
     {
       field: 'BTL_MERCH',
       headerName: 'Merchandising Patrocinios',
